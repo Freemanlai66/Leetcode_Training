@@ -1,0 +1,182 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="源文件">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="头文件">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="资源文件">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\0.1TOP100.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\0.5排序算法.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\0.6输入输出.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\1.5数组-补充题目（待补充）.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\3.3哈希表-其他.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\4.1字符串基础.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\4.2子串KMP.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\5.1专题-图论算法.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\6.1专题-DP入门&amp;网格图.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\6.2专题-背包&amp;经典线性.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\6.3专题-划分&amp;状态机&amp;其他线性.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\6.4专题-区间&amp;状压DP.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\6.5专题-数位&amp;优化DP.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\6.6专题-树形DP.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\6.7专题-图&amp;博弈&amp;概率.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\7.1专题-网格图.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\8.1专题-定长滑窗.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\8.2专题-不定长滑窗.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\8.3专题-单序列双指针.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\8.4专题-双序列双指针.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\8.5专题-三指针.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\8.6专题-分组循环.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\9.1专题-二分查找.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\9.2专题-二分答案.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\9.3专题-二分其他.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\10.1专题-贪心策略.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\11.0专题-枚举技巧.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\11.1专题-前缀和.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\11.2专题-差分.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\11.3专题-栈.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\11.4专题-队列.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\11.5专题-堆.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\11.6专题-字典树.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\11.7专题-并查集.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\12.1专题-链表.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\12.2专题-二叉树.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\12.4专题-回溯.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\13专题-数学.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\14专题-位运算.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Log.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\s389_找不同.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\s1768_交替合并字符串.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\file\admin.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="..\file\computer.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="..\file\order.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="..\file\student.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="..\file\teacher.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\Main.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\example_addressbook.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\example_booksystem.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\example_roomaddress.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\FileName.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Log.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
