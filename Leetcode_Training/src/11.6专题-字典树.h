@@ -309,6 +309,73 @@ namespace s208o2
      * bool param_3 = obj->startsWith(prefix);
      */
 }
+namespace s208o3
+{   // 改用array，用RAII的root，并且将sons析构直接放在Node里
+    class Trie {
+    private:
+        enum class State {
+            PERFECT_MATCH, PREFIX_MATCH, NO_MATCH
+        };
+        struct Node {
+            bool isEnd = false;
+            array<Node*, 26> sons{};
+            ~Node() {
+                // 递归析构，整棵树一起释放                      
+                for (Node* p : sons) delete p;
+            }
+        };
+
+        // RAII，自动禁拷贝，同时dummy改成root，命名更规范
+        // 如果不用智能指针，那么根据rule of three：
+        // (一旦你写了析构函数，通常也必须写（或显式删除）拷贝构造和拷贝赋值)
+        // 就需要额外的代码禁掉拷贝
+        // Trie(const Trie&) = delete;
+        // Trie& operator=(const Trie&) = delete;  
+        // 最好的方式还是直接改成智能指针
+        std::unique_ptr<Node> root = std::make_unique<Node>();
+
+        // 传引用，避免拷贝，const引用 + const方法
+        State find(const string& word) const {
+            const Node* cur = root.get();
+            for (char c : word) {
+                int index = c - 'a';
+                cur = cur->sons[index];      // 先走
+                if (!cur) return State::NO_MATCH;   // 走到空就算失败
+                /* 与下面写法等价，取出->再验证，比之前那样重复写cur->sons[index]好
+                const Node* nxt = cur->sons[index];   // 取槽位
+                if (!nxt) return State::NO_MATCH;       // 缺失 → 判定失败
+                cur = nxt;
+                */
+            }
+            return cur->isEnd ? State::PERFECT_MATCH : State::PREFIX_MATCH;
+        }
+
+    public:
+        Trie() = default;
+
+        // leetcode题干给的签名就不用改了，不用改成传引用
+        void insert(string word) {
+            Node* cur = root.get();
+            for (char c : word) {
+                int index = c - 'a';
+                Node*& nxt = cur->sons[index];
+                if (!nxt) {
+                    nxt = new Node();
+                }
+                cur = nxt;
+            }
+            cur->isEnd = true;
+        }
+
+        bool search(string word) {
+            return find(word) == State::PERFECT_MATCH;
+        }
+
+        bool startsWith(string prefix) {
+            return find(prefix) != State::NO_MATCH;
+        }
+    };
+}
 // ---------------------
 // 【6.2】进阶 (1)
 /*

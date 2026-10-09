@@ -165,14 +165,17 @@ namespace s149o1
         }
     };
 }
-namespace s149extension {
+namespace s149extensiono1 {
     // 如果给出的点可以重复，那么在遍历每个点时，重复点的数量需要加到所有j统计的线条里
+    // 也可以对所有点排序，用另一个去重后的点集沿用o1的解法来做vector<pair<Point, int>>
+
     int maxPoints(vector<vector<int>>& points) {
         int n = points.size(), ans = 0;
         for (int i = 0; i < n; i++) {
             unordered_map<double, int> cnt;
             int same = 0;                       // 与 points[i] 坐标相同的其它点
             for (int j = 0; j < n; j++) {
+                // j可以从i + 1开始，更快，这版从0开始遍历只是更直白展示思想，改版见extensiono2
                 if (j == i) continue;
                 int dx = points[j][0] - points[i][0];
                 int dy = points[j][1] - points[i][1];
@@ -189,4 +192,32 @@ namespace s149extension {
         }
         return ans;
     }
+}
+namespace s149extensiono2
+{   // 内层循环从i + 1开始，为什么可以这样做的原因和o1相同：
+    // 最靠前的那个点，它的副本必然都在它后面"，而 j = i + 1 恰好保证了它们会被扫到
+    class Solution {    
+    public:
+        int maxPoints(vector<vector<int>>& points) {
+            int n = points.size(), ans = 0;
+            for (int i = 0; i < n; i++) {
+                unordered_map<double, int> cnt;
+                int same = 0; // 与 points[i] 坐标相同的其它点 && 下标 > i（只要正确统计一次即可）
+                for (int j = i + 1; j < n; j++) {
+                    int dx = points[j][0] - points[i][0];
+                    int dy = points[j][1] - points[i][1];
+                    if (dx == 0 && dy == 0) { // 重复点：属于所有方向
+                        same++;
+                        continue;
+                    }
+                    double k = dx ? 1.0 * dy / dx : numeric_limits<double>::infinity();
+                    ++cnt[k];
+                }
+                for (auto& [k, v] : cnt)
+                    ans = max(ans, v + same + 1); // 每个方向都加上重复点
+                ans = max(ans, same + 1); // 全是重复点的退化情况（这个容易漏）
+            }
+            return ans;
+        }
+    };
 }
