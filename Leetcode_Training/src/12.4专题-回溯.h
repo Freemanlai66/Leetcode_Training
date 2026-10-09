@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include<vector>
 #include<string>
 #include<unordered_map>
@@ -6,46 +6,46 @@
 #include<algorithm>
 using namespace std;
 
-// ���������
+// 问题待定：
 /*
-1.����������Ŀ��ʱ�临�Ӷȣ��ռ临�Ӷȷ�����Ŀǰ��δ��ȫ����
+1.回溯类型题目的时间复杂度，空间复杂度分析，目前还未完全掌握
 */
 
 /*
-ģ���⣺
-1.static constexpr��̬�����Ķ��� + �������ż���Ŀ���������˼��:17
-2.�Ӽ��ͻ���ģ�壬 m1Ϊѡ��ѡ��������ӽǣ���o1Ϊö��ѡ�ĸ����𰸵��ӽǣ�:78
-3.���ַ������Ӵ��ķָ�����ţ������Ӽ���Ԫ�أ��������Ӽ��ͻ���:131
-4.���廹�Ǻ��Ӽ��ͻ��ݱȽ����ƣ����Ƕ���˼�֦�Ĳ��� : 77
-5.�������Ҫһ��˼άת�������Զ࿴��, ������ƥ��ת������ѡ�벻ѡ : 22
-6.�ò���������Ԫ���Ƿ��ڼ����У��á�ö��ѡ�ĸ�����ģ�� : 46
-7.N�ʺ󣬱�����ö���кŵ�ȫ���� : 51
-8.��s78�Ӽ��ͻ������������ص�����ֻ�в�ѡ��ͬ�����Żᵼ�½���ظ���������ö��ѡ�ĸ�ʱ��ö����ͬԪ�أ�������:90
-9.�����ͻ��ݵ�ȥ�أ����Ӽ��͵�ö��ѡ�ĸ�ȥ�رȽ�����:47
-10.����ͼ + ����:79
+模板题：
+1.static constexpr静态变量的定义 + 回溯入门级题目，理解回溯思想:17
+2.子集型回溯模板， m1为选或不选（输入的视角），o1为枚举选哪个（答案的视角）:78
+3.将字符串中子串的分割处（逗号）当作子集中元素，本质是子集型回溯:131
+4.总体还是和子集型回溯比较类似，但是多出了剪枝的步骤 : 77
+5.这道题需要一点思维转换，可以多看看, 将括号匹配转换成了选与不选 : 22
+6.用布尔数组标记元素是否在集合中，用“枚举选哪个”的模板 : 46
+7.N皇后，本质是枚举列号的全排列 : 51
+8.与s78子集型回溯有所区别，重点在于只有不选相同的数才会导致结果重复，或是在枚举选哪个时不枚举相同元素（跳过）:90
+9.排列型回溯的去重，与子集型的枚举选哪个去重比较类似:47
+10.网格图 + 回溯:79
 */
 
-// ���ݣ����Ż��� + �Ӽ��ͻ��� + ����ͻ��� + �����ͻ��� + �ظ�Ԫ�ػ��� + ���� + �۰�ö��
+// 回溯：入门回溯 + 子集型回溯 + 组合型回溯 + 排列型回溯 + 重复元素回溯 + 搜索 + 折半枚举
 
-// ��4.1�����Ż��� (1)
-// ������ʵ�Ƕ�������N�����ĵݹ������⣬ÿ������ѡʲô��Ч�ڶ�Ӧ�ڵ��м�������
-// ����˼ά�ǽ���������һ������˼����β��������Ǳ��������
+// 【4.1】入门回溯 (1)
+// 回溯其实是二叉树、N叉树的递归衍生题，每个步骤选什么等效于对应节点有几个孩子
+// 核心思维是将问题抽象成一颗树，思考如何拆解问题或是遍历这颗树
 /*
-17.�绰�������ĸ��ϣ�����һ������������ 2-9 ���ַ����������������ܱ�ʾ����ĸ��ϡ��𰸿��԰� ����˳�� ���ء�
-�������ֵ���ĸ��ӳ�����£���绰������ͬ����ע�� 1 ����Ӧ�κ���ĸ��
+17.电话号码的字母组合：给定一个仅包含数字 2-9 的字符串，返回所有它能表示的字母组合。答案可以按 任意顺序 返回。
+给出数字到字母的映射如下（与电话按键相同）。注意 1 不对应任何字母。
 */
 // ---------------------
-// ģ����1��static constexpr��̬�����Ķ��� + �������ż���Ŀ���������˼��
+// 模板题1：static constexpr静态变量的定义 + 回溯入门级题目，理解回溯思想
 namespace s17o1
 {
     class Solution {
     private:
         static const string mapping[10];
-        // static const����������Ƚϸ��ӣ������Σ�����������ֱ�Ӷ��壬��Ҫ�����⣨ͨ������.cpp�ļ��У������ζ��壩
-        // static constexpr���Էſ����ƣ��������ȣ����ַ����ȸ����ӵ��������ɲ�֧�֣�since C++14
-        // static inline constexpr��û���������� since C++17
+        // static const变量，如果比较复杂（非整形）不能在类内直接定义，需要在类外（通常是在.cpp文件中，避免多次定义）
+        // static constexpr可以放宽限制（浮点数等，但字符串等更复杂的类型依旧不支持）since C++14
+        // static inline constexpr则没有类型限制 since C++17
 
-        // ��ʱ�临�Ӷ���O(4^n * n)
+        // 总时间复杂度是O(4^n * n)
     public:
         vector<string> letterCombinations(string digits) {
             int n = digits.length();
@@ -54,19 +54,19 @@ namespace s17o1
             }
 
             vector<string> ans;
-            // ��ʼ��һ������Ϊn�Ŀ��ַ�����ÿ��λ�ö���'\0'
-            // string path(n, 0)����ʽ��ת����path(n, '\0')������0��ӦASCII��0��'\0'
-            // ע��string path(n)�ǲ��Ϸ��ģ�stringû�����ֹ��캯����ʽ
+            // 初始化一个长度为n的空字符串，每个位置都是'\0'
+            // string path(n, 0)会隐式的转换成path(n, '\0')，这里0对应ASCII码0的'\0'
+            // 注意string path(n)是不合法的，string没有这种构造函数形式
             string path(n, 0);
 
             auto dfs = [&](auto&& self, int i)->void {
                 if (i == n) {
-                    ans.push_back(path);// �����ַ�����ҪO(n)��ʱ��
+                    ans.push_back(path);// 复制字符串需要O(n)的时间
                     return;
                 }
                 for (char c : mapping[digits[i] - '0']) {
-                    // ֱ�Ӹ��ǣ�����Ҫ�ָ��ֳ�����Ϊpath�����ǹ̶���
-                    // ����֮����Ӽ��ͻ�������Ϊ���������ӵĶ������Ȳ���������Ҫ���ڻָ��ֳ���
+                    // 直接覆盖，不需要恢复现场，因为path长度是固定的
+                    // （在之后的子集型回溯里因为往答案里添加的东西长度不定，所以要定期恢复现场）
                     path[i] = c;
                     self(self, i + 1);
                 }
@@ -82,22 +82,22 @@ namespace s17o1
     };
 }
 // ---------------------
-// ��4.2���Ӽ��ͻ��� (2)
-// �С�ѡ��ѡ��(ÿ��Ԫ�ؿ���ѡ��ѡ)�͡�ö��ѡ�ĸ�������д�����������ʺϣ����������⣩�ĳ���
+// 【4.2】子集型回溯 (2)
+// 有「选或不选」(每个元素可以选或不选)和「枚举选哪个」两种写法，各自有适合（更容易理解）的场景
 /*
-78.�Ӽ�������һ���������� nums �������е�Ԫ�� ������ͬ �����ظ��������п��ܵ��Ӽ����ݼ�����
-�⼯ ���� �����ظ����Ӽ�������԰� ����˳�� ���ؽ⼯��
+78.子集：给你一个整数数组 nums ，数组中的元素 互不相同 。返回该数组所有可能的子集（幂集）。
+解集 不能 包含重复的子集。你可以按 任意顺序 返回解集。
 
-39.����ܺͣ�����һ�� ���ظ�Ԫ�� ���������� candidates ��һ��Ŀ������ target ��
-�ҳ� candidates �п���ʹ���ֺ�ΪĿ���� target �� ���� ��ͬ��� �������б���ʽ���ء�����԰� ����˳�� ������Щ��ϡ�
-candidates �е� ͬһ�� ���ֿ��� �������ظ���ѡȡ ���������һ�����ֵı�ѡ������ͬ������������ǲ�ͬ�ġ� 
-���ڸ��������룬��֤��Ϊ target �Ĳ�ͬ��������� 150 ����
+39.组合总和：给你一个 无重复元素 的整数数组 candidates 和一个目标整数 target ，
+找出 candidates 中可以使数字和为目标数 target 的 所有 不同组合 ，并以列表形式返回。你可以按 任意顺序 返回这些组合。
+candidates 中的 同一个 数字可以 无限制重复被选取 。如果至少一个数字的被选数量不同，则两种组合是不同的。 
+对于给定的输入，保证和为 target 的不同组合数少于 150 个。
 */
 // ---------------------
-// ģ����2���Ӽ��ͻ���ģ�壬 m1Ϊѡ��ѡ��������ӽǣ���o1Ϊö��ѡ�ĸ����𰸵��ӽǣ�
-// ѡ��ѡs78�Ѿ��������ˣ�������ǿ����������Խ��ģ����3 s131o2 �Ľ��������
+// 模板题2：子集型回溯模板， m1为选或不选（输入的视角），o1为枚举选哪个（答案的视角）
+// 选或不选s78已经很清晰了，如果还是看不懂，可以结合模板题3 s131o2 的解加深理解
 namespace s78m1
-{   // ѡ��ѡ����������ӽ�������ÿ�ο���ѡ���յ�Ԫ��
+{   // 选或不选，从输入的视角来看，每次可能选到空的元素
     class Solution {
     public:
         vector<vector<int>> subsets(vector<int>& nums) {
@@ -112,9 +112,9 @@ namespace s78m1
                     ans.push_back(element);
                     return;
                 }
-                self(self, i + 1);// ��ѡ
+                self(self, i + 1);// 不选
                 element.push_back(nums[i]);
-                self(self, i + 1);// ѡ���ȼӵ�·���ٵݹ�
+                self(self, i + 1);// 选，先加到路径再递归
                 element.pop_back();
                 };
 
@@ -124,9 +124,9 @@ namespace s78m1
     };
 }
 namespace s78o1
-{   // ö��ѡ�ĸ����𰸵��ӽǣ�,�Ҹ��˾���m1��˼·�ȽϺ����⣬��Ϊ���Ƕ������ݹ�ֱ�ӱ仯����
-    // ö��ѡ�ĸ����������ǲ�����������������鳤��Ϊ4
-    // ���Ȱѿռ�����𰸺�(Ҳ���Ǹ��ڵ�)�����1��4��ѡ����Ϊ����ѡ�ظ������������2��3��ѡ���Դ�����
+{   // 枚举选哪个（答案的视角）,我个人觉得m1的思路比较好理解，因为就是二叉树递归直接变化而来
+    // 枚举选哪个的做法就是不规则的树，比如数组长度为4
+    // 在先把空集加入答案后(也就是根节点)，深度1有4个选择（因为不能选重复的数），深度2有3个选择，以此类推
     class Solution {
     public:
         vector<vector<int>> subsets(vector<int>& nums) {
@@ -137,14 +137,14 @@ namespace s78o1
             vector<int> element;
 
             auto dfs = [&](auto&& self, int i) -> void {
-                // ����𰸵ĳ��ȿ��Բ��̶���ֻѡ����Ԫ�ص�һ�����У�������ÿ�ζ�Ҫ����
-                // ��Ҳ�кܶ��������Ҫi == nʱ�ſ�����ans�и��´�
+                // 本题答案的长度可以不固定（只选所有元素的一个都行），所以每次都要更新
+                // 但也有很多情况下需要i == n时才可以向ans中更新答案
                 ans.push_back(element);
 
-                // ÿ����ʵ����n��ѡ�񣬵�����Ϊ�����ظ�ѡȡ��������һ����Ӧ�ô��ڵ�ǰѡ�������Ҳ�������·��ı�����
+                // 每次其实都有n个选择，但是因为不能重复选取，所以下一个数应该大于当前选择的数（也即形如下方的遍历）
                 for (int j = i; j < n; ++j) {
                     element.push_back(nums[j]);
-                    self(self, j + 1);// ע��������j + 1������i + 1��Ҫʱ��������һ���ݹ�ı���������ʲô
+                    self(self, j + 1);// 注意这里是j + 1而不是i + 1，要时刻留意下一步递归的变量到底是什么
                     element.pop_back();
                 }
                 };
@@ -155,9 +155,9 @@ namespace s78o1
     };
 }
 
-// s78��΢�仯��һ�£�Ԫ�ر�ÿ����ظ�ѡ��
+// s78稍微变化了一下，元素变得可以重复选择
 namespace s39m1
-{   // ѡ��ѡ
+{   // 选或不选
     class Solution {
     public:
         vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
@@ -173,12 +173,12 @@ namespace s39m1
                 if (sum > target || i == n) {
                     return;
                 }
-                // ��ѡ
+                // 不选
                 self(self, sum, i + 1);
-                // ѡ
+                // 选
                 path.push_back(candidates[i]);
                 sum += candidates[i];
-                self(self, sum, i);// �ص㣺����i������i + 1����Ϊ��ǰԪ�ؿ����ظ�ѡ������ѡ��󻹿��Լ�������ѡ/��ѡ
+                self(self, sum, i);// 重点：这是i而不是i + 1，因为当前元素可以重复选，所以选择后还可以继续决定选/不选
                 path.pop_back();
                 };
             dfs(dfs, 0, 0);
@@ -187,7 +187,7 @@ namespace s39m1
     };
 }
 namespace s39o1
-{   // ѡ��ѡ + ��֦�Ż�
+{   // 选或不选 + 剪枝优化
     class Solution {
     public:
         vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
@@ -195,7 +195,7 @@ namespace s39o1
             vector<int> path;
             vector<vector<int>> ans;
 
-            // ֻ������һ�����򶼻����
+            // 只增加了一个排序都会更快
             sort(candidates.begin(), candidates.end());
 
             auto dfs = [&](auto&& self, int sum, int i) {
@@ -203,8 +203,8 @@ namespace s39o1
                     ans.push_back(path);
                     return;
                 }
-                // �µı߽��������ϸ�����󣬺����candidates[i]����������ǰ�ͳ��ˣ�����Ҳû��Ҫ�ݹ�
-                // ע�⣬����i == nдǰ�棬Ҫ��Ȼ�����candidates[i]���ܻ����Խ��
+                // 新的边界条件更严格，排序后，后面的candidates[i]会更大，如果当前就超了，后面也没必要递归
+                // 注意，这里i == n写前面，要不然后面的candidates[i]可能会访问越界
                 if (i == n || sum < candidates[i]) {
                     return;
                 }
@@ -222,7 +222,7 @@ namespace s39o1
     };
 }
 namespace s39o2
-{   // ö��ѡ�ĸ� + ��֦�Ż�
+{   // 枚举选哪个 + 剪枝优化
     class Solution {
     public:
         vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
@@ -236,15 +236,15 @@ namespace s39o2
                     return;
                 }
 
-                // ��֦�Ż������������ԣ�
+                // 剪枝优化（利用有序性）
                 for (int i = start; i < candidates.size(); ++i) {
-                    if (sum + candidates[i] > target) {  // ��ǰ��ֹ
+                    if (sum + candidates[i] > target) {  // 提前终止
                         break;
                     }
-                    // ע�����ﲻ��ֱ����sum += candidates[i]����Ϊ��i��n - 1�����б�����sum�ǹ��õ�
+                    // 注：这里不能直接用sum += candidates[i]，因为从i到n - 1的所有遍历下sum是共用的
 
                     path.push_back(candidates[i]);
-                    self(self, sum + candidates[i], i);  // �����ظ�ѡ
+                    self(self, sum + candidates[i], i);  // 允许重复选
                     path.pop_back();
                 }
                 };
@@ -255,25 +255,25 @@ namespace s39o2
     };
 }
 // ---------------------
-// ��4.3�������ͻ��� (2)
-// �ѷָ��ߣ����ţ������ǿ��ԡ�ѡ��ѡ���Ķ������������Ӽ��ͻ���
+// 【4.3】划分型回溯 (2)
+// 把分割线（逗号）看成是可以「选或不选」的东西，本质是子集型回溯
 /*
-131.�ָ���Ĵ�������һ���ַ��� s�����㽫 s �ָ��һЩ �Ӵ���ʹÿ���Ӵ����� ���Ĵ� ������ s ���п��ܵķָ����
+131.分割回文串：给你一个字符串 s，请你将 s 分割成一些 子串，使每个子串都是 回文串 。返回 s 所有可能的分割方案。
 
-93.��ԭIP��ַ����Ч IP ��ַ �������ĸ�������ÿ������λ�� 0 �� 255 ֮����ɣ��Ҳ��ܺ���ǰ�� 0��������֮���� '.' �ָ���
-���磺"0.1.2.201" �� "192.168.1.1" �� ��Ч IP ��ַ��
-���� "0.011.255.245"��"192.168.1.312" �� "192.168@1.1" �� ��Ч IP ��ַ��
-����һ��ֻ�������ֵ��ַ��� s �����Ա�ʾһ�� IP ��ַ��
-�������п��ܵ���Ч IP ��ַ����Щ��ַ����ͨ���� s �в��� '.' ���γɡ�
-�� ���� ���������ɾ�� s �е��κ����֡�����԰� �κ� ˳�򷵻ش𰸡�
+93.复原IP地址：有效 IP 地址 正好由四个整数（每个整数位于 0 到 255 之间组成，且不能含有前导 0），整数之间用 '.' 分隔。
+例如："0.1.2.201" 和 "192.168.1.1" 是 有效 IP 地址，
+但是 "0.011.255.245"、"192.168.1.312" 和 "192.168@1.1" 是 无效 IP 地址。
+给定一个只包含数字的字符串 s ，用以表示一个 IP 地址，
+返回所有可能的有效 IP 地址，这些地址可以通过在 s 中插入 '.' 来形成。
+你 不能 重新排序或删除 s 中的任何数字。你可以按 任何 顺序返回答案。
 */
 // ---------------------
-// ģ����3�����ַ������Ӵ��ķָ�����ţ������Ӽ���Ԫ�أ��������Ӽ��ͻ���
+// 模板题3：将字符串中子串的分割处（逗号）当作子集中元素，本质是子集型回溯
 namespace s131o1
-{   // ѡ��ѡ��"a,a,b,"����i = 0, i = 1, i = 2�����Ķ��ţ��ж�ѡ��ѡ
+{   // 选或不选，"a,a,b,"，对i = 0, i = 1, i = 2三处的逗号，判断选或不选
     class Solution {
     private:
-        // ˫ָ���ж��Ƿ�Ϊ���Ĵ�
+        // 双指针判断是否为回文串
         bool isPalindrome(const string& s, int left, int right) {
             while (left < right) {
                 if (s[left++] != s[right--]) {
@@ -287,27 +287,27 @@ namespace s131o1
         vector<vector<string>> partition(string s) {
             int n = s.size();
             vector<vector<string>> ans;
-            vector<string> path; // ��ĿҪ�󷵻ص��Ƿָ�ġ���������ÿ��������vector<string>
+            vector<string> path; // 题目要求返回的是分割的“方案”，每个方案即vector<string>
 
-            // start��ʾ��λ����Ӵ��Ŀ�ʼλ��
+            // start表示这段回文子串的开始位置
             auto dfs = [&](auto&& self, int start, int end) -> void {
                 if (end == n) {
                     ans.push_back(path);
                     return;
                 }
 
-                // i���λ�ò����зָ�
+                // i这个位置不进行分割
                 if (end < n - 1) {
-                    // ��i = n - 1��Ҳ��ָ���ַ������һ���ַ��ұ�ʱ���Ǳ�����зָ��
-                    // ��i < n - 1ʱ������һֱ����������ָ�㣬�����зָ�
+                    // 当i = n - 1，也即指向字符串最后一个字符右边时，是必须进行分割的
+                    // 在i < n - 1时，可以一直随意的跳过分割点，不进行分割
                     self(self, start, end + 1);
                 }
 
-                // ��i���ָ���[start, i]�Ĳ��ֲ��ǻ��Ĵ�����Ҳ��û�к�����
+                // 在i处分割，如果[start, i]的部分不是回文串，那也就没有后续了
                 if (isPalindrome(s, start, end)) {
                     path.emplace_back(s.begin() + start, s.begin() + end + 1);
                     self(self, end + 1, end + 1);
-                    path.pop_back();// �ָ��ֳ�
+                    path.pop_back();// 恢复现场
                 }
                 };
 
@@ -317,11 +317,11 @@ namespace s131o1
     };
 }
 namespace s131o2
-{   // ö��ѡ�ĸ�
-    // ���ﶺ�ŵ�"λ��"�Ͳ��ǹ̶����ˣ����Ƕ��ŵ�"����"�ǹ̶��ģ���o1ѡ�벻ѡ��ͬ
-    // ������"aab"��������3�����ţ�����Ķ��ű�����֮ǰ���ŵ��ұ�
-    // ��һ�����ſ����ڣ���һ��a����/�ڶ���a����/b����
-    // չ�����ǣ�
+{   // 枚举选哪个
+    // 这里逗号的"位置"就不是固定的了，而是逗号的"数量"是固定的，与o1选与不选不同
+    // 对例子"aab"，假设有3个逗号，后面的逗号必须在之前逗号的右边
+    // 第一个逗号可以在：第一个a后面/第二个a后面/b后面
+    // 展开就是：
     /*
             a,ab            aa,b           aab,
            / \                |           
@@ -351,14 +351,14 @@ namespace s131o2
                     ans.push_back(path);
                     return;
                 }
-                // ��Ϊ
+                // 因为
                 for (int j = i; j < n; ++j) {
-                    // ���for loop�е�ÿ��j����Ӧһ����������j = n - 1��ʱ��path = s
-                    // ֻ�е�ǰ[i, j]���ⲿ���Ӵ��ǻ��ĵĲŻ�������µݹ飬���Ե�j == nʱһ�����嶼�ǻ��ĵ�
-                    if (isPalindrome(s, i, j)) {// ������
+                    // 这个for loop中的每个j都对应一个子树，当j = n - 1的时候path = s
+                    // 只有当前[i, j]的这部分子串是回文的才会继续向下递归，所以当j == n时一定整体都是回文的
+                    if (isPalindrome(s, i, j)) {// 闭区间
                         path.emplace_back(s.begin() + i, s.begin() + j + 1);
                         self(self, j + 1);
-                        // ����ָ��ֳ�Ҳ���൱����ÿ��j��Ӧ�Ĵ��������淵�ؿ���Ҷ�ӵĸ��ڵ�
+                        // 这里恢复现场也就相当于在每个j对应的大子树里面返回靠近叶子的根节点
                         // e.g. a,a,b -> a, ab -> a,ab,
                         path.pop_back();
                     }
@@ -371,17 +371,17 @@ namespace s131o2
     };
 }
 
-// ���ǵ�һ���Լ������������⣬��s131��������һ����
+// 算是第一次自己做出来回溯题，与s131本质上是一道题
 namespace s93m1
-{   // ö��ѡ�ĸ�
+{   // 枚举选哪个
     class Solution {
     private:
         bool isIPAddress(const string& s, int left, int right) {
-            // ������ǰ��0
+            // 不能有前导0
             if (s[left] == '0' && right > left) {
                 return false;
             }
-            // ����4λ����ǰ����
+            // 超过4位数提前返回
             if (right - left + 1 > 3) {
                 return false;
             }
@@ -389,37 +389,37 @@ namespace s93m1
             for (int i = left; i <= right; ++i) {
                 num = num * 10 + (s[i] - '0');
             }
-            // 1��3λ���֣�����Ҫ��0-255��Χ�ڣ�num >= 0�����жϣ�
+            // 1至3位数字，但需要在0-255范围内（num >= 0无需判断）
             return num <= 255;
-            // return stoi(s.substr(left, right - left + 1)) <= 255; // Ҳ�����ÿ⺯��
+            // return stoi(s.substr(left, right - left + 1)) <= 255; // 也可以用库函数
         }
 
     public:
         vector<string> restoreIpAddresses(string s) {
             int n = s.size();
-            // С��֦
+            // 小剪枝
             if (n < 4 || n > 12) return {};
             vector<string> ans;
             vector<string> path;
 
             auto dfs = [&](auto&& self, int start) {
-                // path����պ���4���Ӷ�
+                // path必须刚好有4个子段
                 if (start == n && path.size() == 4) {
-                    // �ҵ�����Ҫ���IP��ַ����ʼƴ��+����"."�����´�
+                    // 找到符合要求的IP地址，开始拼接+添加"."并更新答案
                     string temp = "";
                     for (auto& ele : path) {
                         temp += ele;
                         temp += ".";
                     }
-                    // string temp = path[0] + "." + path[1] + "." + path[2] + "." + path[3]; ֱ��չ��Ҳ����
-                    temp.pop_back(); // ��ĩβ�������"."ȥ��
+                    // string temp = path[0] + "." + path[1] + "." + path[2] + "." + path[3]; 直接展开也可以
+                    temp.pop_back(); // 把末尾多出来的"."去除
                     ans.push_back(temp);
                     return;
                 }
-                // ��i = 4��path.size() != 4ʱ������forѭ����ʼ��j < n�жϾ͹���ȥ���൱��return��
+                // 当i = 4但path.size() != 4时，下面for循环初始的j < n判断就过不去，相当于return了
 
                 for (int end = start; end < n; ++end) {
-                    // ��ǰ�Ӷ����ֱ�������Ҫ�� && ���ܳ���4���Ӷ�
+                    // 当前子段数字必须满足要求 && 不能超过4个子段
                     if (isIPAddress(s, start, end) && path.size() < 4) {
                         path.emplace_back(s.begin() + start, s.begin() + end + 1);
                         self(self, end + 1);
@@ -434,44 +434,44 @@ namespace s93m1
     };
 }
 namespace s93o1
-{   // ѡ��ѡ
+{   // 选或不选
     class Solution {
     private:
         bool isIPAddress(const string& s, int left, int right) {
-            // ������ǰ��0 || ����4λ����ǰ����
+            // 不能有前导0 || 超过4位数提前返回
             int len = right - left + 1;
             if ((s[left] == '0' && len > 1) || len > 3) {
                 return false;
             }
-            // 1��3λ���֣�����Ҫ��0-255��Χ��
+            // 1至3位数字，但需要在0-255范围内
             return stoi(s.substr(left, len)) <= 255;
         }
 
     public:
         vector<string> restoreIpAddresses(string s) {
             int n = s.size();
-            // С��֦
+            // 小剪枝
             if (n < 4 || n > 12) return {};
             vector<string> ans;
             vector<string> path;
 
             auto dfs = [&](auto&& self, int start, int end)->void {
-                // path����պ���4���Ӷ�
+                // path必须刚好有4个子段
                 if (end == n) {
                     if (path.size() == 4) {
-                        // �ҵ�����Ҫ���IP��ַ����ʼƴ��+����"."�����´�
+                        // 找到符合要求的IP地址，开始拼接+添加"."并更新答案
                         string temp = path[0] + "." + path[1] + "." + path[2] + "." + path[3];
                         ans.push_back(move(temp));
                     }
-                    // end == n��ʱ������ֶ����أ������������isIPAddress�����з���end == n�������ַ�������Խ��
+                    // end == n的时候必须手动返回，否则会在下面isIPAddress函数中访问end == n，导致字符串访问越界
                     return;
                 }
 
-                // m2��AI�ṩ�ļ�֦���Լӽ����������ԸĶ�
+                // m2中AI提供的剪枝可以加进来，纯良性改动
                 
-                // ��ѡ���������ǰ[start, end]��Χ�ڶ�������0-255Ҫ����Ҳû��Ҫ�����ݹ���
-                // ѡ����ǰ�Ӷ����ֱ�������Ҫ�� && ���ܳ���4���Ӷ�
-                // ��һ�ε�д�������Ż����m2
+                // 不选：但如果当前[start, end]范围内都不符合0-255要求，那也没必要继续递归了
+                // 选：当前子段数字必须满足要求 && 不能超过4个子段
+                // 这一段的写法最终优化版见m2
                 if (isIPAddress(s, start, end) && path.size() < 4) {
                     self(self, start, end + 1);
 
@@ -487,10 +487,10 @@ namespace s93o1
     };
 }
 namespace s93m2
-{   // ģ��s131��ѡ��ѡ����д��һ��
+{   // 模仿s131的选或不选重新写的一版
     class Solution {
     private:
-        // isValid����o1�İ汾д�ļ��
+        // isValid还是o1的版本写的简洁
         bool isValid(const string& s, int left, int right) {
             int len = right - left + 1;
             if (len > 3) return false;
@@ -506,23 +506,23 @@ namespace s93m2
     public:
         vector<string> restoreIpAddresses(string s) {
             int n = s.size();
-            // С��֦
+            // 小剪枝
             if (n < 4 || n > 12) return {};
             vector<string> ans;
             vector<string> path;
 
             auto dfs = [&](auto&& dfs, int start, int end)->void {
-                // AI�����ļ�֦��ʣ���ַ�̫���̫��
+                // AI给出的剪枝：剩余字符太多或太少
                 int remainingChars = n - start;
                 int remainingSegments = 4 - path.size();
 
-                // ʣ���ַ������ں�����Χ����ǰ����
+                // 剩余字符数不在合理范围，提前返回
                 if (remainingChars < remainingSegments
                     || remainingChars > remainingSegments * 3) {
                     return;
                 }
 
-                if (path.size() == 4) {// ֻҪpath.size() == 4�ˣ������Ƿ�ѡ��ĩβ����Ӧ�����̷���
+                if (path.size() == 4) {// 只要path.size() == 4了，无论是否选到末尾，都应该立刻返回
                     if (end == n) {
                         string ip = path[0] + '.' + path[1]
                             + '.' + path[2] + '.' + path[3];
@@ -531,14 +531,14 @@ namespace s93m2
                     return;
                 }
 
-                // ѡ��ѡС����õ�д��
+                // 选或不选小段最好的写法
                 if (isValid(s, start, end)) {
-                    // ��ѡ
+                    // 不选
                     int len = end - start + 1;
                     if (len < 3 && end < n - 1) {
                         dfs(dfs, start, end + 1);
                     }
-                    // ѡ
+                    // 选
                     if (path.size() < 4) {
                         path.emplace_back(s.begin() + start, s.begin() + end + 1);
                         dfs(dfs, end + 1, end + 1);
@@ -553,10 +553,10 @@ namespace s93m2
     };
 }
 namespace s93m3 {
-    // ���ϰ棺o1 + m2
+    // 整合版：o1 + m2
     class Solution {
     private:
-        // ������
+        // 闭区间
         bool isValid(string& s, int start, int end) {
             int len = end - start + 1;
             if (len > 3 || (len > 1 && s[start] == '0')) {
@@ -589,13 +589,13 @@ namespace s93m3 {
                 }
 
                 if (isValid(s, start, end)) {
-                    // ��ѡ
+                    // 不选
                     int len = end - start + 1;
                     if (len < 3 && end < n - 1) {
                         dfs(dfs, start, end + 1);
                     }
 
-                    // ѡ
+                    // 选
                     if (path.size() < 4) {
                         path.emplace_back(s.begin() + start, s.begin() + end + 1);
                         dfs(dfs, end + 1, end + 1);
@@ -610,28 +610,28 @@ namespace s93m3 {
     };
 }
 // ---------------------
-// ��4.4������ͻ��� (4)
-// ����ͻ�������Ӽ��ͻ��ݣ���֮ͬ�����ڡ���ϡ��ĳ����ǹ̶��ģ������n������ѡ�̶���Ϊk�����
-// �����������Ӽ��������Ƶģ�ͬʱ���ڳ��ȹ̶��������ڵݹ�·���н��м�֦�Ż�
+// 【4.4】组合型回溯 (4)
+// 组合型回溯相比子集型回溯，不同之处在于“组合”的长度是固定的，比如从n个数里选固定长为k的组合
+// 其他过程与子集型是类似的，同时由于长度固定，可以在递归路径中进行剪枝优化
 /*
-77.��ϣ������������� n �� k�����ط�Χ [1, n] �����п��ܵ� k ��������ϡ�����԰� �κ�˳�� ���ش𰸡�
+77.组合：给定两个整数 n 和 k，返回范围 [1, n] 中所有可能的 k 个数的组合。你可以按 任何顺序 返回答案。
 
-216.����ܺ� III���ҳ��������֮��Ϊ n �� k ��������ϣ�����������������
-ֻʹ������1��9��ÿ������ ���ʹ��һ�� ��
-���� ���п��ܵ���Ч��ϵ��б� �����б����ܰ�����ͬ��������Σ���Ͽ������κ�˳�򷵻ء�
+216.组合总和 III：找出所有相加之和为 n 的 k 个数的组合，且满足下列条件：
+只使用数字1到9；每个数字 最多使用一次 。
+返回 所有可能的有效组合的列表 。该列表不能包含相同的组合两次，组合可以以任何顺序返回。
 
-22.�������ɣ����� n �����������ŵĶ������������һ�������������ܹ��������п��ܵĲ��� ��Ч�� ������ϡ�
+22.括号生成：数字 n 代表生成括号的对数，请你设计一个函数，用于能够生成所有可能的并且 有效的 括号组合。
 
-301.ɾ����Ч�����ţ�����һ�����������ź���ĸ��ɵ��ַ��� s ��ɾ����С��������Ч���ţ�ʹ��������ַ�����Ч��
-�������п��ܵĽ�����𰸿��԰� ����˳�� ���ء�
+301.删除无效的括号：给你一个由若干括号和字母组成的字符串 s ，删除最小数量的无效括号，使得输入的字符串有效。
+返回所有可能的结果。答案可以按 任意顺序 返回。
 */
 // ---------------------
-// ģ����4�����廹�Ǻ��Ӽ��ͻ��ݱȽ����ƣ����Ƕ���˼�֦�Ĳ���
+// 模板题4：总体还是和子集型回溯比较类似，但是多出了剪枝的步骤
 namespace s77o1
-{   // ö��ѡ�ĸ�
-    // ��֦�Ż�1�����Ѿ�ѡ��k��ʱ�����Խ����ݹ飨�о������ǿ���Ǽ�֦�ɣ�������Ҫ�����ģ�
-    // ��֦�Ż�2����ʣ���ѡ������֧��ѡ��k��Ԫ��ʱ���Ϳ��Խ����ݹ�
-    //            ��path����Ϊm����ÿ�εݹ黹��ѡk - m���������ʣ�µ�Ԫ�ظ���С�� k - m������Խ�������
+{   // 枚举选哪个
+    // 剪枝优化1：当已经选了k个时，可以结束递归（感觉这个勉强算是剪枝吧，本来就要结束的）
+    // 剪枝优化2：当剩余的选择不足以支撑选出k个元素时，就可以结束递归
+    //            设path长度为m，则每次递归还需选k - m个数，如果剩下的元素个数小于 k - m，则可以结束递推
     class Solution {
     public:
         vector<vector<int>> combine(int n, int k) {
@@ -643,8 +643,8 @@ namespace s77o1
                     ans.push_back(path);
                     return;
                 }
-                // ����������������֦�Ż����ж����������
-                // ��������Ǵ˴��ж�����Ϊ��n - i + 1 < k - path.size()
+                // 逆序遍历，让这个剪枝优化的判断条件更简洁
+                // 如果正序，那此处判断条件为：n - i + 1 < k - path.size()
                 if (i < k - path.size()) {
                     return;
                 }
@@ -663,7 +663,7 @@ namespace s77o1
 
 }
 namespace s77o2
-{   // ѡ��ѡ
+{   // 选或不选
     class Solution {
     public:
         vector<vector<int>> combine(int n, int k) {
@@ -675,17 +675,17 @@ namespace s77o2
                     ans.push_back(path);
                     return;
                 }
-                // ����ļ�֦�����Ż������·���
+                // 这里的剪枝可以优化，见下方：
                 if (i < k - path.size()) {
                     return;
                 }
-                self(self, i - 1); // ��ѡ
+                self(self, i - 1); // 不选
                 /*
-                * ֻ��ʣ��i > k - path.size()ʱ�������ʱ������ﲻѡ�����ݹ飬������>=����Ϊ��ǰ����ǲ�ѡ��
+                * 只有剩下i > k - path.size()时，才有资本在这里不选继续递归，不能是>=，因为当前这个是不选的
                 if (i > k - path.size() {
                     self(self, i - 1);
                 }
-                // �·��ġ�ѡ����������Ӱ�죬��Ϊ������ѡ�������ʱ��˷ѻӻ����ǡ�ѡ��һ��������ģ�path��size����
+                // 下方的“选”并不会受影响，因为连“不选”都有资本浪费挥霍，那“选”一定是满足的（path的size更大）
                 */
                 path.push_back(i);
                 self(self, i - 1);
@@ -698,7 +698,7 @@ namespace s77o2
 
 }
 namespace s77m1
-{   // ��path��Ϊ�̶����ȣ�����pop_back()
+{   // 将path改为固定长度，无需pop_back()
     class Solution {
     public:
         vector<vector<int>> combine(int n, int k) {
@@ -717,10 +717,10 @@ namespace s77m1
                     return;
                 }
 
-                // ��ѡ
+                // 不选
                 dfs(dfs, i + 1, j);
 
-                // ѡ
+                // 选
                 path[j] = i;
                 dfs(dfs, i + 1, j + 1);
                 };
@@ -731,9 +731,9 @@ namespace s77m1
     };
 }
 
-// ��s77�������ƣ�����һ���֦���ж�
+// 跟s77大体类似，多了一点剪枝和判断
 namespace s216m1
-{   // ѡ��ѡ
+{   // 选或不选
     class Solution {
     public:
         vector<vector<int>> combinationSum3(int k, int n) {
@@ -749,9 +749,9 @@ namespace s216m1
                     return;
                 }
                 int rest = k - path.size();
-                // ���1-9�Ѿ�ȫ������ || ʣ�µ��������� || ʣ��ȫѡ1������ || ʣ��ȫѡ9������
-                // ����������ļ�ֻ֦�Ǵ��Եģ���Ϊÿ������ֻ��ѡһ�������ܶ�ѡ1��9
-                // ����ȷ�ļ�֦������������� + �Ȳ��������
+                // 如果1-9已经全部用完 || 剩下的数不够了 || 剩下全选1都超出 || 剩下全选9都不够
+                // 后两种情况的剪枝只是粗略的，因为每个数字只能选一个，不能都选1或9
+                // 更精确的剪枝可以用逆序遍历 + 等差数列求和
                 if (num > 9 || num < rest || rest + sum > n || rest * 9 + sum < n) {
                     return;
                 }
@@ -768,7 +768,7 @@ namespace s216m1
     };
 }
 namespace s216m2
-{   // ö��ѡ�ĸ�
+{   // 枚举选哪个
     class Solution {
     public:
         vector<vector<int>> combinationSum3(int k, int n) {
@@ -783,9 +783,9 @@ namespace s216m2
                     return;
                 }
                 int rest = k - path.size();
-                // ���1-9�Ѿ�ȫ�����꣨�����֦forѭ���������� || ʣ�µ��������� || ʣ��ȫѡ1������ || ʣ��ȫѡ9������
-                // ����������ļ�ֻ֦�Ǵ��Եģ���Ϊÿ������ֻ��ѡһ�������ܶ�ѡ1��9
-                // ����ȷ�ļ�֦������������� + �Ȳ��������
+                // 如果1-9已经全部用完（这个剪枝for循环能做到） || 剩下的数不够了 || 剩下全选1都超出 || 剩下全选9都不够
+                // 后两种情况的剪枝只是粗略的，因为每个数字只能选一个，不能都选1或9
+                // 更精确的剪枝可以用逆序遍历 + 等差数列求和
                 if (num < rest || rest + sum > n || rest * 9 + sum < n) {
                     return;
                 }
@@ -801,7 +801,7 @@ namespace s216m2
     };
 }
 namespace s216m3
-{   // ö��ѡ�ĸ��ļ�д����û����ô���֦
+{   // 枚举选哪个的简单写法，没管那么多剪枝
     class Solution {
     public:
         vector<vector<int>> combinationSum3(int k, int n) {
@@ -828,7 +828,7 @@ namespace s216m3
     };
 }
 namespace s216m4
-{   // ��path��Ϊ�̶����ȣ�����pop_back() + �淶����
+{   // 将path改为固定长度，无需pop_back() + 规范命名
     class Solution {
     public:
         vector<vector<int>> combinationSum3(int k, int n) {
@@ -861,32 +861,32 @@ namespace s216m4
     };
 }
 
-// ģ����5���������Ҫһ��˼άת�������Զ࿴��
+// 模板题5：这道题需要一点思维转换，可以多看看
 namespace s22o1
-{   // ѡ��ѡ�������ö��ѡ�ĸ���΢�鷳��Ͳ����ˣ�
-    // �൱����2n��λ����ѡn��λ�÷š������š�����ѡ�ͷš������š�
-    // ͬʱ�������ԭ��
-    // 1.��������Ŀһ���ﵽn������ʣ��ȫ����������
-    // 2.��������Ŀ���ܳ�����������Ŀ��Ҳ��һ��������Ŀ��ȣ���ֻ�ܷ���������
+{   // 选或不选（这道题枚举选哪个稍微麻烦点就不做了）
+    // 相当于在2n个位置里选n个位置放“左括号”，不选就放“右括号”
+    // 同时遵从以下原则：
+    // 1.左括号数目一旦达到n个，则剩下全部放右括号
+    // 2.右括号数目不能超过左括号数目，也即一旦两者数目相等，则只能放左左括号
     class Solution {
     public:
         vector<string> generateParenthesis(int n) {
             vector<string> ans;
             string path;
-            // ���path(n, 0)����Ϊ�������ַ������ǾͲ���Ҫpop_back�����ݹ����Ҫ���i����ʾ2n��λ���ﵱǰλ�ã�
+            // 如果path(n, 0)定义为定长的字符串，那就不需要pop_back，但递归参数要变成i（表示2n个位置里当前位置）
 
             auto dfs = [&](auto&& self, int left, int right) {
-                if (left == n && right == n) {// ������Ըĳ�right == n����Ϊ�ݹ���rightһ��С�ڵ���left
+                if (left == n && right == n) {// 这里可以改成right == n，因为递归中right一定小于等于left
                     ans.push_back(path);
                     return;
                 }
-                // ��ѡ���������ţ���right�������ܳ���left
+                // 不选：放右括号，但right数量不能超过left
                 if (right < left) {
                     path += ")";
                     self(self, left, right + 1);
                     path.pop_back();
                 }
-                // ѡ���������ţ�����������Ŀһ���ﵽn������ʣ��ȫ����������
+                // 选：放左括号，但左括号数目一旦达到n个，则剩下全部放右括号
                 if (left < n) {
                     path += "(";
                     self(self, left + 1, right);
@@ -900,20 +900,20 @@ namespace s22o1
     };
 }
 namespace s22o2
-{   // o1�ĸİ棬ѡ��ѡ���Ż���
+{   // o1的改版，选或不选，优化版
     class Solution {
     public:
         vector<string> generateParenthesis(int n) {
             vector<string> ans;
-            string path(2 * n, 0);// 0����'/n'��ֱ��Ԥ����̶���С�ڴ棬����o1���Զ�����
+            string path(2 * n, 0);// 0代表'/n'，直接预分配固定大小内存，避免o1的自动扩容
 
             auto dfs = [&](auto&& self, int left, int right) {
-                if (right == n) {   // ��һ���ж���������ʵ����ֻ��Ҫ�ж�right���ɣ�o1ͬ������ֱ�Ӹĳ�����
+                if (right == n) {   // 少一个判断条件，其实这里只需要判断right即可，o1同样可以直接改成这样
                     ans.push_back(path);
                     return;
                 }
                 if (right < left) {
-                    path[left + right] = ')';// ʹ���±ֱ꣬��ʡȥpop_back��΢������
+                    path[left + right] = ')';// 使用下标，直接省去pop_back，微型提速
                     self(self, left, right + 1);
                 }
                 if (left < n) {
@@ -928,15 +928,15 @@ namespace s22o2
     };
 }
 
-// ������ĵ�һ�������⣬o1����������ȻЧ�ʲ��������������������⣬o2�����ж���ʱ�����о�
+// 回溯里的第一道困难题，o1常规做法虽然效率不算最优慢，但容易理解，o2做法有额外时间再研究
 namespace s301o1
-{   // ѡ��ѡ
-    // ����20�����ţ����ַ����������ֻ��25����ȥ�����⣬�ַ�����ֻ��Сд��ĸ
+{   // 选或不选
+    // 至多20个括号，且字符串长度最多只有25，除去括号外，字符串中只有小写字母
     class Solution {
     public:
         vector<string> removeInvalidParentheses(string s) {
             int lremove = 0, rremove = 0;
-            // Calculate minimum removals ���������һ������Ҫ�Ƴ������ŵ���Сֵ��lremoveֻ������Ժ���ܼ���
+            // Calculate minimum removals 这里算出的一定是需要移除的括号的最小值，lremove只有在配对后才能减少
             for (char c : s) {
                 if (c == '(') {
                     lremove++;
@@ -947,11 +947,11 @@ namespace s301o1
                 }
             }
             
-            // ��set����Ϊ����ɾ�������õ����ַ�������ͬ�ģ�����())��ɾ����һ�������ź͵ڶ��������ŵõ����ַ�����ͬ
+            // 用set是因为部分删除方法得到的字符串是相同的，比如())，删除第一个右括号和第二个右括号得到的字符串相同
             unordered_set<string> ansSet;
             string path;
             // Optimized: use reference to avoid copying
-            // open��ʾ��δ��ƥ������������������ѳ��ֵ���δ�������űպϵ�������������
+            // open表示尚未被匹配的左括号数量（即已出现但尚未被右括号闭合的左括号数量）
             auto dfs = [&](auto&& self, int index, int lremove, int rremove, int open) -> void {
                 // Prune: insufficient remaining characters to delete
                 if (s.size() - index < lremove + rremove) return;
@@ -961,14 +961,14 @@ namespace s301o1
                 // Termination: reached end of string
                 if (index == s.size()) {
                     if (lremove == 0 && rremove == 0) {
-                        // ѡ����ʱ��open > 0ȷ����������ȷƥ�䣬��lremove��rremove��Ϊ0˵��û�ж������ţ����Է��ļ����
+                        // 选则保留时的open > 0确保了括号正确匹配，而lremove和rremove都为0说明没有多余括号，可以放心加入答案
                         ansSet.insert(path);
                     }
                     return;
                 }
 
                 char c = s[index];
-                // Option 1: Delete current character (if applicable)��Ҳ����ѡ��ǰ���ţ�lremove rremove��Ӧ��С��
+                // Option 1: Delete current character (if applicable)（也即不选当前符号，lremove rremove相应减小）
                 if (c == '(' && lremove > 0) {
                     self(self, index + 1, lremove - 1, rremove, open);
                 }
@@ -976,7 +976,7 @@ namespace s301o1
                     self(self, index + 1, lremove, rremove - 1, open);
                 }
 
-                // Option 2: Keep current character��Ҳ��ѡ��ǰ���ţ�open��Ӧ���иı䣩
+                // Option 2: Keep current character（也即选当前符号，open相应进行改变）
                 path.push_back(c);
                 if (c == '(') {
                     self(self, index + 1, lremove, rremove, open + 1);
@@ -1000,11 +1000,11 @@ namespace s301o1
     };
 }
 namespace s301o2
-{   // ����������ɨ�跨������Ҫ��ǰͳ�ƶ���������������������Ҽ�֦������
-    // Ҳ����Ҫ�ù�ϣ������ȥ�أ��������������������������ǳ��棬�����˽�
-    // ���ɣ�ͨ����open��close�ֱ����'(',')'����ʱֻҪ����open��close������ʵ�ִ���ɨ��Ĵ��븴��
+{   // 正向反向两遍扫描法，不需要提前统计多余的左右括号数量，并且剪枝更厉害
+    // 也不需要用哈希表进行去重，更优秀的做法，但是这个做法非常规，仅做了解
+    // 技巧：通过用open和close分别代表'(',')'，此时只要调换open和close，就能实现从右扫描的代码复用
 
-    // ����ԭʼ�����������м�¼���˵�ʱ��˼��
+    // 我在原始题解的评论区中记录下了当时的思考
     // https://leetcode.cn/problems/remove-invalid-parentheses/solutions/3754927/liang-bian-sao-miao-fa-bu-xu-yao-ti-qian-c3kl/
     class Solution {
     public:
@@ -1018,60 +1018,60 @@ namespace s301o2
         void solve(const string& s, vector<string>& res, int last_i, int last_j, char open, char close) {
             int balance = 0;
 
-            // last_i ��ɨ����㣬i�ǵ�ǰɨ��ָ��
+            // last_i 是扫描起点，i是当前扫描指针
             for (int i = last_i; i < s.size(); ++i) {
                 if (s[i] == open) balance++;
                 else if (s[i] == close) balance--;
 
-                // ���balance < 0��˵����[last_i, i]�����ڳ����˲�ƥ���������
+                // 如果balance < 0，说明在[last_i, i]区间内出现了不匹配的右括号
                 if (balance < 0) {
-                    // ������Ҫ��[last_j, i]������Ѱ��һ����������ɾ��
-                    // last_j ��ɾ����������㣨��һ��ɾ��last_j����0���������Ϊj��
+                    // 我们需要在[last_j, i]区间内寻找一个右括号来删除
+                    // last_j 是删除操作的起点（第一次删除last_j就是0，后面更新为j）
                     for (int j = last_j; j <= i; ++j) {
-                        // 1. ��������Ҫɾ������������
-                        // 2. ȥ�أ�����������Ķ�������ţ�ֻɾ����һ��
+                        // 1. 必须是需要删除的括号类型
+                        // 2. 去重：如果是连续的多个右括号，只删除第一个
                         /*
-                        ����һ��balance<0��Ҫ���������֧����֮��һ����return�˳�solve������
-                        ���Խ���balance<0ʱbalanceһ��Ϊ-1��Ҳ��ֻ���һ�������ţ���ʱ���������:
-                        1....())��ɾ��ǰ�������Ž��һ�£���Ҫȥ��
-                        2....()a)��ɾ��ǰ�������Ž����һ�£�����Ҫȥ��
-                        Ҳ����ֻ����������������һ��ĲŻ�����ظ�������ֻ��Ҫ����������ַ��Ƿ�ͬΪ�����ž���ʵ��ȥ�ء�
+                        首先一旦balance<0就要进入操作分支，并之后一定会return退出solve函数。
+                        所以进入balance<0时balance一定为-1，也即只多出一个右括号，此时有两类可能:
+                        1....())，删除前后右括号结果一致，需要去重
+                        2....()a)，删除前后右括号结果不一致，不需要去重
+                        也即，只有两个右括号连在一起的才会造成重复，所以只需要检查相连的字符是否同为右括号就能实现去重。
                         */
                         if ((s[j] == close) && ((j == last_j) || (s[j - 1] != close))) {
-                            // �������ַ������ݹ�(0��ʼ����j����jΪ��0��ʼ���±꣬�����Ѿ�ɾ����һ��)
-                            // substr(j + 1)������±�j + 1����������ַ���ƴ����һ��
+                            // 构建新字符串并递归(0开始，共j个，j为从0开始的下标，所以已经删除了一个)
+                            // substr(j + 1)则代码下标j + 1处及后面的字符，拼接在一起
                             string ss = s.substr(0, j) + s.substr(j + 1);
-                            // ÿ������һ��ݹ�solve������ɾ������һ��������ַ���
+                            // 每次深入一层递归solve都代表删除掉了一个多余的字符串
                             solve(ss, res, i, j, open, close);
                         }
                     }
-                    // ֻҪ�ҵ���һ�����Ϸ��� balance < 0����ǰ������ʹ���ͽ�����
-                    // ��Ϊ���еĿ����Զ��Ѿ�ͨ���µĵݹ��֧ȥ̽����
-                    return; // ��Ҫ
+                    // 只要找到了一个不合法的 balance < 0，当前函数的使命就结束了
+                    // 因为所有的可能性都已经通过新的递归分支去探索了
+                    return; // 重要
                 }
             }
 
-            // ���ѭ��������balance >= 0��˵�������ҷ����ǺϷ��ģ���ת�ַ���׼����������
+            // 如果循环结束，balance >= 0，说明从左到右方向是合法的，反转字符串准备从右往左
             string reversed = s;
             reverse(reversed.begin(), reversed.end());
 
             if (open == '(') {
-                // ����ǵ�һ�Σ�����ɨ�裬���ڷ�ת�ַ���������������
+                // 如果是第一次（正向）扫描，现在反转字符串，处理左括号
                 solve(reversed, res, 0, 0, close, open);
             }
             else {
-                // ����ǵڶ��Σ�����ɨ����ɣ�˵�� reversed ��������ȫ�Ϸ���
-                // ���䷴ת��ԭʼ˳�򣬼�������
+                // 如果是第二次（反向）扫描完成，说明 reversed 现在是完全合法的
+                // 将其反转回原始顺序，加入结果集
                 res.push_back(reversed);
             }
         }
     };
 }
 namespace s3o1o3
-{   // �Ż����������ɶ��Ժ��o2�ⷨ
+{   // 优化命名提升可读性后的o2解法
     class Solution {
     private:
-        // ע������s����const�Ǹ�Сϸ��
+        // 注：这里s加上const是个小细节
         void dfsRemove(const string& s, vector<string>& ans,
             int scanStart, int deleteStart,
             char openBracket, char closeBracket) {
@@ -1079,7 +1079,7 @@ namespace s3o1o3
             int balance = 0;
 
             for (int i = scanStart; i < n; ++i) {
-                // ע���г����������ĸ�ַ�
+                // 注意有除括号外的字母字符
                 if (s[i] == openBracket) {
                     ++balance;
                 }
@@ -1092,12 +1092,12 @@ namespace s3o1o3
                         if (s[j] == closeBracket &&
                             (j == deleteStart || s[j - 1] != closeBracket)) {
                             string newStr = s.substr(0, j) + s.substr(j + 1);
-                            // ��ΪnewStr�ĳ��ȱ�sСһ��ɾ����һ��Ԫ�أ�����i��j�������һ������ά�ֲ���
-                            // ��Ȼ���ڱ������ϴ��������䲻�����ص�
+                            // 因为newStr的长度比s小一，删除了一个元素，所以i和j并不会加一，而是维持不变
+                            // 仍然是在闭区间上处理，区间不会有重叠
                             dfsRemove(newStr, ans, i, j, openBracket, closeBracket);
                         }
                     }
-                    return; // һ��ֻ����һ�����������
+                    return; // 一次只处理一个多余的括号
                 }
             }
 
@@ -1114,31 +1114,31 @@ namespace s3o1o3
     public:
         vector<string> removeInvalidParentheses(string s) {
             vector<string> ans;
-            // ������չ��[]{}���ַ������
+            // 还能拓展成[]{}等字符的配对
             dfsRemove(s, ans, 0, 0, '(', ')');
             return ans;
         }
     };
 }
 // ---------------------
-// ��4.5�������ͻ��� (2)
-// ���ÿ���Ԫ��֮���ǰ���ϵ��ֻ��Ҫ�����Ƿ���ʹ������ݵĹ����γɵ������ӹ���
-// �����������⣬֮ǰûѡ����Ԫ�ض��Ǳ�ѡ�����Թ�ϣ����Ҫ
+// 【4.5】排列型回溯 (2)
+// 不用考虑元素之间的前后关系，只需要考虑是否访问过，回溯的过程形成的树更加规整
+// 相比起组合问题，之前没选过的元素都是备选，所以哈希很重要
 /*
-46.ȫ���У�����һ�������ظ����ֵ����� nums �������� ���п��ܵ�ȫ���� ������� ������˳�� ���ش𰸡�
+46.全排列：给定一个不含重复数字的数组 nums ，返回其 所有可能的全排列 。你可以 按任意顺序 返回答案。
 
-51.N�ʺ󣺰��չ�������Ĺ��򣬻ʺ���Թ�����֮����ͬһ�л�ͬһ�л�ͬһб���ϵ����ӡ�
-n �ʺ����� �о�������ν� n ���ʺ������ n��n �������ϣ�����ʹ�ʺ�˴�֮�䲻���໥������
-����һ������ n ���������в�ͬ�� n �ʺ����� �Ľ��������
-ÿһ�ֽⷨ����һ����ͬ�� n �ʺ����� �����ӷ��÷������÷����� 'Q' �� '.' �ֱ�����˻ʺ�Ϳ�λ��
+51.N皇后：按照国际象棋的规则，皇后可以攻击与之处在同一行或同一列或同一斜线上的棋子。
+n 皇后问题 研究的是如何将 n 个皇后放置在 n×n 的棋盘上，并且使皇后彼此之间不能相互攻击。
+给你一个整数 n ，返回所有不同的 n 皇后问题 的解决方案。
+每一种解法包含一个不同的 n 皇后问题 的棋子放置方案，该方案中 'Q' 和 '.' 分别代表了皇后和空位。
 
-52.N�ʺ�II��n �ʺ����� �о�������ν� n ���ʺ������ n �� n �������ϣ�����ʹ�ʺ�˴�֮�䲻���໥������
-����һ������ n ������ n �ʺ����� ��ͬ�Ľ��������������
+52.N皇后II：n 皇后问题 研究的是如何将 n 个皇后放置在 n × n 的棋盘上，并且使皇后彼此之间不能相互攻击。
+给你一个整数 n ，返回 n 皇后问题 不同的解决方案的数量。
 */
 // ---------------------
-// ģ����6���ò���������Ԫ���Ƿ��ڼ����У��á�ö��ѡ�ĸ�����ģ��
+// 模板题6：用布尔数组标记元素是否在集合中，用“枚举选哪个”的模板
 namespace s46o1
-{   // ʱ�临�Ӷȣ��ܹ���n!��Ҷ�ӣ�·��������nums�ĳ���n������ʱ�临�Ӷ���O(n * n!)
+{   // 时间复杂度，总共有n!个叶子，路径长度是nums的长度n，所以时间复杂度是O(n * n!)
     class Solution {
     public:
         vector<vector<int>> permute(vector<int>& nums) {
@@ -1167,14 +1167,14 @@ namespace s46o1
     };
 }
 namespace s46m1
-{   // ʱ�����º��Լ�д�����ģ������ָ��Ԫ��ȡֵΪ[-10, 10]�����Կ���ֱ�������鵱��ϣ������unordered_map��
-    // ��ϣ�����趨��o1��ȸ������ӣ���ֵ��Ƚ�С��ʱ���ʺ�m1����n�Ƚ�С��ʱ���ʺ�o1
+{   // 时隔数月后自己写出来的，题干中指出元素取值为[-10, 10]，所以可以直接用数组当哈希表，比unordered_map快
+    // 哈希表的设定与o1相比各有优劣，当值域比较小的时候适合m1，当n比较小的时候适合o1
     class Solution {
     public:
         vector<vector<int>> permute(vector<int>& nums) {
-            int cnt[21]{}; // Ԫ��ֵ + 10������ϣ�����±꣬��������ɵ���Ϣ
+            int cnt[21]{}; // 元素值 + 10当作哈希表的下标，利用了题干的信息
             vector<vector<int>> ans;
-            vector<int> path;// ����Ҳ���Ըĳɹ̶����ȵ�path���Ǻ���Ͳ���pop_back��
+            vector<int> path;// 这里也可以改成固定长度的path，那后面就不用pop_back了
             int n = nums.size();
 
             auto dfs = [&](auto&& dfs, int i) -> void {
@@ -1199,7 +1199,7 @@ namespace s46m1
     };
 }
 namespace s46m2
-{   // ��m1�Ļ����ϸ�Ϊ�±�path�Ͳ�������visited�����淶
+{   // 在m1的基础上改为下标path和布尔数组visited，更规范
     class Solution {
     public:
         vector<vector<int>> permute(vector<int>& nums) {
@@ -1230,13 +1230,13 @@ namespace s46m2
     };
 }
 
-// ģ����7��������ö���кŵ�ȫ����
+// 模板题7：本质是枚举列号的全排列
 namespace s51o1
-{   // o1д�������������׶������ǿ����Ż�
+{   // o1写法最清晰最容易懂，但是可以优化
     class Solution {
     private:
-        // ��Ϊö�ٹ����Ǵ��ϵ��µģ�����ֻ��Ҫ��鵱ǰλ�õ�������������Ϻ����ϣ�
-        // ���б�����ϣ����ϣ��Ƿ��Ѿ��Ź��ʺ󣬵�ǰisvalid��O(n)���Ӷȣ������Ż���O(1)�����o2�ⷨ
+        // 因为枚举过程是从上到下的，所以只需要检查当前位置的上面半区（左上和右上）
+        // 检查斜向（左上，右上）是否已经放过皇后，当前isvalid是O(n)复杂度，可以优化成O(1)，详见o2解法
         bool isValid(const vector<int>& path, int row, int col) {
             int n = path.size();
             int diag1 = row + col;
@@ -1255,13 +1255,13 @@ namespace s51o1
         vector<vector<string>> solveNQueens(int n) {
             vector<vector<string>> ans;
             vector<int> path;
-            // colVisted���൱�ڶ��кŽ���ȫ���У�����ȷ��ÿ��ÿ��ֻ��һ���ʺ�
+            // colVisted就相当于对列号进行全排列，可以确保每行每列只有一个皇后
             vector<bool> colVisited(n, false);
 
             auto dfs = [&](auto&& self, int row)->void {
                 if (row == n) {
                     vector<string> scheme;
-                    // �Ƚϱ�����ans���´𰸵ķ�������ʵ������Ԥ���һ��ȫ��'.'�����̣�Ȼ����path�ź�Q���ٸ��£����o2
+                    // 比较笨的向ans更新答案的方法，其实可以先预设好一个全是'.'的棋盘，然后按照path放好Q后再更新，详见o2
                     for (int col : path) {
                         string s = "";
                         for (int i = 0; i < col; ++i) {
@@ -1294,27 +1294,27 @@ namespace s51o1
     };
 }
 namespace s51o2
-{   // �Ľ�1����diag1��diag2���൱��visited���������飬�ӿ�isValid��ѯ���̣���isValid��ʱ�临�ӶȽ���O(1)
-    // �Ľ�2��Ԥ��������̣��޸�ʱ�������ʺ����ӣ����´𰸸���Ч
-    // �Ľ�3����ѡ���������������滻Ϊuint8_t���ӿ������ٶ�
+{   // 改进1：用diag1和diag2（相当于visited）布尔数组，加快isValid查询过程，将isValid的时间复杂度降至O(1)
+    // 改进2：预定义空棋盘，修改时定点放入皇后棋子，更新答案更高效
+    // 改进3（可选）：将布尔数组替换为uint8_t，加快运行速度
     class Solution {
     public:
         vector<vector<string>> solveNQueens(int n) {
             vector<vector<string>> ans;
             vector<string> board(n, string(n, '.'));
             vector<bool> colVisited(n, false);
-            // ��colVisited���ƣ��ò����������O(n)�ļ������̣�ע��Խ��߲��������СԤ��Ϊ2 * n - 1
-            // diag1����row + col����ô��СΪ0�����Ϊ2 * n - 2����2 * n - 1����
-            // diag2����row - col��������ڸ�������СΪ0 - (n - 1)�������Լ���ʱ���±����n - 1�����Ϊn - 1����2 * n - 1����
+            // 与colVisited相似，用布尔数组代替O(n)的检索过程，注意对角线布尔数组大小预设为2 * n - 1
+            // diag1储存row + col，那么最小为0，最大为2 * n - 2，共2 * n - 1个数
+            // diag2储存row - col，但因存在负数（最小为0 - (n - 1)），所以检索时将下标加上n - 1，最大为n - 1，共2 * n - 1个数
             vector<bool> diag1(2 * n - 1, false);
             vector<bool> diag2(2 * n - 1, false);
             // vector<uint8_t> diag1(2 * n - 1, 0); 
-            // ������unsigned 8 bit type(�޷���8λ�������൱��unsigned char)�����Ч��
-            // uint8_t��ֻ��bool����0/1�����ĳ����������ٶȱ�bool���죬��ռ�õĿռ��bool��
-            // ����Ҫ���漫���λͼ�����Ƕ��ڴ����еĳ���������bool��
-            // �Ͼ�ֻռ��һ���ֽڣ�����uint8_t���ٶ���bool�ļ�������Ҫ����ȡ��
-            // bool����λѹ�������ܷ���ʱ�漰��ͬCPU�����У���uint8_t���������ֽڴ��棬���������ʸ���
-            // ͬʱuint8_t�ķ����޸Ķ���ֱ�ӵ�CPUָ�bool��Ҫ�����λ���㣬CPUָ����������
+            // 可以用unsigned 8 bit type(无符号8位整数，相当于unsigned char)来提高效率
+            // uint8_t在只将bool当作0/1处理的场景下运行速度比bool更快，但占用的空间比bool大，
+            // 在需要储存极大的位图，或是对内存敏感的场景可以用bool，
+            // 毕竟只占用一个字节，但是uint8_t的速度是bool的几倍，需要自行取舍
+            // bool经过位压缩，可能访问时涉及不同CPU缓存行，而uint8_t是连续的字节储存，缓存命中率更高
+            // 同时uint8_t的访问修改都是直接的CPU指令，bool需要额外的位运算，CPU指令更多更复杂
 
             auto dfs = [&](auto&& self, int row)->void {
                 if (row == n) {
@@ -1325,11 +1325,11 @@ namespace s51o2
                 for (int col = 0; col < n; ++col) {
                     int rc = row - col + n - 1;
                     if (!colVisited[col] && !diag1[row + col] && !diag2[rc]) {
-                        board[row][col] = 'Q';// ֱ���޸Ŀ�����
-                        colVisited[col] = diag1[row + col] = diag2[rc] = true;// ���Ⱥż򻯴���
+                        board[row][col] = 'Q';// 直接修改空棋盘
+                        colVisited[col] = diag1[row + col] = diag2[rc] = true;// 连等号简化代码
                         self(self, row + 1);
                         colVisited[col] = diag1[row + col] = diag2[rc] = false;
-                        board[row][col] = '.';// �ָ��ֳ�
+                        board[row][col] = '.';// 恢复现场
                     }
                 }
                 };
@@ -1340,33 +1340,33 @@ namespace s51o2
     };
 }
 // ---------------------
-// ��4.6�����ظ�Ԫ�صĻ��� (3)
-// ���Ӽ��͡�����͡������ͻ��ݵ�����������Ҫ���ж����һ��ȥ�أ�һ�����ڲ�ѡ�׶�+����ö�ٿ�ʼǰ����һ����Ҫ��������
-// �Ӽ��ͺ�����ͻ������ַ��������ԣ��������ͱ�����ö��ѡ�ĸ���ȥ�ط�ʽ���������ȥ�صĻ��ݷ�����Ҫ����
-// ���������������ǰ�漸�����ͻ��ݵ��ۺϣ��Ա���˼��˼��
-// û������dfs(i + 1)����dfs(j + 1)����ֹ��������𰸵�������ȥ�ط�ʽ��������Щ��ͬ���ú����
-// ������һ��������Ԫ�ؿ����ظ�ʹ�õĻ��ݣ������ֱȽϼ򵥣�
+// 【4.6】有重复元素的回溯 (3)
+// 与子集型、组合型、排列型回溯的区别在于需要进行额外的一步去重（一般是在不选阶段+单词枚举开始前），一般需要进行排序
+// 子集型和组合型回溯两种方法都可以，但排列型必须用枚举选哪个的去重方式，最好两种去重的回溯方法都要掌握
+// 这三道题基本就是前面几种类型回溯的综合，对比着思考思考
+// 没道题是dfs(i + 1)还是dfs(j + 1)，终止条件加入答案的条件，去重方式都多少有些不同，好好体会
+// （还有一种类型是元素可以重复使用的回溯，但那种比较简单）
 /*
-90.�Ӽ�II������һ���������� nums �����п��ܰ����ظ�Ԫ�أ����㷵�ظ��������п��ܵ� �Ӽ����ݼ�����
-�⼯ ���� �����ظ����Ӽ������صĽ⼯�У��Ӽ����԰� ����˳�� ���С�
+90.子集II：给你一个整数数组 nums ，其中可能包含重复元素，请你返回该数组所有可能的 子集（幂集）。
+解集 不能 包含重复的子集。返回的解集中，子集可以按 任意顺序 排列。
 
-40.����ܺ�II������һ����ѡ�˱�ŵļ��� candidates ��һ��Ŀ���� target ��
-�ҳ� candidates �����п���ʹ���ֺ�Ϊ target ����ϡ�
-candidates �е�ÿ��������ÿ�������ֻ��ʹ�� һ�� ��
-ע�⣺�⼯���ܰ����ظ�����ϡ�
+40.组合总和II：给定一个候选人编号的集合 candidates 和一个目标数 target ，
+找出 candidates 中所有可以使数字和为 target 的组合。
+candidates 中的每个数字在每个组合中只能使用 一次 。
+注意：解集不能包含重复的组合。
 
-47.ȫ����II������һ���ɰ����ظ����ֵ����� nums ��������˳�� �������в��ظ���ȫ���С�
+47.全排列II：给定一个可包含重复数字的序列 nums ，按任意顺序 返回所有不重复的全排列。
 */
 // ---------------------
-// ģ����8����s78�Ӽ��ͻ������������ص�����ֻ�в�ѡ��ͬ�����Żᵼ�½���ظ���������ö��ѡ�ĸ�ʱ��ö����ͬԪ�أ�������
+// 模板题8：与s78子集型回溯有所区别，重点在于只有不选相同的数才会导致结果重复，或是在枚举选哪个时不枚举相同元素（跳过）
 namespace s90o1
-{   // ѡ��ѡ
+{   // 选或不选
     class Solution {
-        // ��s78���������ص�����ֻ�в�ѡ��ͬ�����Żᵼ�½���ظ�
-        // ����ֻ��Ҫ�ڽ��в�ѡ�ĵݹ�ǰ�����жϼ���
+        // 与s78有所区别，重点在于只有不选相同的数才会导致结果重复
+        // 所以只需要在进行不选的递归前进行判断即可
 
-        // ����[1, 2, 2]����������ظ���ԭ�����ڣ�
-        // ��ѡ��һ��2���Լ���ѡ�ڶ���2�����ܵõ���ͬ���Ӽ�[1, 2]
+        // 比如[1, 2, 2]，可能造成重复的原因在于：
+        // 不选第一个2，以及不选第二个2，都能得到相同的子集[1, 2]
     public:
         vector<vector<int>> subsetsWithDup(vector<int>& nums) {
             int n = nums.size();
@@ -1386,8 +1386,8 @@ namespace s90o1
                 self(self, i + 1);
                 path.pop_back();
 
-                // �����ظ��������һ��ѡ��ѡ������д��ѡ��дѡ
-                // ���������ظ�ʱ��ΪҪ����Ԫ���޸�i��������дѡ��д��ѡ
+                // 允许重复的情况下一般选或不选都是先写不选再写选
+                // 但不允许重复时因为要跳过元素修改i，所以先写选再写不选
                 while (i + 1 < n && nums[i + 1] == nums[i]) {
                     ++i;
                 }
@@ -1399,7 +1399,7 @@ namespace s90o1
     };
 }
 namespace s90o2
-{   // ö��ѡ�ĸ�
+{   // 枚举选哪个
     class Solution {
     public:
         vector<vector<int>> subsetsWithDup(vector<int>& nums) {
@@ -1415,13 +1415,13 @@ namespace s90o2
                 ans.push_back(path);
 
                 for (int j = i; j < n; ++j) {
-                    // ȥ���߼�
+                    // 去重逻辑
                     if (j > i && nums[j] == nums[j - 1]) {
-                        // �����ȥ��д����s47��ͬ��s47��j > 0
-                        // ÿ��ѡ��Ķ�����У�ֻҪ�������ڵ�Ԫ����ͬ��������������[1, 1, 2, 2]
-                        // �����Ϊ1ʱ��i = 0, j = i = 0����4����ѡ��
-                        // �ڵڶ���1�͵ڶ���2ʱ����������ֻҪ��һ��������û�г����ظ��Ŀ�ѡ��𰸾Ͳ����ظ�
-                        // ��������������j > i������j > 0
+                        // 这里的去重写法和s47不同，s47是j > 0
+                        // 每轮选择的多叉树中，只要左右相邻的元素相同，就跳过，比如[1, 1, 2, 2]
+                        // 在深度为1时，i = 0, j = i = 0，有4个可选项
+                        // 在第二个1和第二个2时进行跳过，只要这一层多叉树中没有出现重复的可选项，答案就不会重复
+                        // 所以这里条件是j > i而不是j > 0
                         continue;
                     }
                     path.push_back(nums[j]);
@@ -1435,7 +1435,7 @@ namespace s90o2
     };
 }
 
-// ��s90�������ظ�Ԫ�صķ���һ��
+// 和s90中跳过重复元素的方法一致
 namespace s40m1
 {
     class Solution {
@@ -1469,7 +1469,7 @@ namespace s40m1
     };
 }
 namespace s40m2
-{   // ö��ѡ�ĸ�
+{   // 枚举选哪个
     class Solution {
     public:
         vector<vector<int>> combinationSum2(vector<int>& candidates, int target) {
@@ -1502,11 +1502,11 @@ namespace s40m2
     };
 }
 
-// ģ����9�������ͻ��ݵ�ȥ�أ����Ӽ��͵�ö��ѡ�ĸ�ȥ�رȽ�����
+// 模板题9：排列型回溯的去重，与子集型的枚举选哪个去重比较类似
 namespace s47o1
-{   // �����ȥ��û����ô������
-    // ����[1, 1, 2]������һ��λ��ѡ���ڶ���1ʱ�������ʱ��һ��1��ûʹ�ã��ǲ����ڵ�һ��λ����ڶ���1�ģ��ᵼ���ظ�
-    // ��������[1, 1, 2]��ȥ�������ǣ�ǰһ��ö�ٵ���Ԫ�غ͵�ǰԪ����ȣ�ͬʱǰһ��Ԫ�ػ����ڿ���״̬
+{   // 这个的去重没有那么好理解
+    // 比如[1, 1, 2]，当第一个位置选到第二个1时，如果此时第一个1还没使用，是不能在第一个位置填第二个1的，会导致重复
+    // 产生两个[1, 1, 2]，去重条件是：前一个枚举到的元素和当前元素相等，同时前一个元素还处于空闲状态
     class Solution {
     public:
         vector<vector<int>> permuteUnique(vector<int>& nums) {
@@ -1516,10 +1516,10 @@ namespace s47o1
             vector<vector<int>> ans;
             vector<int> path(n, 0);
             vector<bool> visited(n, false);
-            sort(nums.begin(), nums.end());// ����
+            sort(nums.begin(), nums.end());// 排序
 
             auto dfs = [&](auto&& self, int index)->void {
-                // ������index��i������i��j��ԭ���ǿɶ��Ը���
+                // 这里用index和i，不用i和j的原因是可读性更高
                 if (index == n) {
                     ans.push_back(path);
                     return;
@@ -1527,17 +1527,17 @@ namespace s47o1
 
                 for (int i = 0; i < n; ++i) {
                     if (!visited[i]) {
-                        // ����������if�жϾ���ȥ��
+                        // 下面这个多的if判断就是去重
                         if (i > 0 && nums[i] == nums[i - 1] && !visited[i - 1]) {
-                            // ������Ϊ��ֻҪ������ͬ��Ԫ�أ�ֻҪ����������е�path��
-                            // ����path��˳������Ǵ����ҵģ�����[1A, 1B, 1C, 2]
-                            // ֻ��1A������path��1B���ܷ���path
-                            // ֻ��1B������path��1C���ܷ���path
-                            // ��������ȷ����������ظ���path
-                            // �ܽ᣺��綼��û��ӣ�С�ܾͱ���
+                            // 简单理解为：只要是有相同的元素，只要将其放入排列的path中
+                            // 放入path的顺序必须是从左到右的，比如[1A, 1B, 1C, 2]
+                            // 只有1A放入了path，1B才能放入path
+                            // 只有1B放入了path，1C才能放入path
+                            // 这样可以确保不会出现重复的path
+                            // 总结：大哥都还没入队，小弟就别上
                             continue;
                         }
-                        // Ҳ��������дΪΪ��
+                        // 也可以整体写为为：
                         // if (visited[i] || (i > 0 && nums[i] == nums[i - 1] && !visited[i - 1])) continue;
                         visited[i] = true;
                         path[index] = nums[i];
@@ -1552,62 +1552,62 @@ namespace s47o1
     };
 }
 // ---------------------
-// ��4.7������ (1)
-// ����ͼ + ����
+// 【4.7】搜索 (1)
+// 网格图 + 回溯
 /*
-79.��������������һ�� m x n ��ά�ַ����� board ��һ���ַ������� word ��
-��� word �����������У����� true �����򣬷��� false ��
-���ʱ��밴����ĸ˳��ͨ�����ڵĵ�Ԫ���ڵ���ĸ���ɣ����С����ڡ���Ԫ������Щˮƽ���ڻ�ֱ���ڵĵ�Ԫ��
-ͬһ����Ԫ���ڵ���ĸ���������ظ�ʹ�á�
+79.单词搜索：给定一个 m x n 二维字符网格 board 和一个字符串单词 word 。
+如果 word 存在于网格中，返回 true ；否则，返回 false 。
+单词必须按照字母顺序，通过相邻的单元格内的字母构成，其中“相邻”单元格是那些水平相邻或垂直相邻的单元格。
+同一个单元格内的字母不允许被重复使用。
 */
 // ---------------------
-// ģ����10������������ͼDFS + ����
+// 模板题10：岛屿类网格图DFS + 回溯
 namespace s79o1
-{   // o1Ϊ��ֱ��������������ܺ͵���������ͼDFS������
-    // ���������m, n���Ϊ6�����账��m, n��������̣���Ҫ��֦�Ż�
+{   // o1为最粗暴的做法，整体框架和岛屿类网格图DFS很类似
+    // 本题题干中m, n最大为6，如需处理m, n更大的棋盘，需要剪枝优化
     class Solution {
     public:
         bool exist(vector<vector<char>>& board, string word) {
             int m = board.size();
             int n = board[0].size();
 
-            // ����visited���飬��¼����״̬
+            // 创建visited数组，记录访问状态
             vector<vector<bool>> visited(m, vector<bool>(n, false));
 
             auto dfs = [&](auto&& self, int r, int c, int i)->bool {
-                // Խ���������ǰ��
+                // 越界检查放在最前面
                 if (r < 0 || r >= m || c < 0 || c >= n) return false;
 
-                // ����Ƿ��ѷ��ʻ��ַ���ƥ��
+                // 检查是否已访问或字符不匹配
                 if (visited[r][c] || board[r][c] != word[i]) {
                     return false;
                 }
 
-                // �ҵ���������
+                // 找到完整单词
                 if (i + 1 == word.length()) {
                     return true;
                 }
 
-                // ��ǵ�ǰ��Ԫ���ѷ���
+                // 标记当前单元格已访问
                 visited[r][c] = true;
 
-                // ��4������ݹ�����
-                if (self(self, r - 1, c, i + 1) ||  // ��
-                    self(self, r + 1, c, i + 1) ||  // ��
-                    self(self, r, c - 1, i + 1) ||  // ��
-                    self(self, r, c + 1, i + 1)) {  // ��
+                // 向4个方向递归搜索
+                if (self(self, r - 1, c, i + 1) ||  // 上
+                    self(self, r + 1, c, i + 1) ||  // 下
+                    self(self, r, c - 1, i + 1) ||  // 左
+                    self(self, r, c + 1, i + 1)) {  // 右
                     return true;
                 }
 
-                // ���ݣ��ָ�����״̬
+                // 回溯：恢复访问状态
                 visited[r][c] = false;
                 return false;
                 };
 
-            // ���������ϵ�ÿ����ʼ��
+            // 遍历棋盘上的每个起始点
             for (int r = 0; r < m; ++r) {
                 for (int c = 0; c < n; ++c) {
-                    // ����ҵ����ʣ���������true
+                    // 如果找到单词，立即返回true
                     if (dfs(dfs, r, c, 0)) {
                         return true;
                     }
@@ -1619,20 +1619,20 @@ namespace s79o1
     };
 }
 namespace s79o2
-{   // ����������֦��
-    // 1.�����Լ�֦�����word�е�ĳ���ַ������������еĶ�Ӧ�ַ��������࣬��ôһ�����޷����������ѵ�word�ģ�����O(n)��ʱ���֦
-    // 2.˳���֦��ͨ�����ĵݹ��˳������߲��ҵ��𰸵��ٶȣ������ԣ���Ҳ���Ƚ�word�е�һ����ĸ�����һ����ĸ�������е�
-    //   ���ִ�����������һ����ĸ���ִ������࣬��ô��word��ת�������ѻ���ã���������һ��ʼ������ board[i][j] != word[k]��
-    //   Ҳ�Ͳ��������µݹ��ˣ��ݹ�������١�
+{   // 引入两个剪枝：
+    // 1.可行性剪枝，如果word中的某个字符数量比棋盘中的对应字符数量还多，那么一定是无法在棋盘中搜到word的，利用O(n)的时间剪枝
+    // 2.顺序剪枝，通过更改递归的顺序，来提高查找到答案的速度（可能性），也即比较word中第一个字母和最后一个字母在棋盘中的
+    //   出现次数，如果最后一个字母出现次数更多，那么将word反转后再来搜会更好，更容易在一开始就满足 board[i][j] != word[k]，
+    //   也就不会再往下递归了，递归次数更少。
     class Solution {
     public:
         bool exist(vector<vector<char>>& board, string word) {
             int m = board.size(), n = board[0].size();
             int len = word.size();
-            // 0.�����Լ�֦
+            // 0.可行性剪枝
             if (m * n < len) return false;
 
-            // 1.�����Լ�֦
+            // 1.可行性剪枝
             unordered_map<char, int> boardMp;
             unordered_map<char, int> wordMp;
             for (auto& row : board) {
@@ -1646,49 +1646,49 @@ namespace s79o2
                 }
             }
 
-            // 2.˳���֦
+            // 2.顺序剪枝
             if (boardMp[word.back()] < boardMp[word[0]]) {
                 reverse(word.begin(), word.end());
             }
 
-            // ���²��ֺ�o1��ͬ
-            // ����visited���飬��¼����״̬
+            // 余下部分和o1相同
+            // 创建visited数组，记录访问状态
             vector<vector<bool>> visited(m, vector<bool>(n, false));
 
             auto dfs = [&](auto&& self, int r, int c, int i)->bool {
-                // Խ���������ǰ��
+                // 越界检查放在最前面
                 if (r < 0 || r >= m || c < 0 || c >= n) return false;
 
-                // ����Ƿ��ѷ��ʻ��ַ���ƥ��
+                // 检查是否已访问或字符不匹配
                 if (visited[r][c] || board[r][c] != word[i]) {
                     return false;
                 }
 
-                // �ҵ���������
+                // 找到完整单词
                 if (i + 1 == word.length()) {
                     return true;
                 }
 
-                // ��ǵ�ǰ��Ԫ���ѷ���
+                // 标记当前单元格已访问
                 visited[r][c] = true;
 
-                // ��4������ݹ�����
-                if (self(self, r - 1, c, i + 1) ||  // ��
-                    self(self, r + 1, c, i + 1) ||  // ��
-                    self(self, r, c - 1, i + 1) ||  // ��
-                    self(self, r, c + 1, i + 1)) {  // ��
+                // 向4个方向递归搜索
+                if (self(self, r - 1, c, i + 1) ||  // 上
+                    self(self, r + 1, c, i + 1) ||  // 下
+                    self(self, r, c - 1, i + 1) ||  // 左
+                    self(self, r, c + 1, i + 1)) {  // 右
                     return true;
                 }
 
-                // ���ݣ��ָ�����״̬
+                // 回溯：恢复访问状态
                 visited[r][c] = false;
                 return false;
                 };
 
-            // ���������ϵ�ÿ����ʼ��
+            // 遍历棋盘上的每个起始点
             for (int r = 0; r < m; ++r) {
                 for (int c = 0; c < n; ++c) {
-                    // ����ҵ����ʣ���������true
+                    // 如果找到单词，立即返回true
                     if (dfs(dfs, r, c, 0)) {
                         return true;
                     }
@@ -1699,13 +1699,13 @@ namespace s79o2
     };
 }
 namespace s79m1
-{   // ͨ���޸�board��ʡ��visited���飬�Ҳ���Ӱ��ԭʼ����board������������ỹԭ
+{   // 通过修改board来省掉visited数组，且不会影响原始数据board，结束遍历后会还原
     class Solution {
     public:
         bool exist(vector<vector<char>>& board, string word) {
             int m = board.size(), n = board[0].size();
             int len = word.size();
-            // �����Լ�֦
+            // 可行性剪枝
             if (m * n < len) return false;
 
             unordered_map<char, int> boardMap;
@@ -1721,7 +1721,7 @@ namespace s79m1
                 }
             }
 
-            // ˳���֦
+            // 顺序剪枝
             if (boardMap[word.back()] < boardMap[word[0]]) {
                 reverse(word.begin(), word.end());
             }
@@ -1733,20 +1733,20 @@ namespace s79m1
                 if (!board[r][c] || board[r][c] != word[i]) {
                     return false;
                 }
-                // ϸ�ڣ����ﲻ�ܸĳ�i == len���������Ϊ�˱�����һ��Խ�磬Ҫ������ǰ��
-                // ��������Ȼ���Ǵ���ģ���Ϊ���i == n - 1ʱƥ����ɺ���������������ж�ʱȫ��Խ�磬��ô���߲���
-                // i == len��һ��������word = "a", board = [['a']]������ǰ�����ݹ����ǰ����
+                // 细节：这里不能改成i == len，如果改了为了避免上一行越界，要把这行前移
+                // 但这样仍然会是错误的，因为如果i == n - 1时匹配完成后，运行下面的四向判断时全部越界，那么就走不到
+                // i == len这一步。比如word = "a", board = [['a']]，能提前结束递归就提前结束
                 if (i + 1 == len) {
                     return true;
                 }
-                // ��Ȼdfs��;���޸���board��������������ʱ�����л�ԭ�����԰�visitedʡ��
+                // 虽然dfs的途中修改了board，但结束搜索的时候会进行还原，可以把visited省掉
                 board[r][c] = 0;
                 if (dfs(dfs, r + 1, c, i + 1) || dfs(dfs, r - 1, c, i + 1) ||
                     dfs(dfs, r, c + 1, i + 1) || dfs(dfs, r, c - 1, i + 1)) {
-                    board[r][c] = word[i];  // ��һ��Ҫ���ϣ����Ҫ�����޸�ԭʼ����
+                    board[r][c] = word[i];  // 这一行要加上，如果要求不能修改原始数据
                     return true;
                 }
-                // ��ԭboard
+                // 还原board
                 board[r][c] = word[i];
                 return false;
                 };
@@ -1763,10 +1763,10 @@ namespace s79m1
     };
 }
 // ---------------------
-// ��4.8���۰�ö�� ()
+// 【4.8】折半枚举 ()
 /*
 
 */
 // ---------------------
-// ��ʱ�Թ�
+// 暂时略过
 

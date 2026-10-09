@@ -1,9 +1,9 @@
-#include <string>
+ï»¿#include <string>
 #include <iostream>
 
-//¿ì½İ×¢ÊÍ ctrl + k + c£» È¡Ïû×¢ÊÍ ctrl + k + u
+//å¿«æ·æ³¨é‡Š ctrl + k + cï¼› å–æ¶ˆæ³¨é‡Š ctrl + k + u
 
-#define MAX 1000 //Í¨Ñ¶Â¼×î¶àÓĞ1000¸öÈË
+#define MAX 1000 //é€šè®¯å½•æœ€å¤šæœ‰1000ä¸ªäºº
 
 struct Person
 {
@@ -20,32 +20,32 @@ int NumofPerson = 0;
 void ShowMenu()
 {
 	std::cout << "*****************************" << std::endl
-		<< "*****\t1¡¢Ìí¼ÓÁªÏµÈË\t*****" << std::endl
-		<< "*****\t2¡¢ÏÔÊ¾ÁªÏµÈË\t*****" << std::endl
-		<< "*****\t3¡¢É¾³ıÁªÏµÈË\t*****" << std::endl
-		<< "*****\t4¡¢²éÕÒÁªÏµÈË\t*****" << std::endl
-		<< "*****\t5¡¢ĞŞ¸ÄÁªÏµÈË\t*****" << std::endl
-		<< "*****\t6¡¢Çå¿ÕÁªÏµÈË\t*****" << std::endl
-		<< "*****\t0¡¢ÍË³öÍ¨Ñ¶Â¼\t*****" << std::endl;
+		<< "*****\t1ã€æ·»åŠ è”ç³»äºº\t*****" << std::endl
+		<< "*****\t2ã€æ˜¾ç¤ºè”ç³»äºº\t*****" << std::endl
+		<< "*****\t3ã€åˆ é™¤è”ç³»äºº\t*****" << std::endl
+		<< "*****\t4ã€æŸ¥æ‰¾è”ç³»äºº\t*****" << std::endl
+		<< "*****\t5ã€ä¿®æ”¹è”ç³»äºº\t*****" << std::endl
+		<< "*****\t6ã€æ¸…ç©ºè”ç³»äºº\t*****" << std::endl
+		<< "*****\t0ã€é€€å‡ºé€šè®¯å½•\t*****" << std::endl;
 }
 void clear()
 {
 	std::cin.get();	std::cin.get();
 	std::cout << "\033c";
-	//Ò²¿ÉÒÔ#include<stdlib.h>£¬ÓÃ system("pause") + system("cls")À´Íê³É£¬Ğ§¹û¸üºÃ
+	//ä¹Ÿå¯ä»¥#include<stdlib.h>ï¼Œç”¨ system("pause") + system("cls")æ¥å®Œæˆï¼Œæ•ˆæœæ›´å¥½
 }
 
 void AddPerson()
 {
 	if (NumofPerson == MAX)
-		std::cout << "Í¨Ñ¶Â¼ÒÑÂú" << std::endl;
+		std::cout << "é€šè®¯å½•å·²æ»¡" << std::endl;
 	else
 	{
-		std::cout << "ÇëÊäÈëĞÕÃû" << std::endl;
+		std::cout << "è¯·è¾“å…¥å§“å" << std::endl;
 		std::cin >> PersonPrt->m_Name;
-		std::cout << "ÇëÊäÈëÄêÁä" << std::endl;
+		std::cout << "è¯·è¾“å…¥å¹´é¾„" << std::endl;
 		std::cin >> PersonPrt->m_Age;
-		std::cout << "ÇëÊäÈëĞÔ±ğ" << std::endl << "\t 1 -- ÄĞ" << std::endl << "\t 2 -- Å®" << std::endl;
+		std::cout << "è¯·è¾“å…¥æ€§åˆ«" << std::endl << "\t 1 -- ç”·" << std::endl << "\t 2 -- å¥³" << std::endl;
 		int Gender = 0;
 		while (true)
 		{
@@ -55,22 +55,22 @@ void AddPerson()
 				PersonPrt->m_Gender = Gender;
 				break;
 			}
-			std::cout << "ĞÔ±ğÊäÈëÓĞÎó" << std::endl;
+			std::cout << "æ€§åˆ«è¾“å…¥æœ‰è¯¯" << std::endl;
 		}
-		std::cout << "ÇëÊäÈëµØÖ·" << std::endl;
+		std::cout << "è¯·è¾“å…¥åœ°å€" << std::endl;
 		std::cin >> PersonPrt->m_Address;
-		std::cout << "Â¼Èë³É¹¦" << std::endl;
+		std::cout << "å½•å…¥æˆåŠŸ" << std::endl;
 		PersonPrt++; NumofPerson++;
 		clear();
 	}
 }
 void AddPerson(Person* Prt)
 {
-	std::cout << "ÇëÊäÈëĞÕÃû" << std::endl;
+	std::cout << "è¯·è¾“å…¥å§“å" << std::endl;
 	std::cin >> Prt->m_Name;
-	std::cout << "ÇëÊäÈëÄêÁä" << std::endl;
+	std::cout << "è¯·è¾“å…¥å¹´é¾„" << std::endl;
 	std::cin >> Prt->m_Age;
-	std::cout << "ÇëÊäÈëĞÔ±ğ" << std::endl << "\t 1 -- ÄĞ" << std::endl << "\t 2 -- Å®" << std::endl;
+	std::cout << "è¯·è¾“å…¥æ€§åˆ«" << std::endl << "\t 1 -- ç”·" << std::endl << "\t 2 -- å¥³" << std::endl;
 	int Gender = 0;
 	while (true)
 	{
@@ -80,11 +80,11 @@ void AddPerson(Person* Prt)
 			Prt->m_Gender = Gender;
 			break;
 		}
-		std::cout << "ĞÔ±ğÊäÈëÓĞÎó" << std::endl;
+		std::cout << "æ€§åˆ«è¾“å…¥æœ‰è¯¯" << std::endl;
 	}
-	std::cout << "ÇëÊäÈëµØÖ·" << std::endl;
+	std::cout << "è¯·è¾“å…¥åœ°å€" << std::endl;
 	std::cin >> Prt->m_Address;
-	std::cout << "Â¼Èë³É¹¦" << std::endl;
+	std::cout << "å½•å…¥æˆåŠŸ" << std::endl;
 	clear();
 }
 
@@ -93,16 +93,16 @@ void ShowAll()
 	Person* StartPrt = Persons;
 	if (NumofPerson == 0)
 	{
-		std::cout << "Í¨Ñ¶Â¼Îª¿Õ" << std::endl;
+		std::cout << "é€šè®¯å½•ä¸ºç©º" << std::endl;
 	}
 	else
 	{
 		while (StartPrt != PersonPrt)
 		{
-			std::cout << "ĞÕÃû£º" << StartPrt->m_Name << "\t";
-			std::cout << "ÄêÁä£º" << StartPrt->m_Age << "\t";
-			std::cout << "ĞÔ±ğ£º" << (StartPrt->m_Gender == 1 ? "ÄĞ" : "Å®") << "\t";
-			std::cout << "µØÖ·£º" << StartPrt->m_Address << "\t" << std::endl;
+			std::cout << "å§“åï¼š" << StartPrt->m_Name << "\t";
+			std::cout << "å¹´é¾„ï¼š" << StartPrt->m_Age << "\t";
+			std::cout << "æ€§åˆ«ï¼š" << (StartPrt->m_Gender == 1 ? "ç”·" : "å¥³") << "\t";
+			std::cout << "åœ°å€ï¼š" << StartPrt->m_Address << "\t" << std::endl;
 			StartPrt++;
 		}
 	}
@@ -110,17 +110,17 @@ void ShowAll()
 }
 void ShowOne(Person* Prt)
 {
-	std::cout << "ĞÕÃû£º" << Prt->m_Name << "\t";
-	std::cout << "ÄêÁä£º" << Prt->m_Age << "\t";
-	std::cout << "ĞÔ±ğ£º" << (Prt->m_Gender == 1 ? "ÄĞ" : "Å®") << "\t";
-	std::cout << "µØÖ·£º" << Prt->m_Address << "\t";
+	std::cout << "å§“åï¼š" << Prt->m_Name << "\t";
+	std::cout << "å¹´é¾„ï¼š" << Prt->m_Age << "\t";
+	std::cout << "æ€§åˆ«ï¼š" << (Prt->m_Gender == 1 ? "ç”·" : "å¥³") << "\t";
+	std::cout << "åœ°å€ï¼š" << Prt->m_Address << "\t";
 }
 
 void DeleteAll()
 {
 	PersonPrt = Persons;
 	NumofPerson = 0;
-	std::cout << "Í¨Ñ¶Â¼ÒÑÇå¿Õ" << std::endl;
+	std::cout << "é€šè®¯å½•å·²æ¸…ç©º" << std::endl;
 	clear();
 }
 void DeleteOne(Person* Prt)
@@ -134,22 +134,22 @@ void DeleteOne(Person* Prt)
 		Prt++;
 	}
 	PersonPrt--; NumofPerson--;
-	std::cout << "ËùÑ¡¶ÔÏóÒÑÉ¾³ı" << std::endl;
+	std::cout << "æ‰€é€‰å¯¹è±¡å·²åˆ é™¤" << std::endl;
 }
 
-//Î´½â¾öÖØÃûÎÊÌâ£¬¶ÔÖØÃû¶ÔÏó£¬ÓÅÏÈ¼ìË÷³öĞòºÅ¿¿Ç°µÄ
+//æœªè§£å†³é‡åé—®é¢˜ï¼Œå¯¹é‡åå¯¹è±¡ï¼Œä¼˜å…ˆæ£€ç´¢å‡ºåºå·é å‰çš„
 Person* PersonCheck()
 {
 	Person* StartPrt = Persons;
 	std::string nameforcheck;
 	if (NumofPerson == 0)
 	{
-		std::cout << "Í¨Ñ¶Â¼Îª¿Õ" << std::endl;
+		std::cout << "é€šè®¯å½•ä¸ºç©º" << std::endl;
 		return NULL;
 	}
 	else
 	{
-		std::cout << "ÇëÊäÈë´ı²éÕÒĞÕÃû" << std::endl;
+		std::cout << "è¯·è¾“å…¥å¾…æŸ¥æ‰¾å§“å" << std::endl;
 		std::cin >> nameforcheck;
 		while (StartPrt != PersonPrt)
 		{
@@ -159,7 +159,7 @@ Person* PersonCheck()
 			}
 			StartPrt++;
 		}
-		std::cout << "Í¨Ñ¶Â¼ÖĞÎŞ´ËÈË";
+		std::cout << "é€šè®¯å½•ä¸­æ— æ­¤äºº";
 		return NULL;
 	}
 	clear();
@@ -176,13 +176,13 @@ int main()
 		std::cin >> FunctionSwitch;
 		switch (FunctionSwitch)
 		{
-		case 1://Ìí¼ÓÁªÏµÈË
+		case 1://æ·»åŠ è”ç³»äºº
 			AddPerson();
 			break;
-		case 2://ÏÔÊ¾ÁªÏµÈË
+		case 2://æ˜¾ç¤ºè”ç³»äºº
 			ShowAll();
 			break;
-		case 3:	//¸ù¾İĞÕÃûÉ¾³ıÁªÏµÈË
+		case 3:	//æ ¹æ®å§“ååˆ é™¤è”ç³»äºº
 		{
 			Person* PrtDle = PersonCheck();
 			if (PrtDle != NULL)
@@ -190,7 +190,7 @@ int main()
 			clear();
 		}
 		break;
-		case 4: //¸ù¾İĞÕÃû²éÕÒÁªÏµÈË
+		case 4: //æ ¹æ®å§“åæŸ¥æ‰¾è”ç³»äºº
 		{
 			Person* PrtChk = PersonCheck();
 			if (PrtChk != NULL)
@@ -198,19 +198,19 @@ int main()
 			clear();
 		}
 		break;
-		case 5: //¸ù¾İĞÕÃûĞŞ¸ÄÁªÏµÈËĞÅÏ¢
+		case 5: //æ ¹æ®å§“åä¿®æ”¹è”ç³»äººä¿¡æ¯
 		{
 			Person* PrtRe = PersonCheck();
 			AddPerson(PrtRe);
 		}
 		break;
-		case 6: //Çå¿ÕÍ¨Ñ¶Â¼
+		case 6: //æ¸…ç©ºé€šè®¯å½•
 			DeleteAll();
 			break;
-		case 0: //ÍË³ö
+		case 0: //é€€å‡º
 		{
 			MenuFlag = 0;
-			std::cout << "¸ĞĞ»Ê¹ÓÃ" << std::endl;
+			std::cout << "æ„Ÿè°¢ä½¿ç”¨" << std::endl;
 			clear();
 		}
 		break;

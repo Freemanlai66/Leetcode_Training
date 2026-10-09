@@ -1,4 +1,4 @@
-#include <iostream>
+ï»¿#include <iostream>
 #include <thread>
 #include <mutex>
 #include <queue>
@@ -10,7 +10,7 @@ using namespace std;
 #ifdef __cplusplus
 extern "C" {
 #endif
-	// º¯ÊıÉùÃ÷...xx
+	// å‡½æ•°å£°æ˜...xx
 #ifdef __cplusplus
 }
 #endif
@@ -22,16 +22,16 @@ atomic<bool> shutdown(false);
 
 void producer(int id) {
     for (int i = 0; i < 5; ++i) {
-        // Ä£ÄâÈÎÎñ×¼±¸Ê±¼ä
+        // æ¨¡æ‹Ÿä»»åŠ¡å‡†å¤‡æ—¶é—´
         std::this_thread::sleep_for(std::chrono::milliseconds(500));
 
         {	
             std::lock_guard<std::mutex> lock(mtx); 
-            // Éú²úÈÎÎñ
+            // ç”Ÿäº§ä»»åŠ¡
             int task = id * 10 + i;
             taskQueue.push(task);
-            std::cout << "Éú²úÕß " << id << " Éú²úÁËÈÎÎñ£º" << task << std::endl;
-        }	// Àë¿ª×÷ÓÃÓò×Ô¶¯½âËø
+            std::cout << "ç”Ÿäº§è€… " << id << " ç”Ÿäº§äº†ä»»åŠ¡ï¼š" << task << std::endl;
+        }	// ç¦»å¼€ä½œç”¨åŸŸè‡ªåŠ¨è§£é”
         cv.notify_one();
     }
 }
@@ -39,13 +39,13 @@ void producer(int id) {
 void consumer(int id) {
     while (true) {
         std::unique_lock<std::mutex> lock(mtx);
-        // µÈ´ıÌõ¼ş£º¶ÓÁĞ·Ç¿Õ»òÒªÇóÍË³ö
+        // ç­‰å¾…æ¡ä»¶ï¼šé˜Ÿåˆ—éç©ºæˆ–è¦æ±‚é€€å‡º
         cv.wait(lock, [] {
             return !taskQueue.empty() || shutdown.load();
             });
-        // Èç¹ûÖ»Ğ´cv.wait(lock)¿ÉÄÜµ¼ÖÂĞé¼Ù»½ĞÑ
+        // å¦‚æœåªå†™cv.wait(lock)å¯èƒ½å¯¼è‡´è™šå‡å”¤é†’
 
-        // Èç¹ûÇëÇóÍË³öÇÒ¶ÓÁĞÎª¿Õ£¬ÔòÍË³ö
+        // å¦‚æœè¯·æ±‚é€€å‡ºä¸”é˜Ÿåˆ—ä¸ºç©ºï¼Œåˆ™é€€å‡º
         if (shutdown.load() && taskQueue.empty()) {
             break;
         }
@@ -53,74 +53,74 @@ void consumer(int id) {
         int task = taskQueue.front();
         taskQueue.pop();
 
-        std::cout << "Ïû·ÑÕß " << id << " ´¦ÀíÁËÈÎÎñ: " << task << std::endl;
+        std::cout << "æ¶ˆè´¹è€… " << id << " å¤„ç†äº†ä»»åŠ¡: " << task << std::endl;
         std::this_thread::sleep_for(std::chrono::milliseconds(200));
-        lock.unlock();  // ¼°Ê±ÊÍ·ÅËø£¬¼õÉÙ¾ºÕù£¬×îĞ¡»¯Ëø³ÖÓĞÊ±¼ä
+        lock.unlock();  // åŠæ—¶é‡Šæ”¾é”ï¼Œå‡å°‘ç«äº‰ï¼Œæœ€å°åŒ–é”æŒæœ‰æ—¶é—´
     }
 }
 
 //int main() {
-//    std::cout << "=== Ìõ¼ş±äÁ¿Ê¾Àı£ºÉú²úÕß-Ïû·ÑÕßÄ£ĞÍ ===" << std::endl;
+//    std::cout << "=== æ¡ä»¶å˜é‡ç¤ºä¾‹ï¼šç”Ÿäº§è€…-æ¶ˆè´¹è€…æ¨¡å‹ ===" << std::endl;
 //
 //    std::thread p1(producer, 1);
 //    std::thread p2(producer, 2);
 //    std::thread c1(consumer, 1);
 //    std::thread c2(consumer, 2);
 //
-//    // µÈ´ıÉú²úÕßÍê³É
+//    // ç­‰å¾…ç”Ÿäº§è€…å®Œæˆ
 //    p1.join();
 //    p2.join();
 //
-//    // ÉèÖÃÍË³ö±êÖ¾²¢»½ĞÑËùÓĞÏû·ÑÕß
-//    shutdown.store(true);    // atomic²Ù×÷£¬Ïß³Ì°²È«
-//    cv.notify_all();         // Í¨ÖªËùÓĞÏû·ÑÕß
+//    // è®¾ç½®é€€å‡ºæ ‡å¿—å¹¶å”¤é†’æ‰€æœ‰æ¶ˆè´¹è€…
+//    shutdown.store(true);    // atomicæ“ä½œï¼Œçº¿ç¨‹å®‰å…¨
+//    cv.notify_all();         // é€šçŸ¥æ‰€æœ‰æ¶ˆè´¹è€…
 //
-//    // µÈ´ıÏû·ÑÕßÍê³É
+//    // ç­‰å¾…æ¶ˆè´¹è€…å®Œæˆ
 //    c1.join();
 //    c2.join();
 //
-//    std::cout << "=== ³ÌĞò½áÊø ===" << std::endl;
+//    std::cout << "=== ç¨‹åºç»“æŸ ===" << std::endl;
 //}
 
 #include <memory>
 #include <vector>
 
-// ---------- »ùÀà£¨³éÏó»ùÀà£¬ºóÃæ»á½âÊÍ"³éÏó"£©----------
+// ---------- åŸºç±»ï¼ˆæŠ½è±¡åŸºç±»ï¼Œåé¢ä¼šè§£é‡Š"æŠ½è±¡"ï¼‰----------
 class Shape {
 public:
-    // ´¿Ğéº¯Êı£º=0 ±íÊ¾"Ö»ÉùÃ÷½Ó¿Ú£¬²»¸øÊµÏÖ"
+    // çº¯è™šå‡½æ•°ï¼š=0 è¡¨ç¤º"åªå£°æ˜æ¥å£ï¼Œä¸ç»™å®ç°"
     virtual void draw() const = 0;
     virtual double area() const = 0;
-    virtual ~Shape() = default;   // ĞéÎö¹¹£¡ºóÃæÏêÊöÎªÊ²Ã´±ØĞëÓĞ
+    virtual ~Shape() = default;   // è™šææ„ï¼åé¢è¯¦è¿°ä¸ºä»€ä¹ˆå¿…é¡»æœ‰
 };
 
-// ---------- ÅÉÉúÀà 1 ----------
+// ---------- æ´¾ç”Ÿç±» 1 ----------
 class Circle : public Shape {
     double r_;
 public:
     explicit Circle(double r) : r_(r) {}
     void draw() const override {
-        std::cout << "»­Ò»¸öÔ²£¬°ë¾¶ " << r_ << "\n";
+        std::cout << "ç”»ä¸€ä¸ªåœ†ï¼ŒåŠå¾„ " << r_ << "\n";
     }
     double area() const override { return 3.14159 * r_ * r_; }
 };
 
-// ---------- ÅÉÉúÀà 2 ----------
+// ---------- æ´¾ç”Ÿç±» 2 ----------
 class Rect : public Shape {
     double w_, h_;
 public:
     Rect(double w, double h) : w_(w), h_(h) {}
     void draw() const override {
-        std::cout << "»­Ò»¸ö¾ØĞÎ " << w_ << " x " << h_ << "\n";
+        std::cout << "ç”»ä¸€ä¸ªçŸ©å½¢ " << w_ << " x " << h_ << "\n";
     }
     double area() const override { return w_ * h_; }
 };
 
-// ---------- ÒÔ»ùÀàÖ¸Õë/ÒıÓÃ²Ù×÷£¬¶àÌ¬·¢»Ó×÷ÓÃ ----------
+// ---------- ä»¥åŸºç±»æŒ‡é’ˆ/å¼•ç”¨æ“ä½œï¼Œå¤šæ€å‘æŒ¥ä½œç”¨ ----------
 void renderAll(const std::vector<std::unique_ptr<Shape>>& shapes) {
     for (const auto& s : shapes) {
-        s->draw();                     // ¶¯Ì¬°ó¶¨£ºÔËĞĞÊ±¾ö¶¨µ÷ÓÃË­
-        std::cout << "  Ãæ»ı = " << s->area() << "\n";
+        s->draw();                     // åŠ¨æ€ç»‘å®šï¼šè¿è¡Œæ—¶å†³å®šè°ƒç”¨è°
+        std::cout << "  é¢ç§¯ = " << s->area() << "\n";
     }
 }
 

@@ -1,0 +1,4 @@
+root = true
+# 所有要处理的源码文件类型
+[*.{cs,cpp,h,hpp,js,ts,json,xml,html,css,properties}]
+charset = utf-8-bom

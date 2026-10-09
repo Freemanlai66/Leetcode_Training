@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <string>
 #include <vector>
 #include <stack>
@@ -42,66 +42,66 @@ public:
     }
 };
 
-// ���������
+// 问题待定：
 /*
-1.С��2.2�еĴ󲿷���Ŀ��ֻ�ṩ�˵ݹ�ⷨ����ӦBFS����д����С��2.13��
+1.小节2.2中的大部分题目都只提供了递归解法，对应BFS迭代写法在小节2.13中
 104, 111, 112, 129, 199, 100
-2.С��2.6ΪDP��أ���ʱ����
+2.小节2.6为DP相关，暂时跳过
 */
 
 /*
-ģ���⣺
-1.������ǰ�������o1Ϊ�ݹ鷨��o3Ϊǰ�����������ģ��:144
-2.���������������m1Ϊ�ݹ鷨��o1,o2Ϊ��������o2Ϊ�������������ģ��:145
-3.���������������m1Ϊ�ݹ鷨��o1Ϊ��������o2Ϊͳһ����������������ǰ�к����ֱ������棩:94
-4.���ֵݹ�ģʽ���Զ����� / �Ե�����:104
-5.���ֵݹ�ģʽ���Զ����� / �Ե����ϵĶԱȣ����������� : 1026
-6.���û���Ҳ������o3Ϊ�����������ָ��ֳ��͵ݹ��е�if - else��Ҫ��ϸ��� : 257
-7.m1Ϊ����·����¼ + ����д����o1Ϊ��׼ & ��õĹ������ȵݹ�д�����Ƚ������⣩��o2Ϊջ����д�������Ա�̬�Ļ����ܻ���Ҫ):236
-8.���ö��������������ʣ�������Ӽ򵥣�o1Ϊ����������������Ҳ�ܼ򵥣�o2Ϊ�ݹ鷨 : 235
-9.o1Ϊǰ����������ϸ������䣩��o2Ϊ�����������������ö������������ʣ���o3Ϊ������� : 98
-10.o1Ϊ����д�������Ҫ������������ + �ڱ����Եݹ�����⣬�ݹ��������ת�������ܴ� : 897
-11.����BST���������������Ĺ��̷ֽ�Ϊһ���������⣬�õݹ������ : 108
-11.5��ǰ��/�����������������������©��֮�㣬�����Լ����������O(n * n)������105
-12.����BST��������� : 701
-13.��������������������Ŀ�Ƚ��ѣ���Ȼ��ȡ�ɵķ��������ǻ������˻����������������ĸ߶� : 450
-14.����ǿ������������������s450�Ѷ��Ե�һЩ : 669
-15.o1Ϊ˫���鷨��o2Ϊ���е���������׼ģ�壩��o3Ϊ�ݹ鷨 : 102
-16.˫������⣬·���ܺ͵�BFS�⣬һ�㲻��ô����DFS���ʺ�����⣬�������ڼ���BFS���������� : 112
-17.��ģ����16 + ���������ʣ����ڵ���Ϊindex�������ӽڵ���Ϊ2 * index, ���ӽڵ�Ϊ2* index + 1:662
-18.������ת��������o2o3������������򣬷����޸Ķ�����:114
-19.����ת��ƽ��BST��s108��ת���������飬�������������Ѷȸ���:109
-20.BFS�ⷨÿ����ҵ�����£������ػ��ⷨo2�ռ临�Ӷ�O(1)ֻ����������ã�s117�ͱ���ⷨ��ͬ���ʲ��г���:116
+模板题：
+1.二叉树前序遍历，o1为递归法，o3为前序遍历迭代法模板:144
+2.二叉树后序遍历，m1为递归法，o1,o2为迭代法，o2为后序遍历迭代法模板:145
+3.二叉树中序遍历，m1为递归法，o1为迭代法，o2为统一迭代法（可以用在前中后三种遍历里面）:94
+4.两种递归模式：自顶向下 / 自底向上:104
+5.两种递归模式：自顶向下 / 自底向上的对比，这道题更典型 : 1026
+6.不用回溯也能做，o3为回溯做法，恢复现场和递归中的if - else需要仔细体会 : 257
+7.m1为常规路径记录 + 回溯写法，o1为标准 & 最好的公共祖先递归写法（比较难理解），o2为栈迭代写法（面试变态的话可能会需要):236
+8.利用二叉搜索树的性质，问题更加简单，o1为迭代法，更好理解也很简单，o2为递归法 : 235
+9.o1为前序遍历（不断更新区间），o2为中序遍历（最常见，利用二叉搜索树性质），o3为后序遍历 : 98
+10.o1为逆天写法，务必要看懂，二叉树 + 哨兵，对递归的理解，递归与迭代的转化帮助很大 : 897
+11.创建BST，将创建二叉树的过程分解为一个个子问题，用递归来解决 : 108
+11.5从前序/中序数组生成树，热门题的漏网之鱼，初见自己最多能做出O(n * n)做法：105
+12.加深BST插入的理解 : 701
+13.锻炼分类讨论能力，题目比较难，虽然有取巧的方法，但是会让树退化成链表，增加树的高度 : 450
+14.继续强化分类讨论能力，比s450难度稍低一些 : 669
+15.o1为双数组法，o2为队列迭代法（标准模板），o3为递归法 : 102
+16.双队列求解，路径总和的BFS解，一般不这么做，DFS更适合这道题，本题用于加深BFS迭代的理解 : 112
+17.套模板题16 + 二叉树性质，根节点编号为index，则左子节点编号为2 * index, 右子节点为2* index + 1:662
+18.二叉树转成链表，o2o3后序遍历的逆序，反向修改二叉树:114
+19.链表转成平衡BST，s108是转换有序数组，这题是链表，难度更高:109
+20.BFS解法每层从右到左更新，链表特化解法o2空间复杂度O(1)只能在这道题用（s117和本题解法相同，故不列出）:116
 
-����ģ�壺
-1.lambda������εݹ����������3��д����auto&&(C++14), std::function, this auto&&(C++23)��872
-    ������c++23��this auto&&���ã�����������ʵ�֣�������auto&&��Y Combinator������Ҫ��function
-    std::function�����ܴ�Ҫ�ѷ���+���Ͳ��������������Ż�������̬���䲻�ȶ�����ȫ���Ƽ���
-    ��������ֵ��TreeNode*�������ĳ����������ܱ�������ͷ��Ҫ��Ҳֻ�ʺϷ���ֵ��void֮��ļ򵥳���
-    �ݹ����ָ�Ƶ���õĳ����£�overhead�ۻ����ԣ����������function��۷�
-    ���˳����£�std::function��lambda��10-100������Ϸ�����ڲ��ͽ�ֹʹ�ã���ԭ����Ϸ�ͻ��˿�ܾͽ��� std::function��
-    ֻ������void setCallback(std::function<void(int)> cb);֮��Ļص��ӿڲű���Ҫ�ã�����
+额外模板：
+1.lambda函数如何递归调用自身的3种写法：auto&&(C++14), std::function, this auto&&(C++23)：872
+    可以用c++23的this auto&&就用，是最完美的实现，否则用auto&&（Y Combinator），不要用function
+    std::function开销很大，要堆分配+类型擦除，而且内联优化弱，动态分配不稳定，完全不推荐用
+    碰到返回值是TreeNode*生成树的场景，还可能报错，非头铁要用也只适合返回值是void之类的简单场景
+    递归这种高频调用的场景下，overhead累积明显，面试如果用function会扣分
+    极端场景下，std::function比lambda慢10-100倍，游戏引擎内部就禁止使用（《原神》游戏客户端框架就禁用 std::function）
+    只有类似void setCallback(std::function<void(int)> cb);之类的回调接口才必须要用，或是
     std::queue<std::function<void()>> tasks;
-    tasks.push(...);֮����Ҫ�ӳ�ִ�еĳ����������¼�ϵͳ��������У���Ϊ�洢���ǡ����������������ͱ��뱻������
+    tasks.push(...);之类需要延迟执行的场景，例如事件系统、任务队列，因为存储的是“动作本身”，类型必须被擦除。
 */
 
-// ������������������ + ������� + ������� + ������ֱ�� + ���� + ����������� + ���������� +
-// ���������� + ����/ɾ���ڵ� + ����DP + BFS + ���������� + N����
+// 二叉树：遍历二叉树 + 先序遍历 + 后序遍历 + 二叉树直径 + 回溯 + 最近公共祖先 + 二叉搜索树 +
+// 创建二叉树 + 插入/删除节点 + 树形DP + BFS + 链表二叉树 + N叉树
 
-// ��2.1������������ (7)
-// 144��145��94��Ӧ��������򵥵����ֱ�����������Ϊ���ѡһ�ֱ�����ʽ�������нڵ�
+// 【2.1】遍历二叉树 (7)
+// 144，145，94对应二叉树最简单的三种遍历，其他题为随便选一种遍历方式遍历所有节点
 // ---------------------
-// ģ����1��������ǰ�������o1Ϊ�ݹ鷨��o3Ϊǰ�����������ģ��
+// 模板题1：二叉树前序遍历，o1为递归法，o3为前序遍历迭代法模板
 namespace s144o1
-{   // �ݹ鷨�����������ֻ��Ҫ��һ��traversal�����ڵ�˳��
+{   // 递归法，后序和中序只需要改一下traversal函数内的顺序
     class Solution {
     private:
-        void traversal(TreeNode* cur, vector<int>& vec) {// �ݹ�Ĵ��ݲ���
-            // �ݹ���˳�����            
+        void traversal(TreeNode* cur, vector<int>& vec) {// 递归的传递参数
+            // 递归的退出条件            
             if (cur == nullptr) {
                 return;
             }
-            // �ݹ���߼�
+            // 递归的逻辑
             vec.push_back(cur->val);
             traversal(cur->left, vec);
             traversal(cur->right, vec);
@@ -115,22 +115,22 @@ namespace s144o1
     };
 }
 namespace s144o2
-{   // ���������ϸ���ǰ��������߼�������д�������̣���һ·���������е����ӣ�Ȼ����pop���������Һ���
-    // ��д������������Ϥ�����������߼���������ģ��д����������ģ���o3
+{   // 迭代法，严格按照前序遍历的逻辑流程来写迭代过程，先一路遍历完所有的左孩子，然后再pop出来遍历右孩子
+    // 本写法可以用来熟悉迭代遍历的逻辑，但不是模板写法，迭代法模板见o3
     class Solution {
     public:
         vector<int> preorderTraversal(TreeNode* root) {
-            vector<int> ans;// ����д���²���Ҫ���п������ж�
-            stack<TreeNode*> stk;// �Ƚ���������ϱ����ص㣬ѡ��ջ
+            vector<int> ans;// 这种写法下不需要进行空树的判断
+            stack<TreeNode*> stk;// 先进后出，符合遍历特点，选用栈
             TreeNode* node = root;
-            // �ж������ǹؼ���������Ҫд�����ε���ʱջΪ�յ�root�ǿ�/������ĳ�ڵ�������������ǿյ�
+            // 判断条件是关键，两个都要写，初次调用时栈为空但root非空/过程中某节点的右子树可能是空的
             while (!stk.empty() || node != nullptr) {
                 while (node != nullptr) {
                     ans.push_back(node->val);
                     stk.push(node);
                     node = node->left;
                 }
-                // ��Ϊ���ڲ�whileѭ���ڣ�nodeΪҶ�ӽ������ӣ���ָ�룩������Ҫ����ջ��top�ص���һ��
+                // 因为在内部while循环内，node为叶子结点的左孩子（空指针）处，需要利用栈的top回到上一层
                 node = stk.top();
                 stk.pop();
                 node = node->right;
@@ -140,7 +140,7 @@ namespace s144o2
     };
 }
 namespace s144o3
-{   // DFS��������ģ��
+{   // DFS迭代遍历模板
     class Solution {
     public:
         vector<int> preorderTraversal(TreeNode* root) {
@@ -153,7 +153,7 @@ namespace s144o3
                 TreeNode* node = stk.top();
                 stk.pop();
                 ans.push_back(node->val);
-                // ��Ϊջ���Ƚ����������ǰ������У������Һ��ӽ�ջ
+                // 因为栈是先进后出，所以前序遍历中，先让右孩子进栈
                 if (node->right) stk.push(node->right);
                 if (node->left) stk.push(node->left);
             }
@@ -162,7 +162,7 @@ namespace s144o3
     };
 }
 
-// ģ����2�����������������m1Ϊ�ݹ鷨��o1,o2Ϊ��������o1Ϊ�������������ģ��
+// 模板题2：二叉树后序遍历，m1为递归法，o1,o2为迭代法，o1为后序遍历迭代法模板
 namespace s145m1
 {
     class Solution {
@@ -191,11 +191,11 @@ namespace s145o1
             vector<int> ans;
             stack<TreeNode*> stk;
 
-            TreeNode* prev = nullptr; // ��¼��һ�����ʵĽڵ�
-            TreeNode* node = root;    // ��ǰ�ڵ�
-            // ���ѭ�����������������̣��ڲ�ѭ��������������
+            TreeNode* prev = nullptr; // 记录上一个访问的节点
+            TreeNode* node = root;    // 当前节点
+            // 外层循环控制整个遍历过程，内层循环向左子树深入
             while (!stk.empty() || node != nullptr) {
-                // 1.�����������ӽڵ㣨����ı��� + �ж�֮���������ҽڵ��Ƿ�������ı�Ҫ��
+                // 1.遍历到最左子节点（最初的遍历 + 判断之后碰到的右节点是否有深入的必要）
                 while (node != nullptr) {
                     stk.push(node);
                     node = node->left;
@@ -204,16 +204,16 @@ namespace s145o1
                 node = stk.top();
                 stk.pop();
 
-                // 2.����Ƿ���Ҫ����������(���������� && δ���ʹ�)
+                // 2.检查是否需要处理右子树(右子树存在 && 未访问过)
                 if (node->right != nullptr && node->right != prev) {
-                    stk.push(node); // �ظ�ѹջ�Լ�¼��ǰ·���ֲ�ڵ�
+                    stk.push(node); // 重复压栈以记录当前路径分叉节点
                     node = node->right;
                 }
                 else {
-                    // 3.���ʵ�ǰ�ڵ�
+                    // 3.访问当前节点
                     ans.push_back(node->val);
-                    prev = node;// �����ظ�����������������������𰸺󣬶�Ӧ���ڵ���ٴξ���if-else�жϣ���������ظ�
-                    node = nullptr;// �����ظ�����������[��սڵ�](�������գ��ڲ��whileѭ����һֱ�ظ�)
+                    prev = node;// 避免重复访问右子树，右子树加入答案后，对应根节点会再次经历if-else判断，用来标记重复
+                    node = nullptr;// 避免重复访问左子树[设空节点](如果不设空，内层的while循环会一直重复)
                 }
             }
             return ans;
@@ -221,7 +221,7 @@ namespace s145o1
     };
 }
 namespace s145o2
-{   // ��s144o2���Ӧ
+{   // 和s144o2相呼应
     class Solution {
     public:
         vector<int> postorderTraversal(TreeNode* root) {
@@ -234,18 +234,18 @@ namespace s145o2
                 TreeNode* node = stk.top();
                 stk.pop();
                 ans.push_back(node->val);
-                // ans�������Ϊ��-��-��
+                // ans遍历结果为中-右-左
                 if (node->left) stk.push(node->left);
                 if (node->right) stk.push(node->right);
             }
-            // reverse��Ϊ��-��-�У�ǡ���Ǻ���������
+            // reverse后为左-右-中，恰好是后序遍历结果
             reverse(ans.begin(), ans.end());
             return ans;
         }
     };
 }
 
-// ģ����3�����������������m1Ϊ�ݹ鷨��o1Ϊ��������o2Ϊͳһ����������������ǰ�к����ֱ������棩
+// 模板题3：二叉树中序遍历，m1为递归法，o1为迭代法，o2为统一迭代法（可以用在前中后三种遍历里面）
 namespace s94m1
 {
     class Solution {
@@ -271,15 +271,15 @@ namespace s94o1
     class Solution {
     public:
         vector<int> inorderTraversal(TreeNode* root) {
-            vector<int> ans;// ���д���£������ص�ȥ���ж������Ĵ���
+            vector<int> ans;// 这个写法下，不用特地去加判定空树的代码
             stack<TreeNode*> stk;
             TreeNode* node = root;
-            while (node != nullptr || !stk.empty()) {// �𲽷��ʵ���ײ������ߵ�Ҷ�Ӵ�
+            while (node != nullptr || !stk.empty()) {// 逐步访问到最底层的最左边的叶子处
                 while (node != nullptr) {
                     stk.push(node);
                     node = node->left;
                 }
-                // ��Ϊ���ڲ�whileѭ���ڣ�nodeΪҶ�ӽ������ӣ���ָ�룩������Ҫ����ջ��top�ص���һ��
+                // 因为在内部while循环内，node为叶子结点的左孩子（空指针）处，需要利用栈的top回到上一层
                 node = stk.top();
                 stk.pop();
                 ans.push_back(node->val);
@@ -291,13 +291,13 @@ namespace s94o1
     };
 }
 namespace s94o2
-{   // ͳһ����������ָ�뷨�����м���������һ����ָ�룬ֻ�ж�����ָ��ʱ�Ž����val���뷵������
-    // �������ֱ���ֻ��Ҫ��΢�ĵ����˳��
+{   // 统一迭代法（空指针法，在中间结点后面加上一个空指针，只有读到空指针时才将结点val放入返回数组
+    // 其他两种遍历只需要稍微改点语句顺序
     /*
-    ���������Ϊ������ͳһ��������ÿ�ζ��ڵ�ǰ��㶼������Ȼ����ݱ�����˳��Ҫ���ٶԸý�㡢�ýڵ�ĺ���������ջ
-    ���Ƿ�ͳһ�������Ŀռ临�Ӷ�ƽ��O(longn)����������״ʱ�ΪO(n)
-    ��ͳһ����������ΪΪÿ����㶼�����ָ���ǣ��ռ临�Ӷ�ΪO(n) + O(logn) = O(n)
-    �������������ļǲ�������ͳһ���������Ͳ�Ҫдͳһ������
+    以中序遍历为例理解统一迭代法，每次对于当前结点都弹出，然后根据遍历的顺序要求再对该结点、该节点的孩子依次入栈
+    但是非统一迭代法的空间复杂度平均O(longn)，在树呈链状时最坏为O(n)
+    而统一迭代法，因为为每个结点都加入空指针标记，空间复杂度为O(n) + O(logn) = O(n)
+    如果不是面试真的记不起来非统一迭代法，就不要写统一迭代法
     */
     class Solution {
     public:
@@ -310,31 +310,31 @@ namespace s94o2
             while (!stk.empty()) {
                 TreeNode* node = stk.top();
                 if (node != nullptr) {
-                    stk.pop(); // ���ýڵ㵯���������ظ������������ٽ�������ڵ����ӵ�ջ��
-                    if (node->right != nullptr) stk.push(node->right);  // �����ҽڵ㣨�սڵ㲻��ջ��
+                    stk.pop(); // 将该节点弹出，避免重复操作，下面再将右中左节点添加到栈中
+                    if (node->right != nullptr) stk.push(node->right);  // 添加右节点（空节点不入栈）
 
-                    stk.push(node);                          // �����нڵ�
-                    stk.push(nullptr); // �нڵ���ʹ������ǻ�û�д���������սڵ���Ϊ��ǡ�
+                    stk.push(node);                          // 添加中节点
+                    stk.push(nullptr); // 中节点访问过，但是还没有处理，加入空节点做为标记。
 
-                    if (node->left != nullptr) stk.push(node->left);    // ������ڵ㣨�սڵ㲻��ջ��
+                    if (node->left != nullptr) stk.push(node->left);    // 添加左节点（空节点不入栈）
                     /*
-                    *   �����ǰ��ģ���ô��Ϊ��
+                    *   如果是前序的，那么改为：
                     if (node->right != nullptr) st.push(node->right);
                     if (node->left != nullptr) st.push(node->left);
                     st.push(node);
                     st.push(nullptr);
-                    *   ����Ǻ���ģ���ô��Ϊ��
+                    *   如果是后序的，那么改为：
                     * st.push(node);
                     st.push(nullptr);
                     if (node->right != nullptr) st.push(node->right);
                     if (node->left != nullptr) st.push(node->left);
                     */
                 } 
-                else { // ֻ�������սڵ��ʱ�򣬲Ž���һ���ڵ�Ž������
-                    stk.pop();           // ���սڵ㵯��
-                    node = stk.top();    // ����ȡ��ջ��Ԫ��
+                else { // 只有遇到空节点的时候，才将下一个节点放进结果集
+                    stk.pop();           // 将空节点弹出
+                    node = stk.top();    // 重新取出栈中元素
                     stk.pop();
-                    result.push_back(node->val); // ���뵽�����
+                    result.push_back(node->val); // 加入到结果集
                 }
             }
             return result;
@@ -342,9 +342,9 @@ namespace s94o2
     };
 }
 
-// o1�жԵݹ��lambdaд������������
+// o1中对递归的lambda写法进行了讨论
 namespace s872m1
-{   // д������ǰ��������������ж��Ƿ�ΪҶ�ӽڵ�
+{   // 写法基于前序遍历，但增加判断是否为叶子节点
     class Solution {
     private:
         vector<int> leafSequence(TreeNode* root) {
@@ -369,7 +369,7 @@ namespace s872m1
     };
 }
 namespace s872m1
-{   // �ݹ鷨
+{   // 递归法
     class Solution {
     private:
         void dfs(TreeNode* node, vector<int>& vec) {
@@ -392,13 +392,13 @@ namespace s872m1
     };
 }
 namespace s872o1
-{   // ����ݹ�д�����Ƚϸ߼����õ���C++23,�����ҽ��任����C++14�ľ���lambda��
-    // lambdaд���߼���Ȼ�߼��������������ĺ���Ч����ͬ�����Բ�Ҫ������
+{   // 灵神递归写法，比较高级（用到了C++23,这里我将其换成了C++14的具名lambda）
+    // lambda写法高级虽然高级，但创建独立的函数效果相同，所以不要求掌握
     class Solution {
     private:
         vector<int> leafValues(TreeNode* root) {
             vector<int> ans;
-            // lambda��ͬ����ͨ������������ڲ�ֱ��дdfs(node->left)���ݹ���ô�lambda�������������Իᱨ��
+            // lambda不同于普通函数，如果在内部直接写dfs(node->left)，递归调用处lambda还不完整，所以会报错
             auto dfs = [&](auto&& self, TreeNode* node) -> void {
                 if (!node) return;
                 if (!node->left && !node->right) {
@@ -409,7 +409,7 @@ namespace s872o1
                 self(self, node->right);
                 };
             dfs(dfs, root);
-            // ����д��function����ģ����ʽ
+            // 或者写成function函数模板形式
             /*
             function<void(TreeNode*)> dfs = [&](TreeNode* node) {
                 if (!node) return;
@@ -422,13 +422,13 @@ namespace s872o1
             };
             dfs(root);            
             */
-            // �����������ԭʼ���룬�õ���C++23������
+            // 下面是灵神的原始代码，用到了C++23的特性
             /*
             auto dfs = [&](this auto&& dfs, TreeNode* node) -> void {
-                if (node == nullptr) { // �սڵ�
+                if (node == nullptr) { // 空节点
                     return;
                 }
-                if (node->left == nullptr && node->right == nullptr) { // Ҷ��
+                if (node->left == nullptr && node->right == nullptr) { // 叶子
                     res.push_back(node->val);
                     return;
                 }
@@ -447,10 +447,10 @@ namespace s872o1
 
 }
 
-// ��������Ĳ�ֻ���������һ���Ƕ�������������ĵ���д��
+// 中序遍历的拆分化处理，另一个角度理解中序遍历的迭代写法
 namespace s173m1
-{   // �ڹ��캯�����������һ�Σ�������洢�ڵ�Ԫ��
-    // �ռ临�Ӷ�O(n)�����Լ����Ż�
+{   // 在构造函数中中序遍历一次，用数组存储节点元素
+    // 空间复杂度O(n)，可以继续优化
     class BSTIterator {
     private:
         vector<int> nums;
@@ -492,12 +492,12 @@ namespace s173m1
     };
 }
 namespace s173o1
-{   // �����������ջ�������̲�ֿ���ģ��
-    // �ռ临�Ӷ�O(h)��hΪ�������߶�
+{   // 将中序遍历的栈遍历过程拆分开来模拟
+    // 空间复杂度O(h)，h为树的最大高度
     class BSTIterator {
     private:
-        stack<TreeNode*> st;  // ��ʽջ������������Ľڵ�
-        // ��������������ǰ�ڵ㼰���������ӽڵ�ѹ��ջ
+        stack<TreeNode*> st;  // 显式栈，保存待处理的节点
+        // 辅助函数：将当前节点及其所有左子节点压入栈
         void pushLeft(TreeNode* node) {
             while (node) {
                 st.push(node);
@@ -507,26 +507,26 @@ namespace s173o1
 
     public:
         BSTIterator(TreeNode* root) {
-            // ��ʼ���������ڵ㼰���������ӽڵ���ջ
+            // 初始化：将根节点及其所有左子节点入栈
             pushLeft(root);
         }
 
         int next() {
-            // ����ջ���ڵ㣨��ǰ��Сֵ��
+            // 弹出栈顶节点（当前最小值）
             TreeNode* cur = st.top();
             st.pop();
             int result = cur->val;
-            // ����ýڵ������ӽڵ㣬�������ӽڵ㼰���������ӽڵ���ջ
+            // 如果该节点有右子节点，则将其右子节点及其所有左子节点入栈
             if (cur->right) {
                 pushLeft(cur->right);
             }
-            // pushLeft(cur->right); // ���ж�if(cur->right)ֱ�ӵ���pushLeftҲ����ȷ��
+            // pushLeft(cur->right); // 不判断if(cur->right)直接调用pushLeft也是正确的
 
             return result;
         }
 
         bool hasNext() {
-            // ջ�ǿ�˵�����нڵ�δ����
+            // 栈非空说明还有节点未访问
             return !st.empty();
         }
     };
@@ -578,7 +578,7 @@ namespace s404m1
 }
 
 namespace s671m1
-{   // ���ڵ�һ������С��ֵ���ڶ�С��ֵҲ�������бȸ��ڵ���ֵ����Сֵ
+{   // 根节点一定是最小的值，第二小的值也即：所有比根节点大的值里最小值
     class Solution {
     public:
         int findSecondMinimumValue(TreeNode* root) {
@@ -600,17 +600,17 @@ namespace s671m1
     };
 }
 // ---------------------
-// ��2.2���Զ�����DFS���������/ǰ������� (8)
-// ��Ҫ����ݹ�ļ�Ӧ�ã���С�ںܶ���ĿҲ�����ò��������⣬��Ӧ��ⲹ����2.13С��
-// �Զ��������͵�DFS�ݹ���Ŀ��һ��ݹ麯��dfs����ֵ��void������õ�����ֵ��Ϊ��ʽ����һ��㴫����ȥ
+// 【2.2】自顶向下DFS（先序遍历/前序遍历） (8)
+// 主要考察递归的简单应用，本小节很多题目也可以用层序遍历求解，对应题解补充在2.13小节
+// 自顶向上类型的DFS递归题目，一般递归函数dfs返回值是void，求解用到的数值设为形式参数一层层传递下去
 /*
 
 */
 // ---------------------
-// ģ����4�����ֵݹ�ģʽ���Զ�����/�Ե�����
+// 模板题4：两种递归模式：自顶向下/自底向上
 namespace s104m1
 {
-    // �Զ����´�����ֵ
+    // 自顶向下传递数值
     class Solution {
     private:
         int dfs(TreeNode* node, int depth) {
@@ -625,7 +625,7 @@ namespace s104m1
 }
 namespace s104o1
 {
-    // �Ե����ϴ�����ֵ
+    // 自底向上传递数值
     class Solution {
     public:
         int maxDepth(TreeNode* root) {
@@ -636,15 +636,15 @@ namespace s104o1
 }
 
 namespace s111m1
-{   // �Զ����£��� + �����Լ�֦���������֦�����ܻ����������С��Ȳ�Ľڵ㣩
+{   // 自顶向下，递 + 最优性剪枝（如果不剪枝，可能会遍历超过最小深度层的节点）
     class Solution {
     private:
         int minDep = INT_MAX;
         void dfs(TreeNode* node, int depth) {
-            // �����Լ�֦������ݹ��з��� cnt��ans�����ڼ������µݹ�Ҳ������ ans ��С��ֱ�ӷ���
+            // 最优性剪枝：如果递归中发现 cnt≥ans，由于继续向下递归也不会让 ans 变小，直接返回
             if (!node || ++depth >= minDep) return;
             if (!node->left && !node->right) {
-                minDep = depth; // ���û�м�֦����ô������ans = min(ans, cnt);
+                minDep = depth; // 如果没有剪枝，那么这里变成ans = min(ans, cnt);
                 return;
             }
             dfs(node->left, depth);
@@ -659,27 +659,27 @@ namespace s111m1
     };
 }
 namespace s111o1
-{   // �Ե����ϣ���
+{   // 自底向上，归
     class Solution {
     public:
         int minDepth(TreeNode* root) {
             if (!root) return 0;
 
-            // ���rootû���Ҷ��ӣ���ô��Ⱦ�������������ȼ�һ
+            // 如果root没有右儿子，那么深度就是左子树的深度加一
             if (!root->right) {
                 return minDepth(root->left) + 1;
             }
-            // ���rootû������ӣ���ô��Ⱦ�������������ȼ�һ
+            // 如果root没有左儿子，那么深度就是右子树的深度加一
             if (!root->left) {
                 return minDepth(root->right) + 1;
             }
-            // ���root���Ҷ��Ӷ��У���ô�ֱ�ݹ��������������ȣ��Լ�����������ȣ�����ȡ��Сֵ�ټ�һ
+            // 如果root左右儿子都有，那么分别递归计算左子树的深度，以及右子树的深度，二者取最小值再加一
             return min(minDepth(root->left), minDepth(root->right)) + 1;
         }
     };
 }
 namespace s111o2
-{   // �Ե����ϣ��飬д��2
+{   // 自底向上，归，写法2
     class Solution {
     public:
         int minDepth(TreeNode* root) {
@@ -696,14 +696,14 @@ namespace s111o2
     };
 }
 
-// ��BFS�͵�����������o1Ϊ��򵥵ĵݹ�
+// 有BFS和迭代的做法，o1为最简单的递归
 namespace s112o1
-{   /* �ݹ���߼�����targetSum��ÿ��ڵ��ֵ��ȥ�������0˵���ҵ���·����
-    1.�����ǰ�ڵ��ǿյģ����޷���������������false�����������սڵ��˻�ûreturn true��˵���Ѿ��Ҳ����ˣ���
-    2.��Ŀ���ܺͼ�ȥ��ǰ�ڵ�ֵ��
-    3.�����ǰ�ڵ���Ҷ�ӽڵ㣬��ô�ж��Ƿ�ǰĿ��ֵ�Ƿ�Ϊ0��
-    �ж��������Ƿ�������Ҫ��
-    �ж��������Ƿ�������Ҫ��
+{   /* 递归的逻辑：将targetSum用每层节点的值减去，如果是0说明找到了路径；
+    1.如果当前节点是空的，则无法当作减数，返回false（都遍历到空节点了还没return true，说明已经找不到了）；
+    2.用目标总和减去当前节点值；
+    3.如果当前节点是叶子节点，那么判断是否当前目标值是否为0；
+    判断左子树是否能满足要求；
+    判断右子树是否能满足要求。
     */
     class Solution {
     public:
@@ -712,7 +712,7 @@ namespace s112o1
                 return false;
             }
             targetSum -= root->val;
-            if (root->left == nullptr && root->right == nullptr) { // root ��Ҷ��
+            if (root->left == nullptr && root->right == nullptr) { // root 是叶子
                 return targetSum == 0;
             }
             return hasPathSum(root->left, targetSum) || hasPathSum(root->right, targetSum);
@@ -742,18 +742,18 @@ namespace s129m1
     };
 }
 
-// �����BFS������������뵽����DFS�ݹ�Ҳ����
+// 这道题BFS更容易理解和想到，但DFS递归也能做
 namespace s199o1
 {
     class Solution {
     private:
         void dfs(TreeNode* node, vector<int>& vec, int depth) {
             if (!node) return;
-            // �������״���������ans.size()����̬�жϣ�������
+            // 这个深度首次遇到，用ans.size()来动态判断，很巧妙
             if (vec.size() == depth) {
                 vec.push_back(node->val);
             }
-            // �ȵݹ�����������֤�״�������һ�������ұߵĽڵ�
+            // 先递归右子树，保证首次遇到的一定是最右边的节点
             dfs(node->right, vec, depth + 1);
             dfs(node->left, vec, depth + 1);
         }
@@ -767,7 +767,7 @@ namespace s199o1
 }
 
 namespace s1448m1
-{   // �Զ�����
+{   // 自顶向下
     class Solution {
     private:
         int ans = 0;
@@ -788,7 +788,7 @@ namespace s1448m1
     };
 }
 namespace s1448o1
-{   // �Ե�����д�����Ҹ��˻���������m1�Զ�����
+{   // 自底向上写法，我个人还是倾向于m1自顶向下
     class Solution {
     public:
         int goodNodes(TreeNode* root, int mx = INT_MIN) {
@@ -824,7 +824,7 @@ namespace s988m1
     };
 }
 
-// ģ����5�����ֵݹ�ģʽ���Զ�����/�Ե����ϵĶԱȣ�����������
+// 模板题5：两种递归模式：自顶向下/自底向上的对比，这道题更典型
 namespace s1026m1
 {
     class Solution {
@@ -835,7 +835,7 @@ namespace s1026m1
             ans = max(ans, max(abs(node->val - mx), abs(node->val - mn)));
             mx = max(mx, node->val);
             mn = min(mn, node->val);
-            /* �ĳ�������ã���Ϊ��Ϊmx��mnһ����·���ϵļ�ֵ
+            /* 改成下面更好，因为因为mx和mn一定是路径上的极值
             mx = max(mx, node->val);
             mn = min(mn, node->val);
             ans = max(ans, mx - mn);
@@ -852,10 +852,10 @@ namespace s1026m1
     };
 }
 namespace s1026o1
-{   // �Ե����ϣ�����������������������������������������õ������������
+{   // 自底向上：后序遍历，根据左子树的情况和右子树的情况，得到本树的情况。
     /*
-    * ˼·��ά��B�����Ƚڵ��е���Сֵ�����ֵ�����ǻ�����վ������A���ӽǣ�ά��A����ڵ��е���Сֵmn�����ֵmx��
-    * ���仰˵����Сֵ�����ֵ������Ϊ��Σ�������Ϊ����ֵ����˼����AΪ���������е���Сֵmn�����ֵmx��
+    * 思路是维护B的祖先节点中的最小值和最大值，我们还可以站在祖先A的视角，维护A子孙节点中的最小值mn和最大值mx。
+    * 换句话说，最小值和最大值不再作为入参，而是作为返回值，意思是以A为根的子树中的最小值mn和最大值mx。
     */
     class Solution {
         int ans = 0;
@@ -877,8 +877,8 @@ namespace s1026o1
         }
     };
 }
-// ��2.3���Ե�����DFS (�������) ��10��
-// �Զ��������͵�DFS�ݹ���Ŀ��һ��ݹ麯��dfs����ֵ����Ҫ�õ��Ĳ�������д�ݹ麯��ʱĬ�ϵײ㴫��������ֵ����ȷ��
+// 【2.3】自底向上DFS (后序遍历) （10）
+// 自顶向上类型的DFS递归题目，一般递归函数dfs返回值是需要用到的参数，编写递归函数时默认底层传上来的数值是正确的
 /*
 
 */
@@ -901,7 +901,7 @@ namespace s965m1
 
 namespace s100o1
 {
-    // �ж��������Ƿ���ͬ = �������ĸ��ڵ���ͬ + ��������������������ͬ
+    // 判断两个树是否相同 = 两个树的根节点相同 + 根结点的左右两个子树相同
     class Solution {
     public:
         bool isSameTree(TreeNode* p, TreeNode* q) {
@@ -924,13 +924,13 @@ namespace s101m1
     private:
         bool dfs(TreeNode* p, TreeNode* q) {
             if (!p || !q) {
-                return p == q;// p = q = nullptrʱ�ſ������
+                return p == q;// p = q = nullptr时才可能相等
             }
 
             if (p->val != q->val) {
                 return false;
             }
-            /* Ҳ������������ôд��
+            /* 也可以像下面这么写：
             if (p == q) {
                 return true;// p = q = nullptr
             }
@@ -946,7 +946,7 @@ namespace s101m1
     };
 }
 
-// ���s100 + s101
+// 结合s100 + s101
 namespace s951m1
 {
     class Solution {
@@ -965,9 +965,9 @@ namespace s951m1
 }
 
 namespace s110o1
-{   // DFS�ݹ��������Ͷ�������������s104����
-    // ���ص���ȶ��������������ò�������ô���ø�������ʾ��ǰ�����ǲ�ƽ���
-    // �������BFS������
+{   // DFS递归做法，和二叉树的最大深度s104类似
+    // 返回的深度都是正数，负数用不到，那么就用负数来表示当前子树是不平衡的
+    // 这道题用BFS不好做
     class Solution {
     private:
         int getHeight(TreeNode* node) {
@@ -1006,7 +1006,7 @@ namespace s226m1
     };
 }
 namespace s226o1
-{   // DFS������ ǰ������������stack����queue�����в������Ҳû�κ�����
+{   // DFS迭代法 前序遍历，这里把stack换成queue，进行层序遍历也没任何问题
     class Solution {
     public:
         TreeNode* invertTree(TreeNode* root) {
@@ -1017,7 +1017,7 @@ namespace s226o1
                 TreeNode* node = stk.top();
                 stk.pop();
                 swap(node->left, node->right);
-                // ����node->right��node->left�����Ⱥ�
+                // 这里node->right和node->left不分先后
                 if (node->right) stk.push(node->right);
                 if (node->left) stk.push(node->left);
             }
@@ -1026,7 +1026,7 @@ namespace s226o1
     };
 }
 namespace s226o2
-{   // �ݹ���������֮�����ֱ������д����;���̵ķ���ֵû����������ν�����ڵ㷵������ȷ�𰸾Ϳ��ԣ�û��Ҫ�¿�����
+{   // 递归做法熟练之后可以直接这样写，中途过程的返回值没有意义无所谓，根节点返回了正确答案就可以，没必要新开函数
     class Solution {
     public:
         TreeNode* invertTree(TreeNode* root) {
@@ -1040,9 +1040,9 @@ namespace s226o2
     };
 }
 
-// ����������TreeNode*�ݹ�
+// 返回类型是TreeNode*递归
 namespace s617o1
-{   // ��������TreeNode*���ͷ���ֵһֱ����ûʲô���ã���������ó���
+{   // 以往这种TreeNode*类型返回值一直觉得没什么作用，这次派上用场了
     class Solution {
     public:
         TreeNode* mergeTrees(TreeNode* root1, TreeNode* root2) {
@@ -1108,7 +1108,7 @@ namespace s606m1
         void dfs(TreeNode* node) {
             if (!node) return;
             ans += to_string(node->val);
-            // ����Ϊ�գ����Һ��Ӳ�Ϊ�յ�������Բ������Ӳ�Ϊ�յķ�֧
+            // 左孩子为空，但右孩子不为空的情况可以并入左孩子不为空的分支
             if (node->left || (!node->left && node->right)) {
                 ans += '(';
                 dfs(node->left);
@@ -1128,12 +1128,12 @@ namespace s606m1
     };
 }
 // ---------------------
-// ��2.4���Ե�����DFS��ɾ�� (1)
+// 【2.4】自底向上DFS：删点 (1)
 /*
 
 */
 // ---------------------
-// ����������TreeNode*����s617����
+// 返回类型是TreeNode*，和s617类似
 namespace s814o1
 {
     class Solution {
@@ -1153,14 +1153,14 @@ namespace s814o1
     };
 }
 // ---------------------
-// ��2.5���е��й� (1)
+// 【2.5】有递有归 (1)
 /*
 
 */
 // ---------------------
-// ��������ֵ�����������Ե�����
+// 不带返回值，但是又是自底向上
 namespace s538o1
-{   // ����˳��Ϊ�� - �� - �� + ˳�㸴ϰlambda�ݹ�д�������ȫ�ֱ�����
+{   // 遍历顺序为右 - 中 - 左 + 顺便复习lambda递归写法（规避全局变量）
     class Solution {
     public:
         TreeNode* convertBST(TreeNode* root) {
@@ -1178,23 +1178,23 @@ namespace s538o1
     };
 }
 // ---------------------
-// ��2.6����������ֱ�� ()
+// 【2.6】二叉树的直径 ()
 /*
 
 */
 // ---------------------
-// ��ʱ�Թ���������Ŀ���6.6ר��-����DP
+// 暂时略过，部分题目详见6.6专题-树形DP
 // ---------------------
-// ��2.7������ (3)
-// ��������ȳ���ݹ飬���˸��ָ��ֳ��Ĺ��̣�pop_back�������ظ�����ĳ���������Ϳռ临�Ӷȣ���ʱ�临�ӶȲ���
-// �ص�Ϊ�ж��Ƿ�ΪҶ�ӽڵ���Ƿ����µݹ��Ƕ�ѡһ��if-else
+// 【2.7】回溯 (3)
+// 回溯题相比常规递归，多了个恢复现场的过程（pop_back），能重复利用某个变量降低空间复杂度，但时间复杂度不变
+// 特点为判断是否为叶子节点和是否向下递归是二选一的if-else
 /*
 
 */
 // ---------------------
-// ģ����6�����û���Ҳ����������o1��������Ҫ��θ����ַ�����o3Ϊ�����������ָ��ֳ��͵ݹ��е�if-else��Ҫ��ϸ���
+// 模板题6：不用回溯也能做，比如o1，但是需要多次复制字符串，o3为回溯做法，恢复现场和递归中的if-else需要仔细体会
 namespace s257m1
-{   // �޻����������ڼ���Ҫ��θ����ַ������Զ�����DFS
+{   // 无回溯做法，期间需要多次复制字符串，自顶向下DFS
     class Solution {
     private:
         string s = "";
@@ -1223,7 +1223,7 @@ namespace s257m1
     };
 }
 namespace s257m2
-{   // �޻������������ǰѸ��ڵ�����з��ڵݹ������
+{   // 无回溯做法，但是把根节点的特判放在递归的外面
     namespace s257m
     {
         class Solution {
@@ -1246,9 +1246,9 @@ namespace s257m2
             vector<string> binaryTreePaths(TreeNode* root) {
                 string rootVal = to_string(root->val);
                 if (!root->left && !root->right) {
-                    return vector<string>({ rootVal });// ��Ϊ�ݹ��С�->val��������һ��ģ�����rootҪ�������۴���
+                    return vector<string>({ rootVal });// 因为递归中“->val”是连在一起的，所以root要单独讨论处理
                 }
-                dfs(root->left, rootVal);// ����Ĳ����ǿ�·��
+                dfs(root->left, rootVal);// 传入的并不是空路径
                 dfs(root->right, rootVal);
                 return result;
             }
@@ -1256,7 +1256,7 @@ namespace s257m2
     }
 }
 namespace s257o1
-{   // ����д�������ҵĺ����ƣ����Ǹ���
+{   // 灵神写法，跟我的很类似，但是更好
     class Solution {
         vector<string> result;
         void dfs(TreeNode* node, string path) {
@@ -1266,19 +1266,19 @@ namespace s257o1
                 result.push_back(path);
                 return;
             }
-            path += "->";//�Ѽ����ͷ��һ�����������⣬���һ��root�Ͳ��õ���������
+            path += "->";//把加入箭头这一步单独放在这，如此一来root就不用单独处理了
             dfs(node->left, path);
             dfs(node->right, path);
         }
     public:
         vector<string> binaryTreePaths(TreeNode* root) {
-            dfs(root, "");//��ʼ��Ϊ��·��
+            dfs(root, "");//初始化为空路径
             return result;
         }
     };
 }
 namespace s257o2
-{   // ��һ���޻����������ݹ�ֹͣ������ɣ���ǰ�ڵ��Ƿ�ΪҶ�ӽڵ�
+{   // 另一种无回溯做法，递归停止条件变成：当前节点是否为叶子节点
     class Solution {
         vector<string> res;
         void backtrack(TreeNode* node, string path) {
@@ -1301,16 +1301,16 @@ namespace s257o2
     };
 }
 namespace s257o3
-{   /* ���ݣ�����ͨ�ݹ���������ڻᷴ���ָ�ĳ������ֵ��ɾ���������ݣ��������д�����path
-    ����˼·�������ڱ�����ʵ����o1��ͨ�ݹ��������ã�
-    ���û�еݹ鵽Ҷ�ӽڵ㣬���ǻ��ȵݹ���������Ȼ��ݹ���������
-    �ݹ���������������Ҫ����ȥ���ݹ���������
-    ����ȥ�Ĺ����У�֮ǰ�ӵ� path �е����ݣ����������У����������ݣ�Ҫ��ʱ��������ָ��ֳ�����
+{   /* 回溯：与普通递归的区别在于会反复恢复某个变量值，删除垃圾数据，比如这个写法里的path
+    本体思路：（对于本题其实还是o1普通递归做法更好）
+    如果没有递归到叶子节点，我们会先递归左子树，然后递归右子树。
+    递归完了左子树，就要倒回去，递归右子树。
+    倒回去的过程中，之前加到 path 中的数据（在左子树中）是垃圾数据，要及时清除掉（恢复现场）。
     */
     class Solution {
     public:
         vector<string> binaryTreePaths(TreeNode* root) {
-            // ֻ����ڵ��ֵ����������"->"
+            // 只保存节点的值，而不保存"->"
             vector<string> path;
             vector<string> ans;
 
@@ -1325,14 +1325,14 @@ namespace s257o3
                         jointed += "->";
                         jointed += path[i];
                     }
-                    // �ƶ���������, jointed��֮�󲻻��õ��ľֲ�����
+                    // 移动语义提速, jointed是之后不会用到的局部变量
                     ans.push_back(move(jointed));
                 }
-                else {// ���������ݱ���д��if else��ʽ
+                else {// 这两个回溯必须写成if else形式
                     self(self, node->left);
                     self(self, node->right);
                 }
-                // �ָ��ֳ�
+                // 恢复现场
                 path.pop_back();
                 };
 
@@ -1343,7 +1343,7 @@ namespace s257o3
 }
 
 namespace s113m1
-{   // �޻�������
+{   // 无回溯做法
     class Solution {
     public:
         vector<vector<int>> pathSum(TreeNode* root, int targetSum) {
@@ -1371,7 +1371,7 @@ namespace s113m1
     };
 }
 namespace s113o1
-{   // ��������
+{   // 回溯做法
     class Solution {
     public:
         vector<vector<int>> pathSum(TreeNode* root, int targetSum) {
@@ -1388,7 +1388,7 @@ namespace s113o1
                     if (targetSum == 0) {
                         ans.push_back(path);
                     }
-                }   // Ҷ��/���µݹ��Ƕ�ѡһ��
+                }   // 叶子/向下递归是二选一的
                 else {
                     self(self, node->left);
                     self(self, node->right);
@@ -1404,21 +1404,21 @@ namespace s113o1
     };
 }
 
-// ������΢�ѵ���⣬���� + ö�� + ǰ׺�ͽ�ϲ�����������������Ϊs560
+// 属于稍微难点的题，回溯 + 枚举 + 前缀和结合才能做出来，基础题为s560
 namespace s437o1
-{   // ��ĿҪ�󷵻������ܺ͵�·������Ŀ������������s560������target��������
-    // ·���������������Ƶģ�·���ܺ���ǰ׺�͵ļ���Ҳ�����Ƶ�
-    // һ���ù̶���sum�����Ա��������¼��һ���õݹ����s�Ϳ���
-    // ��¼֮ǰ��sumͬ���ù�ϣ����ֻ��Ҫÿ�εݹ�����ָ��ֳ�����
+{   // 题目要求返回满足总和的路径的数目，可以联想至s560的满足target的子数组
+    // 路径和子树组是类似的，路径总和与前缀和的计算也是相似的
+    // 一个用固定的sum，线性遍历数组记录，一个用递归参数s就可以
+    // 记录之前的sum同样用哈希表，只需要每次递归结束恢复现场即可
     
-    // DFS ������������������ڵ� node ʱ������ node ��·�����յ㣬
-    // ��ô�ж��ٸ���㣬������㵽�յ� node ��·���ܺ�ǡ�õ��� targetSum ?
+    // DFS 遍历这棵树，遍历到节点 node 时，假设 node 是路径的终点，
+    // 那么有多少个起点，满足起点到终点 node 的路径总和恰好等于 targetSum ?
     class Solution {
     public:
         int pathSum(TreeNode* root, int targetSum) {
             unordered_map<long long, int> freqMap;
             int ans = 0;
-            freqMap[0LL] = 1;// ��סҪ�������{0, 1}
+            freqMap[0LL] = 1;// 记住要额外加入{0, 1}
 
             auto dfs = [&](auto&& self, TreeNode* node, long long s) {
                 if (!node) return;
@@ -1432,7 +1432,7 @@ namespace s437o1
 
                 self(self, node->left, s);
                 self(self, node->right, s);
-                // ������freqMap��Ӱ����Ҫ����
+                // 子树对freqMap的影响需要撤销
                 --freqMap[s];
                 };
 
@@ -1442,16 +1442,16 @@ namespace s437o1
     };
 }
 // ---------------------
-// ��2.8������������� (2)
-// ��������ô�࣬���������У��������͵���Ŀ��3�������ģ�Ŀǰʱ������ֻ������
+// 【2.8】最近公共祖先 (2)
+// 不用想那么多，记下来就行，这种类型的题目就3道常见的，目前时间有限只做两道
 /*
 
 */
 // ---------------------
-// ģ����7��m1Ϊ����·����¼ + ����д����o1Ϊ��׼&��õĹ������ȵݹ�д�����Ƚ������⣩��o2Ϊջ����д�������Ա�̬�Ļ����ܻ���Ҫ��
+// 模板题7：m1为常规路径记录 + 回溯写法，o1为标准&最好的公共祖先递归写法（比较难理解），o2为栈迭代写法（面试变态的话可能会需要）
 namespace s236m1
-{   // �����������¼�ﵽp��q��·�����ٱȽ�����·���ҵ������������
-    // ����Ҫ�û��ݽ��Ϳռ临�ӶȲ���ͨ����Ҫ��Ȼ�ᳬ���ڴ�����
+{   // 最笨的做法，记录达到p和q的路径，再比较两个路径找到最近公共祖先
+    // 必须要用回溯降低空间复杂度才能通过，要不然会超过内存限制
     class Solution {
     public:
         TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
@@ -1472,7 +1472,7 @@ namespace s236m1
 
             dfs(dfs, root);
 
-            // ��Ŀ��ָ�������������ڵ㣬�����������if��������ɾ��
+            // 题目中指出最少有两个节点，所以下面这段if可以整段删掉
             if (paths.size() == 1) {
                 return p ? p : q;
             }
@@ -1492,44 +1492,44 @@ namespace s236m1
 }
 namespace s236o1
 {   /*
-    �ݹ麯���ķ���ֵ������Ϊ������������ȿ��ܵĺ�ѡ�Ϊ��˵���÷�֧�²����ں�ѡ��
+    递归函数的返回值的意义为：最近公共祖先可能的候选项，为空说明该分支下不存在候选项
 
-    �ܹ������������
-    1.��ǰ�ڵ�Ϊ��
-    2.��ǰ�ڵ�Ϊp��q
-    3.��ǰ�ڵ�ǿ��Ҳ���p��q��
-        3.1.p��q�ֱ��ڵ�ǰ�ڵ������������
-        3.2.p��q���ڵ�ǰ�ڵ����������
-        3.3.p��q���ڵ�ǰ�ڵ����������
-        3.4.p��q�����ڵ�ǰ�ڵ��������
+    总共分以下情况：
+    1.当前节点为空
+    2.当前节点为p或q
+    3.当前节点非空且不是p或q：
+        3.1.p和q分别在当前节点的左右子树里
+        3.2.p或q都在当前节点的左子树里
+        3.3.p或q都在当前节点的右子树里
+        3.4.p或q都不在当前节点的子树里
 
-    ���1�����ؿ�ָ��
-    ���2������Ҫ�����ݹ���ȥ��ֱ�ӷ��ص�ǰ�ڵ㼴�ɣ���Ϊ��ֻ�����ڵ�ǰ�ڵ㼰��ǰ�ڵ���ߵ�λ��
-    ���3.1��˵����ǰ�ڵ��������������ȣ����ص�ǰ�ڵ�
-    ���3.2�����صݹ��������Ľ��
-    ���3.3�����صݹ��������Ľ��
-    ���3.4�����ؿսڵ�
+    情况1：返回空指针
+    情况2：不需要继续递归下去，直接返回当前节点即可，因为答案只可能在当前节点及当前节点更高的位置
+    情况3.1：说明当前节点就是最近公共祖先，返回当前节点
+    情况3.2：返回递归左子树的结果
+    情况3.3：返回递归右子树的结果
+    情况3.4：返回空节点
     */
 
     class Solution {
     public:
         TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
-            // ���1��2�ϲ�
+            // 情况1和2合并
             if (!root || root == p || root == q) {
                 return root;
             }
 
-            // left��right���������������������Ƿ����ҵ��������ȵĺ�ѡ��
+            // left和right代表左子树和右子树里是否能找到公共祖先的候选项
             TreeNode* left = lowestCommonAncestor(root->left, p, q);
             TreeNode* right = lowestCommonAncestor(root->right, p, q);
 
-            if (!right) return left;// ���3.2 + ���3.4
-            if (!left) return right;// ���3.3
+            if (!right) return left;// 情况3.2 + 情况3.4
+            if (!left) return right;// 情况3.3
 
-            // ���3.1 left��right����Ϊ�գ�˵��rootΪ�����������
+            // 情况3.1 left和right都不为空，说明root为最近公共祖先
             return root;
 
-            /*  Ҳ���Լ�������ʽ�򻯣�
+            /*  也可以继续将上式简化：
             if (left && right) return root;
             return left ? left : right;
             */
@@ -1537,19 +1537,19 @@ namespace s236o1
     };
 }
 namespace s236o2
-{   // ջд��
+{   // 栈写法
     class Solution {
     public:
         TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
             stack<TreeNode*> stk;
             stk.push(root);
 
-            // ��ϣ����¼���ڵ� son -> parent
+            // 哈希表记录父节点 son -> parent
             unordered_map<TreeNode*, TreeNode*> parent;
-            parent[root] = nullptr; // ���ڵ�û�и��ڵ�
-            // ������Ҫ����������while(p)������ѭ��
+            parent[root] = nullptr; // 根节点没有父节点
+            // 这点很重要，否则后面的while(p)会变成死循环
 
-            // ����ֱ���ҵ�p��q�����ڵ�
+            // 遍历直到找到p和q两个节点
             while (parent.find(p) == parent.end() || parent.find(q) == parent.end()) {
                 TreeNode* node = stk.top();
                 stk.pop();
@@ -1564,14 +1564,14 @@ namespace s236o2
                 }
             }
 
-            // �ҵ�p���������Ƚڵ㣨���ù�ϣ������ӳ���ϵѭ��׷�٣�
+            // 找到p的所有祖先节点（利用哈希表父子映射关系循环追踪）
             unordered_set<TreeNode*> ancestors;
             while (p) {
                 ancestors.insert(p);
-                p = parent[p];// �Զ�һ������ϻ��ݣ�̫����
+                p = parent[p];// 自动一层层向上回溯，太妙了
             }
 
-            // Ѱ��q�������е�һ��Ҳ��p�����ȵĽڵ�
+            // 寻找q的祖先中第一个也是p的祖先的节点
             while (ancestors.find(q) == ancestors.end()) {
                 q = parent[q];
             }
@@ -1581,9 +1581,9 @@ namespace s236o2
     };
 }
 
-// ģ����8�����ö��������������ʣ�������Ӽ򵥣�o1Ϊ����������������Ҳ�ܼ򵥣�o2Ϊ�ݹ鷨
+// 模板题8：利用二叉搜索树的性质，问题更加简单，o1为迭代法，更好理解也很简单，o2为递归法
 namespace s235o1
-{   // �ռ临�Ӷ�O(1)���ݹ�����O(n)
+{   // 空间复杂度O(1)，递归则是O(n)
     class Solution {
     public:
         TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
@@ -1599,7 +1599,7 @@ namespace s235o1
                     break;
                 }
             }
-            /* ���ɼ����Ż���
+            /* 还可继续优化：
             if (p->val > q->val) {
                 swap(p, q);
             }
@@ -1636,22 +1636,22 @@ namespace s235o2
     };
 }
 // ---------------------
-// ��2.9������������ (10) �������£�
+// 【2.9】二叉搜索树 (10) 性质如下：
 /*
-1.���ҿ죬������ֵ�һ����ÿ�αȽ϶����ų�һ��Ŀ�����
-2.����������Եõ���������
+1.查找快，就像查字典一样，每次比较都能排除一半的可能性
+2.中序遍历可以得到有序数列
 */
 // ---------------------
-// ģ����9��o1Ϊǰ����������ϸ������䣩��o2Ϊ�����������������ö������������ʣ���o3Ϊ�������
+// 模板题9：o1为前序遍历（不断更新区间），o2为中序遍历（最常见，利用二叉搜索树性质），o3为后序遍历
 namespace s98o1
-{   // ע����Ҫ��long long����Ϊ�ڵ�ֵ��Χ��INT_MIN - INT_MAX�������������߽���Ҫ��������
-    // ǰ����������жϣ���ݹ飨�ѽڵ�ֵ�ķ�Χ�������´���
-    // �����Ǵ�������
+{   // 注意需要用long long，因为节点值范围是INT_MIN - INT_MAX，“无穷大”区间边界需要超过它们
+    // 前序遍历：先判断，后递归（把节点值的范围区间往下传）
+    // 核心是传递区间
     /*
-    1.ǰ�������ĳЩ�����²���Ҫ�ݹ鵽Ҷ�ӽڵ���ܷ��أ�������ڵ�����ӵ�ֵ���ڸ��ڵ��ֵ������ӾͲ���������µݹ��ˣ���
-        ����������ͺ����������Ҫ�ݹ鵽һ��Ҷ�ӽڵ㡣������Ƕ�����˵��ǰ����������ġ�
-    2.��������ܺõ������˶��������������ʣ�ʹ�õ��ı������١�
-    3.���������˼������ͨ�õģ����Ե����ϼ���������Ĺ��̡���Ҫѧ�ö�̬�滮�Ļ�������������Ե����ϵ�˼�롣
+    1.前序遍历在某些数据下不需要递归到叶子节点就能返回（比如根节点左儿子的值大于根节点的值，左儿子就不会继续往下递归了），
+        而中序遍历和后序遍历至少要递归到一个叶子节点。从这个角度上来说，前序遍历是最快的。
+    2.中序遍历很好地利用了二叉搜索树的性质，使用到的变量最少。
+    3.后序遍历的思想是最通用的，即自底向上计算子问题的过程。想要学好动态规划的话，请务必掌握自底向上的思想。
     */
     class Solution {
     private:
@@ -1671,12 +1671,12 @@ namespace s98o1
     };
 }
 namespace s98o2
-{   // ���������������һ���ڵ㣬��Ϊ���������������ʣ�����������������õ��Ľ��һ�����ϸ������
-    // �����õ������������˸о����ã���s98m1
+{   // 中序遍历：大于上一个节点，因为二叉搜索树的性质，对树进行中序遍历得到的结果一定是严格递增的
+    // 这里用迭代法遍历个人感觉更好，见s98m1
     class Solution {
     public:
         bool isValidBST(TreeNode* root) {
-            // ��prev����¼�����������֣���������������нڵ㲢���ϸ���prev��ֻҪ����prevʱ��֮ǰС����ôreturn false
+            // 用prev来记录遍历到的数字，按照中序遍历所有节点并不断更新prev，只要更新prev时比之前小，那么return false
             long long prev = LLONG_MIN;
             auto dfs = [&](auto&& self, TreeNode* node) {
                 if (!node) return true;
@@ -1695,7 +1695,7 @@ namespace s98o2
     };
 }
 namespace s98o3
-{   // ����������ȵݹ飬���жϣ��ѽڵ�ֵ�ķ�Χ�������ϴ���
+{   // 后序遍历：先递归，再判断（把节点值的范围区间往上传）
     class Solution {
     private:
         pair<long long, long long> dfs(TreeNode* node) {
@@ -1708,22 +1708,22 @@ namespace s98o3
 
             long long x = node->val;
             if (x <= left.second || x >= right.first) {
-                return { LLONG_MIN, LLONG_MAX };// ����ȷ���ڷ���֮����һ��Ҳ����{ LLONG_MIN, LLONG_MAX }
+                return { LLONG_MIN, LLONG_MAX };// 可以确保在返回之后上一层也返回{ LLONG_MIN, LLONG_MAX }
             }
-            // x <= left.second��x >= right.firstҲ������dfs(node->left)��dfs(node->right)��ֱ��жϣ���ǰ���� 
+            // x <= left.second和x >= right.first也可以在dfs(node->left)和dfs(node->right)后分别判断，提前返回 
 
-            // ��Ϊ�����ӽڵ�����ǿսڵ㣬������Ҫ��ȡһ��min��max��inf��-infȥ����
+            // 因为左右子节点可能是空节点，所以需要再取一次min和max把inf和-inf去除掉
             return { min(left.first, x), max(right.second, x) };
         }
     public:
         bool isValidBST(TreeNode* root) {
-            // �����Ϸ���{ LLONG_MIN, LLONG_MAX }�ͷ���false�ǵȼ۵ģ���Ϊ�к����������Ҫһ·���𰸷��ص����ڵ��ж�
+            // 本质上返回{ LLONG_MIN, LLONG_MAX }和返回false是等价的，因为中后序遍历都需要一路将答案返回到根节点判断
             return dfs(root).first != LLONG_MIN;
         }
     };
 }
 namespace s98m1
-{   // �������������
+{   // 迭代法中序遍历
     class Solution {
     public:
         bool isValidBST(TreeNode* root) {
@@ -1748,9 +1748,9 @@ namespace s98m1
     };
 }
 
-// ����������⣬m1Ϊ������, o1Ϊ���򵥵ĵ�������o2Ϊ�ݹ鷨
+// 中序遍历简单题，m1为迭代法, o1为更简单的迭代法，o2为递归法
 namespace s700m1
-{   // ����������ʵ��ȫ�ò���ջ��
+{   // 迭代法（其实完全用不到栈）
     class Solution {
     public:
         TreeNode* searchBST(TreeNode* root, int val) {
@@ -1804,13 +1804,13 @@ namespace s700o2
     };
 }
 
-// �����������
+// 依旧中序遍历
 namespace s530m1
 {
     class Solution {
     private:
         int ans = INT_MAX;
-        int prev = -1e5;// ��ֹ�������
+        int prev = -1e5;// 防止减法溢出
         void dfs(TreeNode* node) {
             if (!node) return;
 
@@ -1829,7 +1829,7 @@ namespace s530m1
     };
 }
 
-// ͬs530��������д�ĸ��淶
+// 同s530，但代码写的更规范
 namespace s783m1
 {
     class Solution {
@@ -1852,7 +1852,7 @@ namespace s783m1
     };
 }
 
-// m1û���õ����������������ʣ�ֻ�����˻����ı�����o1,o2Ϊ���õĴ�
+// m1没有用到二叉搜索树的性质，只进行了基本的遍历，o1,o2为更好的答案
 namespace s938m1
 {
     class Solution {
@@ -1876,7 +1876,7 @@ namespace s938m1
     };
 }
 namespace s938o1
-{   // ���������ûʲô��ϵ���е����Ե����ϵĺ������
+{   // 跟中序遍历没什么关系，有点像自底向上的后序遍历
     class Solution {
     public:
         int rangeSumBST(TreeNode* root, int low, int high) {
@@ -1893,23 +1893,23 @@ namespace s938o1
     };
 }
 namespace s938o2
-{   // ǰ�����д��
+{   // 前序遍历写法
     class Solution {
     public:
         int rangeSumBST(TreeNode* root, int low, int high) {
             if (!root) return 0;
 
             int sum = 0;
-            // ǰ���ȴ�����ǰ�ڵ�
+            // 前序：先处理当前节点
             if (root->val >= low && root->val <= high) {
                 sum += root->val;
             }
 
-            // ֻ�е�ǰֵ > low ʱ���������ſ�������Чֵ����������ݹ飩
+            // 只有当前值 > low 时，左子树才可能有有效值（否则无需递归）
             if (root->val > low) {
                 sum += rangeSumBST(root->left, low, high);
             }
-            // ֻ�е�ǰֵ < high ʱ���������ſ�������Чֵ����������ݹ飩
+            // 只有当前值 < high 时，右子树才可能有有效值（否则无需递归）
             if (root->val < high) {
                 sum += rangeSumBST(root->right, low, high);
             }
@@ -1919,7 +1919,7 @@ namespace s938o2
     };
 }
 
-// ��򵥵���������������һ���ù�ϣ�������������Ҫ�ó����ռ䣨������ݹ�ջ����ռ�ã����Ǿ���Ҫ�õ�����ݹ����
+// 最简单的做法是整个遍历一遍用哈希表，但是如果想要用常数空间（不计算递归栈调用占用），那就需要用到中序递归遍历
 namespace s501o1
 {
     class Solution {
@@ -1981,8 +1981,8 @@ namespace s230m1
     };
 }
 namespace s230m2
-{   // �������������������
-    // �������BST�еĵ�K��Ԫ�أ���ô����˳��ĳ������󼴿�
+{   // 迭代法中序遍历，更好
+    // 如果是求BST中的第K大元素，那么遍历顺序改成右中左即可
     class Solution {
     public:
         int kthSmallest(TreeNode* root, int k) {
@@ -2007,14 +2007,14 @@ namespace s230m2
     };
 }
 
-// o1Ϊ��������o2Ϊ�ݹ鷨
+// o1为迭代法，o2为递归法
 namespace s99o1
-{   // ������
-    /*          Ϊʲôѡ��һ�ε�ǰһ���ڵ�͵ڶ��εĺ�һ���ڵ㣿
-    ����������������Ϊ '......a1��a2��a3��......��b1��b2��b3......'����ʱ������ a1 < a2 < a3
-    ��a1��b1����ʱ '......a1��b2��a3��......��b1��a2��b3......'��a1��b2��Ĺ�ϵ���� a1 < b2��
-    ���ı�Ĺ�ϵ�� b2 > a3���������󣬵�һ�γ��ֳ�ͻ������ ������������� �Ϸ����ģ�
-    ����ѡ��һ�γ�ͻ�� "ǰһ�����"���ڶ��γ�ͻѡ��һ�����ͬ��
+{   // 迭代法
+    /*          为什么选第一次的前一个节点和第二次的后一个节点？
+    假设正常递增序列为 '......a1、a2、a3、......、b1、b2、b3......'；此时规律是 a1 < a2 < a3
+    当a1和b1交换时 '......a1、b2、a3、......、b1、a2、b3......'；a1和b2间的关系还是 a1 < b2，
+    但改变的关系是 b2 > a3，即交换后，第一次出现冲突，是在 交换结点和其后结点 上发生的，
+    所以选第一次冲突的 "前一个结点"，第二次冲突选后一个结点同理
     */
     class Solution {
     public:
@@ -2034,15 +2034,15 @@ namespace s99o1
                 node = stk.top();
                 stk.pop();
 
-                // ���������ܣ��˴�Ϊ�ڵ㴦��
+                // 中序遍历框架：此处为节点处理
                 if (prev && !firstError && node->val < prev->val) {
                     firstError = prev;
                 }
-                // ��Ҫ��������if����Ϊ������������ڵ������������
+                // 需要连着两个if，因为可能两个错误节点可能正好相邻
                 if (firstError && node->val < prev->val) {
                     secondError = node;
-                    // �������������̽���node��firstError����ǰ���أ�����Ĭ�ϴ���ڵ����ڣ�
-                    // ��������ڣ�secondError��д�����Σ������Ǵβ�����ȷ��
+                    // 不能在这里立刻交换node和firstError并提前返回，不能默认错误节点相邻，
+                    // 如果不相邻，secondError会写入两次，后面那次才是正确的
                 }
                 prev = node;
 
@@ -2082,9 +2082,9 @@ namespace s99o2
     };
 }
 
-// ģ����10��o1Ϊ����д�������Ҫ������������+�ڱ����Եݹ�����⣬�ݹ��������ת�������ܴ�
+// 模板题10：o1为逆天写法，务必要看懂，二叉树+哨兵，对递归的理解，递归与迭代的转化帮助很大
 namespace s897m1
-{   // ����o1д������m1�Ͳ����ٿ���
+{   // 有了o1写法，那m1就不用再看了
     class Solution {
     public:
         TreeNode* increasingBST(TreeNode* root) {
@@ -2105,31 +2105,31 @@ namespace s897m1
                 prev->right = nodes[i];
                 prev = nodes[i];
             }
-            // �����������һ���ڵ�
+            // 单独处理最后一个节点
             nodes[nodes.size() - 1]->left = nullptr;
-            // nodes[nodes.size() - 1]->right = nullptr; �Һ��Ӳ��ô�������Ϊ���һ���ڵ��Һ���һ����nullptr
+            // nodes[nodes.size() - 1]->right = nullptr; 右孩子不用处理，因为最后一个节点右孩子一定是nullptr
             return nodes[0];
         }
     };
 }
 namespace s897o1
-{   // Update��ʱ�������º��һ��д��д����o1д����Ӧ�ò���������
+{   // Update：时隔几个月后第一次写就写出了o1写法，应该不会再忘了
     class Solution {
     public:
         TreeNode* increasingBST(TreeNode* root) {
-            // ������Ҳ�������ڱ������prev��ʼΪ�յ����⣬Ҳ���ط����
+            // 二叉树也可以用哨兵，规避prev初始为空的问题，也返回方便答案
             TreeNode dummy;
             TreeNode* cur = &dummy;
 
-            // ���������룬����������м�ڵ㴦�����֣�һ���ǰ������������˳�����δ����ڵ��
-            // ֻҪ������ʱ��Ҫ�ĺ���Ľڵ㣬�Ͳ���Ӱ�����������˳��
+            // 可以这样想，中序遍历的中间节点处理部分，一定是按照中序遍历的顺序依次处理节点的
+            // 只要处理的时候不要改后面的节点，就不会影响中序遍历的顺序
             auto dfs = [&](auto&& self, TreeNode* node) -> void {
                 if (!node) return;
 
                 self(self, node->left);
 
-                node->left = nullptr;// û���⣬��Ϊ��ǰ�ڵ���������Ѿ��ݹ�����
-                cur->right = node;  // û���⣬��Ϊprev�Ĵ����Ѿ������ˣ�����ô����ô��
+                node->left = nullptr;// 没问题，因为当前节点的左子树已经递归完了
+                cur->right = node;  // 没问题，因为prev的处理已经结束了，想怎么改怎么改
                 cur = node;
 
                 self(self, node->right);
@@ -2141,7 +2141,7 @@ namespace s897o1
     };
 }
 namespace s897o2
-{   // ��������͵ݹ������󣬵����͵ݹ�����ת���ǳ��򵥣�ֻҪ��ס���ߵĻ�����ܼ���
+{   // 理解迭代和递归的区别后，迭代和递归两者转化非常简单，只要记住两者的基本框架即可
     class Solution {
     public:
         TreeNode* increasingBST(TreeNode* root) {
@@ -2171,7 +2171,7 @@ namespace s897o2
 }
 
 namespace s653m1
-{   // ����ⷨ��ȫû���õ����������������ʣ���Ҳû��ʲô���ŵĽⷨ���ռ临�Ӷ���ô����ҪO(n)
+{   // 这个解法完全没有用到二叉搜索树的性质，但也没有什么更优的解法，空间复杂度怎么样都要O(n)
     class Solution {
     public:
         bool findTarget(TreeNode* root, int k) {
@@ -2198,26 +2198,26 @@ namespace s653m1
     };
 }
 // ---------------------
-// ��2.10������������ (2)
-// һ���Ǹ���һ�����飬������ɹ�������һ�Ŷ���������BST��������ȷʵ�����������࿴����
+// 【2.10】创建二叉树 (2)
+// 一般是给定一个数组，根据题干规则生成一颗二叉树（如BST），初见确实做不出来，多看题解吧
 /*
 
 */
 // ---------------------
-// ģ����11������BST���������������Ĺ��̷ֽ�Ϊһ���������⣬�õݹ������
+// 模板题11：创建BST，将创建二叉树的过程分解为一个个子问题，用递归来解决
 namespace s108o1
-{   // ��������м�һ��Ϊ������ߺ��ұߵ�������Ҳת����ƽ���������������������⣬�õݹ������
-    // �ݹ�߽磺������鳤�ȵ��� 0�����ؿսڵ㡣
-    // �𰸿��ܲ���Ψһ�ġ���� n ��ż�������ǿ���ȡ�������м�����Ǹ�����Ϊ���ڵ��ֵ��
-    // Ҳ����ȡ�������м��ұ��Ǹ�����Ϊ���ڵ��ֵ���������ȡ�������м��ұ��Ǹ��������±�Ϊ n / 2���� n ��ż��ʱ��
+{   // 将数组从中间一分为二，左边和右边的子数组也转化成平衡二叉搜索树，变成子问题，用递归来解决
+    // 递归边界：如果数组长度等于 0，返回空节点。
+    // 答案可能不是唯一的。如果 n 是偶数，我们可以取数组正中间左边那个数作为根节点的值，
+    // 也可以取数组正中间右边那个数作为根节点的值。下面代码取的是正中间右边那个数，即下标为 n / 2（当 n 是偶数时）
 
-    // Ϊʲô���ɵĶ�����һ����ƽ���
-    // ��Ϊint m = left + (right - left) / 2 �������ȷ����ÿ�ζ�ѡȡ��ǰ��������м�Ԫ�أ�
-    // ������������Ľڵ�����������1��Ҳ�����������ĸ߶Ȳ����Ϊ1�����ɵ���һ����ƽ���
+    // 为什么生成的二叉树一定是平衡的
+    // 因为int m = left + (right - left) / 2 这个计算确保了每次都选取当前子数组的中间元素，
+    // 因此左右子树的节点数量最多相差1，也即左右子树的高度差最大为1，生成的树一定是平衡的
     class Solution {
     private:
         TreeNode* dfs(vector<int>& nums, int left, int right) {
-            // [left,right) �Ķ���������ҿ������� left = right ��ʾ�սڵ�
+            // [left,right) 的定义是左闭右开，所以 left = right 表示空节点
             if (left == right) {
                 return nullptr;
             }
@@ -2231,7 +2231,7 @@ namespace s108o1
     };
 }
 
-// ������s108һ����ͬ��������ҿ����伴�ɣ��ݹ�߽�ͬ����left == right
+// 基本和s108一样，同样和左闭右开区间即可，递归边界同样是left == right
 namespace s654m1
 {
     class Solution {
@@ -2248,14 +2248,14 @@ namespace s654m1
     };
 }
 
-// ģ����11.5���������©��֮�㣬�����Լ����������O(n * n)����
+// 模板题11.5：热门题的漏网之鱼，初见自己最多能做出O(n * n)做法
 namespace s105o1
-{   // ��΢���׵�ı���ʱ�临�Ӷ�O(n * n)������
-    // ��ǰ��������ҵ����ڵ㣬Ȼ������������в��Ҹ��ڵ�Ԫ�������±�
-    // Ҳ��֪���˸��ڵ����������Ľڵ�����������n = 6, ���������root_index = 3
-    // ��ô��������0��1��2����3���ڵ㡣��������4��5����2���ڵ�
-    // ǰ��������±�0�Ǹ��ڵ㣬���ҵ�3���ڵ㶼���������ڵ㣬ʣ�µ�2�����������ڵ�
-    // ��ʱ�ֱ�֪�����ڵ������������������ǰ��/����������飬�����ģ��С��Ȼ������ݹ���ȥ
+{   // 稍微容易点的暴力时间复杂度O(n * n)做法：
+    // 从前序遍历中找到根节点，然后在中序遍历中查找根节点元素所在下标
+    // 也就知道了根节点左右子树的节点数量。比如n = 6, 中序遍历中root_index = 3
+    // 那么左子树是0，1，2，共3个节点。右子树是4，5，共2个节点
+    // 前序遍历的下标0是根节点，向右的3个节点都是左子树节点，剩下的2个是右子树节点
+    // 此时分别知道根节点的左子树和右子树的前序/中序遍历数组，问题规模变小，然后继续递归下去
 
     class Solution {
     public:
@@ -2263,11 +2263,11 @@ namespace s105o1
             if (preorder.empty()) {
                 return nullptr;
             }
-            // O(n)��find��ע�����ָ�����������ظ�Ԫ�أ�����ֱ�Ӽ򵥵���find
-            // ������һ��������Ҫ�ݹ����n��find������ʱ�临�Ӷ���O(n * n)
+            // O(n)的find，注意题干指出数组中无重复元素，可以直接简单调用find
+            // 最坏情况是一条链，需要递归调用n次find，所以时间复杂度是O(n * n)
             auto root_iter = find(inorder.begin(), inorder.end(), preorder[0]);
             int left_size = root_iter - inorder.begin();
-            // ÿ�εݹ鶼��Ҫ��������һ�����飬�ռ临�Ӷ���O(n * n)
+            // 每次递归都需要拷贝复制一次数组，空间复杂度是O(n * n)
             vector<int> pre_l(preorder.begin() + 1, preorder.begin() + left_size + 1);
             vector<int> pre_r(preorder.begin() + left_size + 1, preorder.end());
             vector<int> in_l(inorder.begin(), root_iter);
@@ -2280,8 +2280,8 @@ namespace s105o1
     };
 }
 namespace s105o2
-{   // �ù�ϣ���Ż�ÿ�ε�find��ѯ���ڵ�
-    // �ѵݹ�����ĳ������±꣬���⸴������
+{   // 用哈希表优化每次的find查询根节点
+    // 把递归参数改成数组下标，避免复制数组
     class Solution {
     public:
         TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
@@ -2290,28 +2290,28 @@ namespace s105o2
             for (int i = 0; i < n; ++i) {
                 mp[inorder[i]] = i;
             }
-            // �����preL, preR�ȱ����ĺ����o1��ȫ��ͬ
-            // ��ʾ��ǰ������ǰ��������������Ҷ˵��±꣬����ҿ�
+            // 这里的preL, preR等变量的含义和o1完全不同
+            // 表示当前完整的前序中序遍历的左右端点下标，左闭右开
             auto dfs = [&](auto&& self, int preL, int preR, int inL)->TreeNode* {
                 if (preL == preR) {
                     return nullptr;
                 }
                 int index = mp[preorder[preL]];
                 int leftSize = index - inL;
-                // �ݹ��������õ��Ĳ���ֻ��preL��preR�����ж��Ƿ��˳��ݹ�
-                // �Լ�inL������leftSize
-                // ע�⣬�������inL������rightSize��ߴ���ɶ���Ҳ��û�����
+                // 递归中真正用到的参数只有preL和preR用来判断是否退出递归
+                // 以及inL来计算leftSize
+                // 注意，这里加上inL并计算rightSize提高代码可读性也是没问题的
                 TreeNode* left = self(self, preL + 1, preL + 1 + leftSize, inL);
                 TreeNode* right = self(self, preL + 1 + leftSize, preR, index + 1);
                 return new TreeNode(preorder[preL], left, right);
                 };
 
-            return dfs(dfs, 0, n, 0); // ����ҿ�����
+            return dfs(dfs, 0, n, 0); // 左闭右开区间
         }
     };
 }
 
-// s105�仯һ��㣬����s105�ͻ�s106
+// s105变化一点点，会做s105就会s106
 namespace s106m1
 {
     class Solution {
@@ -2339,16 +2339,16 @@ namespace s106m1
     };
 }
 // ---------------------
-// ��2.11������/ɾ���ڵ� (2)
-// ��2.10����������һ������������������ֱ�ӿ���⣬����������ۣ������Ƕ����������ѵ�һ����Ŀ
-// ��������ݹ鷨���Ƚ�����д�����⣬������������ֱ�ӿ�������ṹ���������⣬�ò���stack��������Ҫ��¼���ڵ�
+// 【2.11】插入/删除节点 (2)
+// 和2.10创建二叉树一样，初见做不出来，直接看题解，考验分类讨论，基本是二叉树里最难的一类题目
+// 这类问题递归法都比较容易写和理解，迭代法则更多的直接考验对树结构本身的理解，用不到stack，而是需要记录父节点
 /*
 */
 // ---------------------
-// ģ����12������BST���������
+// 模板题12：加深BST插入的理解
 namespace s701m1
-{   // �����������Ĳ��룬���Ǵ���һ������������ṹ�����ܲ����½ڵ�ķ���
-    // �ݹ鷨��
+{   // 二叉搜索树的插入，总是存在一个不需调整树结构，就能插入新节点的方法
+    // 递归法：
     class Solution {
     public:
         TreeNode* insertIntoBST(TreeNode* root, int val) {
@@ -2366,20 +2366,20 @@ namespace s701m1
     };
 }
 namespace s701o1
-{   // ������
+{   // 迭代法
     class Solution {
     public:
         TreeNode* insertIntoBST(TreeNode* root, int val) {
             TreeNode* newNode = new TreeNode(val);
-            // �ڵ�������Ϊ0
+            // 节点数可能为0
             if (!root) return newNode;
 
             TreeNode* cur = root;
             TreeNode* parent = nullptr;
 
-            // Ѱ�Һ��ʵĲ���λ��
+            // 寻找合适的插入位置
             while (cur) {
-                parent = cur; // ���游�ڵ�
+                parent = cur; // 保存父节点
                 if (cur->val > val) {
                     cur = cur->left;
                 }
@@ -2388,7 +2388,7 @@ namespace s701o1
                 }
             }
 
-            // ����ֵ�븸�ڵ�Ƚϣ���������������
+            // 根据值与父节点比较，决定插入左还是右
             if (val < parent->val) {
                 parent->left = newNode;
             }
@@ -2401,27 +2401,27 @@ namespace s701o1
     };
 }
 
-// ģ����13����������������������Ŀ�Ƚ��ѣ���Ȼ��ȡ�ɵķ��������ǻ������˻����������������ĸ߶�
+// 模板题13：锻炼分类讨论能力，题目比较难，虽然有取巧的方法，但是会让树退化成链表，增加树的高度
 namespace s450o1
-{   // �ݹ鷨�����ⲻ��Ҫ�Լ�ȥdelete��ɾ���Ľڵ㣬����leetcode���ⲿ�ĺ����������ڴ��ͷŲ���
-    // ��������delete�ᱨ�������ܵ����˶����ͷ�
+{   // 递归法（本题不需要自己去delete被删除的节点，可能leetcode有外部的函数进行了内存释放操作
+    // 自行添加delete会报错，可能导致了二次释放
     /*
-    1.root Ϊ�գ�����δ������ֵΪ key �Ľڵ㣬���ؿա�
-    2.root.val>key����ʾֵΪ key �Ľڵ���ܴ����� root ���������У���Ҫ�ݹ���� root.left ���� deleteNode�������� root��
-    3.root.val<key����ʾֵΪ key �Ľڵ���ܴ����� root ���������У���Ҫ�ݹ���� root.right ���� deleteNode�������� root��
-    4.root.val=key��root ��ΪҪɾ���Ľڵ㡣��ʱҪ������ɾ�� root���������������ϲ���һ�����������������ԣ������ظ��ڵ㡣
-    ���� root ����������ֳ�����������ۣ�
-        4.1root ΪҶ�ӽڵ㣬û����������ʱ����ֱ�ӽ���ɾ���������ؿա�
-        4.1root ֻ����������û������������ʱ���Խ�������������Ϊ�µ������������������ӽڵ㡣
-        4.1root ֻ����������û������������ʱ���Խ�������������Ϊ�µ������������������ӽڵ㡣
-        4.1root ��������������ʱ���Խ� root �ĺ�̽ڵ㣨�� root �����С�ڵ㣬�������������е���С�ڵ㣬��Ϊ successor��
-        ��Ϊ�µĸ��ڵ���� root������ successor �� root ����������ɾ����ʹ���ڱ��������Ե�����ºϲ�����������
-        ��֤����successor λ�� root ���������У���˴��� root ���������ӽڵ㣻successor �� root ���������е���С�ڵ㣬
-        ���С�� root ���������е������ڵ㡣�������㱣�����������������ԡ�
-        �ڴ���ʵ���ϣ����ǿ�����Ѱ�� successor����ɾ������successor �� root ���������е���С�ڵ㣬
-        �������ҵ� root �����ӽڵ㣬�ٲ�ͣ�������ӽڵ�Ѱ�ң�ֱ���ҵ�һ�����������ӽڵ�Ľڵ㣬
-        ����ڵ㼴Ϊ successor��Ȼ��ݹ���� root.right ���� deleteNode ��ɾ�� successor��
-        ��Ϊ successor û�����ӽڵ㣬�����һ���ݹ���ò����ٴβ�����һ�������Ȼ�� successor ����Ϊ�µ� root �����ء�
+    1.root 为空，代表未搜索到值为 key 的节点，返回空。
+    2.root.val>key，表示值为 key 的节点可能存在于 root 的左子树中，需要递归地在 root.left 调用 deleteNode，并返回 root。
+    3.root.val<key，表示值为 key 的节点可能存在于 root 的右子树中，需要递归地在 root.right 调用 deleteNode，并返回 root。
+    4.root.val=key，root 即为要删除的节点。此时要做的是删除 root，并将它的子树合并成一棵子树，保持有序性，并返回根节点。
+    根据 root 的子树情况分成以下情况讨论：
+        4.1root 为叶子节点，没有子树。此时可以直接将它删除，即返回空。
+        4.1root 只有左子树，没有右子树。此时可以将它的左子树作为新的子树，返回它的左子节点。
+        4.1root 只有右子树，没有左子树。此时可以将它的右子树作为新的子树，返回它的右子节点。
+        4.1root 有左右子树，这时可以将 root 的后继节点（比 root 大的最小节点，即它的右子树中的最小节点，记为 successor）
+        作为新的根节点替代 root，并将 successor 从 root 的右子树中删除，使得在保持有序性的情况下合并左右子树。
+        简单证明，successor 位于 root 的右子树中，因此大于 root 的所有左子节点；successor 是 root 的右子树中的最小节点，
+        因此小于 root 的右子树中的其他节点。以上两点保持了新子树的有序性。
+        在代码实现上，我们可以先寻找 successor，再删除它。successor 是 root 的右子树中的最小节点，
+        可以先找到 root 的右子节点，再不停地往左子节点寻找，直到找到一个不存在左子节点的节点，
+        这个节点即为 successor。然后递归地在 root.right 调用 deleteNode 来删除 successor。
+        因为 successor 没有左子节点，因此这一步递归调用不会再次步入这一种情况。然后将 successor 更新为新的 root 并返回。
     */
     class Solution {
     public:
@@ -2454,19 +2454,19 @@ namespace s450o1
                 successor->left = root->left;
                 return successor;
             }
-            return root;// ��һ����Զ�������У���㷵��ʲô�����ԣ�ֻ����Ϊ���ǰ����if-else�����ǳ�������
+            return root;// 这一行永远不会运行，随便返回什么都可以，只是因为如果前面用if-else代码会非常不美观
         }
     };
 }
 namespace s450o2
-{   // ����������o1�ݹ鷨�ռ临�Ӷȸ���,O(1)
-    // ����Ϊ������ݹ��������游�ڵ����Ϣ����Ҫ��cur��successor�ڵ�ĸ��ڵ���б�������⴦��
+{   // 迭代法，比o1递归法空间复杂度更低,O(1)
+    // 但因为不能像递归那样保存父节点的消息，需要对cur和successor节点的父节点进行保存与额外处理
     class Solution {
     public:
         TreeNode* deleteNode(TreeNode* root, int key) {
             TreeNode* cur = root;
             TreeNode* curParent = nullptr;
-            // �ȳ�������node->val == key�Ľڵ㣬����¼�丸�ڵ�
+            // 先尝试搜索node->val == key的节点，并记录其父节点
             while (cur && cur->val != key) {
                 curParent = cur;
                 if (cur->val > key) {
@@ -2476,11 +2476,11 @@ namespace s450o2
                     cur = cur->right;
                 }
             }
-            // node->val == key�Ľڵ㲻���ڣ�ֱ�ӷ���ԭ��
+            // node->val == key的节点不存在，直接返回原树
             if (!cur) {
                 return root;
             }
-            // ɾ���ڵ�
+            // 删除节点
             if (!cur->left && !cur->right) {
                 cur = nullptr;
             }
@@ -2497,25 +2497,25 @@ namespace s450o2
                     successorParent = successor;
                     successor = successor->left;
                 }
-                // �ع�successor�ĸ��ڵ��ָ��
+                // 重构successor的父节点的指针
                 if (successorParent->val == cur->val) {
-                    // ���1: cur->right����successor, cur��������û������
+                    // 情况1: cur->right就是successor, cur的右子树没有左孩子
                     successorParent->right = successor->right;
-                    // cur->right = cur->right->right; �����д����Ч
+                    // cur->right = cur->right->right; 和这行代码等效
                 }
                 else {
-                    // ���2: successor��cur��������ĳ���������������ڵ�
+                    // 情况2: successor是cur右子树的某个左子树的最底左节点
                     successorParent->left = successor->right;
                 }
-                // ��successor���cur
+                // 用successor替代cur
                 successor->left = cur->left;
                 successor->right = cur->right;
                 cur = successor;
             }
 
-            // �ع�cur�ĸ��ڵ��ָ��
+            // 重构cur的父节点的指针
             if (!curParent) {
-                // cur�ڸ��ڵ��λ�ã������滻����succesor������return root
+                // cur在根节点的位置，但被替换成了succesor，不能return root
                 return cur;
             }
             else {
@@ -2532,9 +2532,9 @@ namespace s450o2
 
 }
 
-// ģ����14������ǿ������������������s450�Ѷ��Ե�һЩ
+// 模板题14：继续强化分类讨论能力，比s450难度稍低一些
 namespace s669o1
-{   // �ݹ鷨�Ƚϼ򵥣������еݹ��ջ�ռ俪��
+{   // 递归法比较简单，但是有递归的栈空间开销
     class Solution {
     public:
         TreeNode* trimBST(TreeNode* root, int low, int high) {
@@ -2542,15 +2542,15 @@ namespace s669o1
                 return nullptr;
             }
             if (root->val < low) {
-                // ˵��root�Լ���������������[low, high]�ڣ���Ҫȫ��ɾ��
+                // 说明root以及其左子树都不在[low, high]内，需要全部删掉
                 return trimBST(root->right, low, high);
             }
             else if (root->val > high) {
-                // ˵��root�Լ���������������[low, high]�ڣ���Ҫȫ��ɾ��
+                // 说明root以及其右子树都不在[low, high]内，需要全部删掉
                 return trimBST(root->left, low, high);
             }
             else {
-                // root����Ҫ�󣬸�������������
+                // root符合要求，更新其左右子树
                 root->left = trimBST(root->left, low, high);
                 root->right = trimBST(root->right, low, high);
                 return root;
@@ -2559,22 +2559,22 @@ namespace s669o1
     };
 }
 namespace s669o2
-{   // ���������ռ临�Ӷ�O(1)
+{   // 迭代法，空间复杂度O(1)
     /*
-    �������������������޼���
-    1.node ������Ϊ�ս�㣺����Ҫ�޼�
-    2.node ������ǿգ�
-        2.1����������� left ��ֵС�� low����ô left �Լ� left ����������������Ҫ��
-        ���ǽ� node ��������Ϊ left ���ҽ�㣬Ȼ�������¶� node �������������޼���
-        2.2����������� left ��ֵ���ڵ��� low������Ϊ node ��ֵ�Ѿ�����Ҫ��
-        ���� left ��������һ������Ҫ�󡣻��ڴˣ�����ֻ��Ҫ�� left �������������޼���
-        ������ node ���� left ��Ȼ�������¶� node �������������޼��� 
-    ���Ϲ��̿��Ե����������������������޼�ͬ����
+    我们先讨论左子树的修剪：
+    1.node 的左结点为空结点：不需要修剪
+    2.node 的左结点非空：
+        2.1如果它的左结点 left 的值小于 low，那么 left 以及 left 的左子树都不符合要求，
+        我们将 node 的左结点设为 left 的右结点，然后再重新对 node 的左子树进行修剪。
+        2.2如果它的左结点 left 的值大于等于 low，又因为 node 的值已经符合要求，
+        所以 left 的右子树一定符合要求。基于此，我们只需要对 left 的左子树进行修剪。
+        我们令 node 等于 left ，然后再重新对 node 的左子树进行修剪。 
+    以上过程可以迭代处理。对于右子树的修剪同理。
     */
     class Solution {
     public:
         TreeNode* trimBST(TreeNode* root, int low, int high) {
-            // �Ӹ��ڵ㿪ʼ����Ԥ�����޼�ɾ����һЩ�ڵ�õ���root
+            // 从根节点开始大块的预处理修剪删除掉一些节点得到新root
             while (root && (root->val < low || root->val > high)) {
                 if (root->val < low) {
                     root = root->right;
@@ -2583,24 +2583,24 @@ namespace s669o2
                     root = root->left;
                 }
             }
-            // ���ڵ�Ԫ��ȫ��ɾ���˶�û�ҵ�һ����[low, high]�ڵ�
+            // 树内的元素全部删完了都没找到一个在[low, high]内的
             if (root == nullptr) {
                 return nullptr;
             }
-            // �Է�����������root���������������ж�
+            // 对符合条件的新root的左右子树进行判断
             TreeNode* node = root;
-            // ��root������������
+            // 新root的左子树处理
             while (node->left) {
                 if (node->left->val < low) {
-                    // node->left�Լ�������������ȫ��ɾ��
+                    // node->left以及其左子树可以全部删除
                     node->left = node->left->right;
                 }
                 else {
-                    // ɾ���ķ�Χ����Ҫ����ϸ�����������󣬸�������
+                    // 删除的范围还需要继续细化，继续向左，更深搜索
                     node = node->left;
                 }
             }
-            // ��root������������
+            // 新root的右子树处理
             node = root;
             while (node->right) {
                 if (node->right->val > high) {
@@ -2610,26 +2610,26 @@ namespace s669o2
                     node = node->right;
                 }
             }
-            // ���ظ��º��root
+            // 返回更新后的root
             return root;
         }
     };
 }
 // ---------------------
-// ��2.12������DP ()
+// 【2.12】树形DP ()
 /*
 
 */
 // ---------------------
-// ��ʱ�Թ�
+// 暂时略过
 // ---------------------
-// ��2.13��������BFS ()
+// 【2.13】二叉树BFS ()
 // 104, 111, 112, 129, 199, 100
 /*
 
 */
 // ---------------------
-// ģ����15��o1Ϊ˫���鷨��o2Ϊ���е���������׼ģ�壩��o3Ϊ�ݹ鷨
+// 模板题15：o1为双数组法，o2为队列迭代法（标准模板），o3为递归法
 namespace s102o1
 {
     class Solution {
@@ -2659,7 +2659,7 @@ namespace s102o1
     };
 }
 namespace s102o2
-{   // ����������ע�⣺��������һ����Ҫ��while�ڲ�����forѭ������6.3 s112o2�ⷨ������BFS������������
+{   // 迭代法，需注意：迭代法不一定需要在while内部进行for循环，见6.3 s112o2解法，加深BFS迭代法的理解
     class Solution {
     public:
         vector<vector<int>> levelOrder(TreeNode* root) {
@@ -2668,9 +2668,9 @@ namespace s102o2
             
             if (root) que.push(root);
             while (!que.empty()) {
-                int n = que.size();// nΪ�ò�Ľ������
+                int n = que.size();// n为该层的结点数量
                 vector<int> vec(n);
-                // forѭ�����ж���������дi < que.size()����Ϊque.size()��С����ѭ���иı�
+                // for循环的判断条件不能写i < que.size()，因为que.size()大小会在循环中改变
                 for (int i = 0; i < n; ++i) {
                     TreeNode* node = que.front();
                     que.pop();
@@ -2678,15 +2678,15 @@ namespace s102o2
                     if (node->left) que.push(node->left); 
                     if (node->right) que.push(node->right);
                 }
-                ans.push_back(move(vec)); // ���⸴��
+                ans.push_back(move(vec)); // 避免复制
             }
             return ans;
         }
     };
 }
 namespace s102o3
-{   // �ݹ鷨��ע�����ֵݹ鷽ʽֻ�Լ򵥴�ӡ��Ч������ģ�壬���Ӳ�������Ӳ�ף�һ����Ҫȫ�ֵ�vector����������
-    // ����ʵ�ʱ������ݵĹ�����ǰ����������Զ���s144o1�ݹ�д����ֻ�Ǵ���ȷ����û�����o2д��
+{   // 递归法（注：这种递归方式只对简单打印有效，不是模板，复杂操作不能硬套，一般需要全局的vector变量辅助）
+    // 而且实际遍历数据的过程是前序遍历，可以对于s144o1递归写法，只是答案正确，最好还是用o2写法
     class Solution {
     private:
         void order(TreeNode* node, vector<vector<int>>& vec, int depth) {
@@ -2729,14 +2729,14 @@ namespace s107m1
                 }
                 ans.push_back(vec);
             }
-            // ���reverse ans����
+            // 最后reverse ans即可
             reverse(ans.begin(), ans.end());
             return ans;
         }
     };
 }
 
-// ���״��α������Ӹ���ż�жϼ��ɣ�û��Ҫ��˫�˶���deque
+// 锯齿状层次遍历，加个奇偶判断即可，没必要用双端队列deque
 namespace s103o1
 {
     class Solution {
@@ -2758,7 +2758,7 @@ namespace s103o1
                     if (node->left) que.push(node->left);
                     if (node->right) que.push(node->right);
                 }
-                if (ans.size() % 2) {// ����ֱ����ans.size()��������Ҫ�����int cnt
+                if (ans.size() % 2) {// 可以直接用ans.size()，而不需要额外的int cnt
                     reverse(vals.begin(), vals.end());
                 }
                 ans.push_back(vals);
@@ -2768,9 +2768,9 @@ namespace s103o1
     };
 }
 
-// �������ȣ�һ����DFS����BFSҲ����
+// 求最大深度，一般用DFS，但BFS也能做
 namespace s104o2
-{   // ��ģ�壬�ռ临�Ӷ�O(n)
+{   // 套模板，空间复杂度O(n)
     class Solution {
     public:
         int maxDepth(TreeNode* root) {
@@ -2791,9 +2791,9 @@ namespace s104o2
         }
     };
 }
-// ����С��ȵ�BFS��
+// 求最小深度的BFS解
 namespace s111o3
-{   // ģ��������ֻ�е�ǰ�������Һ��Ӷ�Ϊ��ʱ�����ж�ΪҶ�ӽڵ�
+{   // 模板做法，只有当前结点的左右孩子都为空时，才判断为叶子节点
     class Solution {
     public:
         int minDepth(TreeNode* root) {
@@ -2811,17 +2811,17 @@ namespace s111o3
                     if (!node->left && !node->right) return depth;
                 }
             }
-            return depth;// root = nullptr �����Ҳ������
+            return depth;// root = nullptr 的情况也包含了
         }
     };
 }
 
-// ģ����16��˫������⣬·���ܺ͵�BFS�⣬һ�㲻��ô����DFS���ʺ�����⣬�������ڼ���BFS����������
+// 模板题16：双队列求解，路径总和的BFS解，一般不这么做，DFS更适合这道题，本题用于加深BFS迭代的理解
 namespace s112o2
-{   // BFS����д����ά���������У��������ڼ���BFS����������
-    // һ������ά���ڵ㣬һ������ά����Ӧ�ڵ�·����ֵ���ܺ�
-    // ����node-val��node����ͬʱ��ӳ��ӣ����Ը��Ե��ܺ�ֵҲ���ܶ�Ӧ�ϵ�
-    // BFS��һ����Ҫ��¼int n = que.size()��forѭ����ֻҪ����ȥ��¼���ܱ��ֲ��������˳��
+{   // BFS迭代写法，维护两个队列，本题用于加深BFS迭代的理解
+    // 一个队列维护节点，一个队列维护对应节点路径下值的总和
+    // 由于node-val与node都是同时入队出队，所以各自的总和值也是能对应上的
+    // BFS不一定需要记录int n = que.size()和for循环，只要队列去记录就能保持层序遍历的顺序
     class Solution {
     public:
         bool hasPathSum(TreeNode* root, int targetSum) {
@@ -2840,8 +2840,8 @@ namespace s112o2
                 if (node->left == nullptr && node->right == nullptr) {
                     if (targetSum == temp) {
                         return true;
-                        // ������ݹ�һ��д��return target == temp
-                        // ��Ϊ������������֧���ִ𰸣�����û�ҵ�������
+                        // 不能像递归一样写成return target == temp
+                        // 因为可能在其他分支出现答案，这里没找到接着找
                     }
                 }
 
@@ -2859,9 +2859,9 @@ namespace s112o2
     };
 }
 
-// ��s112һ�£�˫������⣬һ�����д���ڵ㣬һ�����д���·����ֵ
+// 与s112一致，双队列求解，一个队列储存节点，一个队列储存路径的值
 namespace s129o1
-{   // �ⷨ˼·��s112o2һ�£���������
+{   // 解法思路和s112o2一致，不解释了
     class Solution {
     public:
         int sumNumbers(TreeNode* root) {
@@ -2898,9 +2898,9 @@ namespace s129o1
     };
 }
 
-// ����������ͼ��BFS���ʺ�
+// 二叉树右视图，BFS更适合
 namespace s199o2
-{   // ����������ÿ��ѭ���У�ֻ������һ����㼴Ϊ����ͼ�����ֻ�����һ��Ԫ����Ϊ����ͼ
+{   // 迭代法：在每层循环中，只输出最后一个结点即为右视图，如果只输出第一个元素则为左视图
     class Solution {
     public:
         vector<int> rightSideView(TreeNode* root) {
@@ -2912,8 +2912,8 @@ namespace s199o2
                 for (int i = 0; i < n; ++i) {
                     TreeNode* node = que.front();
                     que.pop();
-                    if (i == n - 1) ans.push_back(node->val);// ֻ���ÿ������һ������
-                    // ���߸ĳ�if (i == 0)��Ȼ��������push node->right��push node->left
+                    if (i == n - 1) ans.push_back(node->val);// 只输出每层的最后一个即可
+                    // 或者改成if (i == 0)，然后下面先push node->right再push node->left
                     if (node->left) que.push(node->left);
                     if (node->right) que.push(node->right);
                 }
@@ -2923,9 +2923,9 @@ namespace s199o2
     };
 }
 
-// ��ģ����16
+// 套模板题16
 namespace s1448o2
-{   // BFS���������������У��ؼ�����queVal.push(max(temp, node->val))��һֱά������·���µĽڵ����ֵ
+{   // BFS迭代法，两个队列，关键在于queVal.push(max(temp, node->val))，一直维护该条路径下的节点最大值
     class Solution {
     public:
         int goodNodes(TreeNode* root) {
@@ -2957,9 +2957,9 @@ namespace s1448o2
     };
 }
 
-// DFS�򵥵Ķ�ö࣬�������BFSͬ����Ϊ�˼������⣬�������ⷨ�����˽�
+// DFS简单的多得多，这道题用BFS同样是为了加深理解，这两个解法仅作了解
 namespace s100o2
-{   // BFS�������������������У���ֱ�ӵ��������������Ԇ��£�������o3
+{   // BFS迭代法，定义两个队列，最直接的做法，但是稍显啰嗦，优先用o3
     class Solution {
     public:
         bool isSameTree(TreeNode* p, TreeNode* q) {
@@ -2979,7 +2979,7 @@ namespace s100o2
                     return false;
                 }
 
-                if ((pnode->left == nullptr) ^ (qnode->left == nullptr)) {// ��λ�����ߺ��ұ�ֻҪ��ͬ���������Ϊ1��ͨ�������ж�return false
+                if ((pnode->left == nullptr) ^ (qnode->left == nullptr)) {// 按位异或，左边和右边只要不同，异或结果就为1，通过条件判断return false
                     return false;
                 }
                 if ((pnode->right == nullptr) ^ (qnode->right == nullptr)) {
@@ -2996,8 +2996,8 @@ namespace s100o2
     };
 }
 namespace s100o3
-{   // s100o2�ⷨ�ĸ����棬BFS��������һ��ֻ�ܰѷǿսڵ�Ž����У�nullptrָ��Ž�ȥҲ���ԣ�
-    // �˽ֻⷨ�õ�һ������
+{   // s100o2解法的改良版，BFS迭代法不一定只能把非空节点放进队列，nullptr指针放进去也可以！
+    // 此解法只用到一个队列
     class Solution {
     public:
         bool isSameTree(TreeNode* p, TreeNode* q) {
@@ -3010,15 +3010,15 @@ namespace s100o3
                 TreeNode* qnode = que.front();
                 que.pop();
                 if (pnode == nullptr && qnode == nullptr) {
-                    // continue֮�������pnode->left, qnode->left�ȴ���Ͳ������У������������Խ�����
+                    // continue之后，下面的pnode->left, qnode->left等代码就不会运行，不会产生错误越界访问
                     continue;
                 }
-                // �˴�Ϊ��·��ֵ��pnode��qnodeֵ�ıȽ�Ҫ�������һ���ж����������������߶��Ƿǿսڵ�
+                // 此处为短路求值，pnode和qnode值的比较要放在最后一个判断条件处，保障两者都是非空节点
                 if (pnode == nullptr || qnode == nullptr || pnode->val != qnode->val) {
                     return false;
                 }
-                que.push(pnode->left);// ����û���ж��Ƿ�Ϊ��ָ��
-                que.push(qnode->left);// ˳�����Ҫ�������������һ������Ҫ��Ӧ
+                que.push(pnode->left);// 这里没有判断是否为空指针
+                que.push(qnode->left);// 顺序必须要是两颗树各入队一个，且要对应
                 que.push(pnode->right);
                 que.push(qnode->right);
             }
@@ -3027,14 +3027,14 @@ namespace s100o3
     };
 }
 
-// BFS�ⷨ����s100������ͬ
+// BFS解法，与s100几乎相同
 namespace s101o1
-{   // �����s100����һ��
+{   // 代码和s100几乎一样
     class Solution {
     public:
         bool isSymmetric(TreeNode* root) {
             queue<TreeNode*> que;
-            // �ȷֱ�push root->left �� root->right�����൱��s100�е�p��q
+            // 先分别push root->left 和 root->right，就相当于s100中的p和q
             que.push(root->left);
             que.push(root->right);
             while (!que.empty()) {
@@ -3046,7 +3046,7 @@ namespace s101o1
                 if (!node1 || !node2 || node1->val != node2->val) {
                     return false;
                 }
-                // ���˳��ı䣬�����s100�б仯��node1�����node2���Ҷ�Ӧ�������ж��Ƿ�Ϊ�Գ�
+                // 入队顺序改变，相对于s100有变化，node1的左和node2的右对应，才能判断是否为对称
                 que.push(node1->left);
                 que.push(node2->right);
                 que.push(node1->right);
@@ -3057,7 +3057,7 @@ namespace s101o1
     };
 }
 
-// ��DFS������д������һģһ��
+// 跟DFS迭代法写法几乎一模一样
 namespace s226o2
 {   
     class Solution {
@@ -3066,7 +3066,7 @@ namespace s226o2
             queue<TreeNode*> que;
             if (root) que.push(root);
             while (!que.empty()) {
-                // ����Ҳ����Ҫ�õ�int n = que.size() + for loop
+                // 这里也不需要用到int n = que.size() + for loop
                 TreeNode* node = que.front();
                 que.pop();
                 swap(node->left, node->right);
@@ -3079,7 +3079,7 @@ namespace s226o2
 }
 
 namespace s513m1
-{   // �������뵽���������������ģ�� + ���һ��ĵ�һ��Ԫ�ؾ��Ǵ�
+{   // 最容易想到的做法：层序遍历模板 + 最后一层的第一个元素就是答案
     class Solution {
     public:
         int findBottomLeftValue(TreeNode* root) {
@@ -3088,7 +3088,7 @@ namespace s513m1
             que.push(root);
             while (!que.empty()) {
                 int n = que.size();
-                for (int i = 0; i < n; ++i) {// �������forѭ����û��Ҫ...
+                for (int i = 0; i < n; ++i) {// 甚至这个for循环都没必要...
                     TreeNode* node = que.front(); que.pop();
                     if (i == 0) ans = node->val;
                     if (node->left) que.push(node->left);
@@ -3106,11 +3106,11 @@ namespace s513o1
         int findBottomLeftValue(TreeNode* root) {
             queue<TreeNode*> que;
             que.push(root);
-            // node����������whileѭ��֮�⣬node�����ָ��ľ������²�����ߵĽڵ�
+            // node变量定义在while循环之外，node的最后指向的就是最下层最左边的节点
             TreeNode* node = nullptr;
             while (!que.empty()) {
                 node = que.front(); que.pop();
-                // �ı���ӳ��ӵ�˳�򣬴�ʱÿ����ҵ������
+                // 改变入队出队的顺序，此时每层从右到左遍历
                 if (node->right) que.push(node->right);
                 if (node->left) que.push(node->left);
             }
@@ -3120,7 +3120,7 @@ namespace s513o1
 }
 
 namespace s515m1
-{   // ����ģ���⣬ÿ���¼�����ֵ����
+{   // 依旧模板题，每层记录下最大值即可
     class Solution {
     public:
         vector<int> largestValues(TreeNode* root) {
@@ -3171,11 +3171,11 @@ namespace s637m1
     };
 }
 
-// �������ʺ���DFS������֪��Ϊʲô����������BFS��
+// 这道题更适合用DFS做，不知道为什么灵神把这题放BFS里
 namespace s993m1
-{   // ��Ȼ�ҵĴ�������ȷ�ģ����о���ʺɽ
-    // ȷ��x, y�Ƿ���ͬһ�����ף����ѵ�����x, y��Ҫӵ�в�ͬ�ĸ��ڵ�
-    // ����unordered_set����¼x, y�ĸ��ڵ㣬���set��СΪ2��˵�����߸��ڵ㲻ͬ��Ϊ���ֵ�
+{   // 虽然我的代码是正确的，但感觉是屎山
+    // 确定x, y是否在同一层容易，但难点在于x, y需要拥有不同的父节点
+    // 采用unordered_set来记录x, y的父节点，如果set大小为2，说明两者父节点不同，为堂兄弟
     class Solution {
     public:
         bool isCousins(TreeNode* root, int x, int y) {
@@ -3223,7 +3223,7 @@ namespace s993m1
     };
 }
 namespace s993m2
-{   // DFS������������һЩ�Ż��õݹ���ǰ��������ǰ��������������нڵ㣩
+{   // DFS做法（可以做一些优化让递归提前结束，当前做法会遍历完所有节点）
     class Solution {
     public:
         bool isCousins(TreeNode* root, int x, int y) {
@@ -3251,13 +3251,13 @@ namespace s993m2
     };
 }
 
-// m1ΪBFS,o1ΪDFS
+// m1为BFS,o1为DFS
 namespace s623m1
 {
     class Solution {
     public:
         TreeNode* addOneRow(TreeNode* root, int val, int depth) {
-            // depth == 1�������������
+            // depth == 1的情况单独处理
             if (depth == 1) {
                 return new TreeNode(val, root, nullptr);
             }
@@ -3273,13 +3273,13 @@ namespace s623m1
                     TreeNode* node = que.front();
                     que.pop();
 
-                    // �����������е���һ��
+                    // 遍历到了新行的上一行
                     if (d == depth - 1) {
                         TreeNode* newNodeL = new TreeNode(val, node->left, nullptr);
                         TreeNode* newNodeR = new TreeNode(val, nullptr, node->right);
                         node->left = newNodeL;
                         node->right = newNodeR;
-                        /* �������п��Լ�Ϊ��������
+                        /* 上面四行可以简化为下面两行
                         node->left = new TreeNode(val, node->left, nullptr);
                         node->right = new TreeNode(val, nullptr, node->right);
                         */
@@ -3289,15 +3289,15 @@ namespace s623m1
                         if (node->right) que.push(node->right);
                     }
                 }
-                if (d == depth - 1) return root;// �����Ѿ�������ϣ�ֱ�ӷ���
+                if (d == depth - 1) return root;// 新行已经添加完毕，直接返回
                 ++d;
             }
-            return root;// ���ﷵ��ʲô������
+            return root;// 这里返回什么都可以
         }
     };
 }
 namespace s623o1
-{   // DFS�Ĵ��뻹�Ǽ������Щ
+{   // DFS的代码还是简洁优雅些
     class Solution {
     public:
         TreeNode* addOneRow(TreeNode* root, int val, int depth) {
@@ -3320,10 +3320,10 @@ namespace s623o1
     };
 }
 
-// ģ����17����ģ����16 + ���������ʣ����ڵ���Ϊindex�������ӽڵ���Ϊ2 * index, ���ӽڵ�Ϊ2 * index + 1
+// 模板题17：套模板题16 + 二叉树性质，根节点编号为index，则左子节点编号为2 * index, 右子节点为2 * index + 1
 namespace s662m1
-{   // �����õ���˫���еļ��ɣ�һ�����д�ڵ㣬һ�����д���
-    // ���Ŀ��ǽڵ���Ŀ���Ϊ3000�����������˻�Ϊ��ʱ���ڵ��Ž��Ǹ��޴�����֣�������long long���治�£�Ҫ��ULL
+{   // 本题用到了双队列的技巧，一个队列存节点，一个队列存编号
+    // 最大的坑是节点数目最大为3000，当二叉树退化为链时，节点编号将是个巨大的数字，甚至连long long都存不下，要用ULL
     class Solution {
     public:
         int widthOfBinaryTree(TreeNode* root) {
@@ -3341,7 +3341,7 @@ namespace s662m1
                     unsigned long long idx = indexs.front();
                     nodes.pop();
                     indexs.pop();
-                    // ֻ��i = 0ʱ��¼mn + ��i = n - 1ʱ����ansҲ����
+                    // 只在i = 0时记录mn + 在i = n - 1时更新ans也可以
                     mx = max(mx, idx);
                     mn = min(mn, idx);
                     if (node->left) {
@@ -3361,50 +3361,50 @@ namespace s662m1
 }
 
 namespace s863m1
-{   // �ѵ�����·���ߵ�target�󣬻��������´𰸣���Ҫ��������
+{   // 难点在于路径走到target后，还可能有新答案，需要继续深入
 
 }
 
 // ---------------------
-// ��2.14������ + ������ (3)
+// 【2.14】链表 + 二叉树 (3)
 /*
 
 */
 // ---------------------
-// ģ����18��������ת��������o2o3Ϊ������������򣬷����޸Ķ�����
-// ��򵥵���m2������������Ҫ�õ�����O(n)�ռ䣬��õ�������o1���ռ临�Ӷ�O(1)
+// 模板题18：二叉树转成链表，o2o3为后序遍历的逆序，反向修改二叉树
+// 最简单的是m2做法，但是需要用到额外O(n)空间，最好的做法是o1，空间复杂度O(1)
 namespace s114o1
-{   // ����ƴ�ӷ����ǳ���������������������ʣ���windliang�����
-    // ˼·��morris�����е�����
+{   // 整体拼接法，非常巧妙，完美利用了树的性质，看windliang的题解
+    // 思路跟morris遍历有点类似
     class Solution {
     public:
         void flatten(TreeNode* root) {
             while (root) {
-                // ������Ϊ�գ���ôֱ�ӿ�����һ���ڵ�
+                // 左子树为空，那么直接考虑下一个节点
                 if (!root->left) {
                     root = root->right;
                     continue;
                 }
-                // �������������ұߵĽڵ�
+                // 找左子树的最右边的节点
                 TreeNode* pre = root->left;
                 while (pre->right) {
                     pre = pre->right;
                 }
-                // ע���������У������������ʽ�޸ģ��ǳ�����
-                // ��ԭ�����������ӵ������������ұ߽ڵ�
+                // 注意下面四行，经典的链表链式修改，非常优雅
+                // 将原来的右子树接到左子树的最右边节点
                 pre->right = root->right;
-                // �����������뵽��������λ��
+                // 将左子树插入到右子树的位置
                 root->right = root->left;
                 root->left = nullptr;
-                // ������һ���ڵ�
+                // 考虑下一个节点
                 root = root->right;
             }
         }
     };
 }
 namespace s114o2
-{   // ���������������Ϊ���ֱ�Ӱ����������˳�����޸�ָ��ָ�򣬻ᶪʧ֮ǰ���ڵ���Һ��ӣ���������˼ά
-    // ���ձ���˳�� ������->������->���ڵ� ���б��������޸�ָ��ָ��
+{   // 先序遍历的逆序，因为如果直接按照先序遍历顺序逐步修改指针指向，会丢失之前父节点的右孩子，所以逆向思维
+    // 按照遍历顺序： 右子树->左子树->根节点 进行遍历，逐步修改指针指向
     class Solution {
     public:
         void flatten(TreeNode* root) {
@@ -3424,7 +3424,7 @@ namespace s114o2
     };
 }
 namespace s114o3
-{   // o2д���ĵ����汾
+{   // o2写法的迭代版本
     class Solution {
     public:
         void flatten(TreeNode* root) {
@@ -3453,8 +3453,8 @@ namespace s114o3
     };
 }
 namespace s114m1
-{   // ʱ������֮���Լ�д�����ģ����ҽӽ���ɱ
-    // ֱ�Ӱ���ǰ�����һ����������ɣ�ֻҪ�ѵ�ǰ�ڵ�����Һ��Ӷ���ջ�ˣ��Ϳ����޸ĵ�ǰ�ڵ�
+{   // 时隔数月之后自己写出来的，而且接近秒杀
+    // 直接按照前序遍历一遍二叉树即可，只要把当前节点的左右孩子都入栈了，就可以修改当前节点
     class Solution {
     public:
         void flatten(TreeNode* root) {
@@ -3478,7 +3478,7 @@ namespace s114m1
     };
 }
 namespace s114m2
-{   // ȥ��dummy�ڵ�İ汾
+{   // 去掉dummy节点的版本
     class Solution {
     public:
         void flatten(TreeNode* root) {
@@ -3493,7 +3493,7 @@ namespace s114m2
                 if (prev) {
                     prev->right = node;
                     // node->left = nullptr; 
-                    // ���д���Ž�prev��ʹ��ˣ���Ϊͷ�ڵ������������Ҳ����Ҫ�Ͽ�����ʹprev = nullptr
+                    // 这行代码放进prev里就错了，因为头节点那里的左子树也必须要断开，即使prev = nullptr
                 }
                 node->left = nullptr;
                 prev = node;
@@ -3502,10 +3502,10 @@ namespace s114m2
     };
 }
 
-// ģ����19������ת��ƽ��BST��s108��ת���������飬�������������Ѷȸ���, o1����Ҫ������
+// 模板题19：链表转成平衡BST，s108是转换有序数组，这题是链表，难度更高, o1做法要求掌握
 namespace s109m1
-{   // �Ƚϱ����������Ǳ���һ��������ֵ�浽�����Ȼ����108�������
-    // �ռ临�Ӷ�O(n)���������ռ临�Ӷ�ΪO(n)�������Ż�ΪO(logn)
+{   // 比较暴力的做法是遍历一次链表将值存到数组里，然后用108代码解题
+    // 空间复杂度O(n)，但这样空间复杂度为O(n)，可以优化为O(logn)
     class Solution {
     private:
         vector<int> nums;
@@ -3529,46 +3529,46 @@ namespace s109m1
     };
 }
 namespace s109o1
-{   // �ռ临�ӶȽ��ɵݹ���Ⱦ�����Ϊ O(log n)��ջ�ռ䣩������m1������ʡ��O(n)������ռ�
-    // ʱ�临�Ӷ�ҲΪO(n)
-    // ���� ���������˳���� �� �� �� �ң����ݹ鹹���ڵ㣬ͬʱ������ͷָ�� head ���Ź����������κ���
-    // ʹ�� ListNode*& head ���ô��ݣ�ȷ���ݹ����������ָ����ƶ�����ȷӰ���������
+{   // 空间复杂度仅由递归深度决定，为 O(log n)（栈空间），比起m1做法节省了O(n)的数组空间
+    // 时间复杂度也为O(n)
+    // 按照 中序遍历的顺序（左 → 根 → 右）来递归构建节点，同时让链表头指针 head 随着构建过程依次后移
+    // 使用 ListNode*& head 引用传递，确保递归调用中链表指针的移动能正确影响后续调用
 
     class Solution {
     private:
         TreeNode* buildBST(int start, int end, ListNode*& head) {
             if (start > end) return nullptr;
 
-            int mid = (start + end) / 2;   // ȡ�м�����������ȡ����
-            // �ȹ���������������������ǰ��Ľڵ㣩
+            int mid = (start + end) / 2;   // 取中间索引（向下取整）
+            // 先构建左子树（会消耗链表前面的节点）
             TreeNode* left = buildBST(start, mid - 1, head);
-            // ��ǰ���ڵ�ʹ��������ǰ�ڵ��ֵ
+            // 当前根节点使用链表当前节点的值
             TreeNode* root = new TreeNode(head->val);
-            head = head->next;            // ����ָ�벽��
+            head = head->next;            // 链表指针步进
             root->left = left;
-            // ����������
+            // 构建右子树
             root->right = buildBST(mid + 1, end, head);
             return root;
         }
 
     public:
         TreeNode* sortedListToBST(ListNode* head) {
-            // ������������
+            // 计算链表长度
             int len = 0;
             ListNode* cur = head;
             while (cur) {
                 ++len;
                 cur = cur->next;
             }
-            // �ݹ鹹����head ������ʹ���ڵݹ����ܹ�����
+            // 递归构建，head 传引用使其在递归中能够步进
             return buildBST(0, len - 1, head);
         }
     };
 }
 
-// ģ����20��BFS�ⷨÿ����ҵ�����£������ػ��ⷨo2�ռ临�Ӷ�O(1)ֻ����������ã�s117�ͱ���ⷨ��ͬ���ʲ��г���
+// 模板题20：BFS解法每层从右到左更新，链表特化解法o2空间复杂度O(1)只能在这道题用（s117和本题解法相同，故不列出）
 namespace s116m1
-{   // ��ģ�壬��������ı��壬right��left��˳������� �����������ÿ���ڵ��nextָ��
+{   // 套模板，层序遍历的变体，right和left的顺序调换， 从右至左更新每个节点的next指针
     class Solution {
     public:
         Node* connect(Node* root) {
@@ -3594,7 +3594,7 @@ namespace s116m1
     };
 }
 namespace s116o1
-{   // DFS�ݹ鷨
+{   // DFS递归法
     class Solution {
     private:
         vector<Node*> vec;
@@ -3620,18 +3620,18 @@ namespace s116o1
     };
 }
 namespace s116o2
-{   // BFS + ���������ǳ���BFS������ʽ��ֻ����Ϊ�����������Բŵ��¿��У��ռ临�Ӷ�O(1)
-    // ÿ�����cur = cur->next���ӣ�ͬʱ��ǰ���dummyλ�õ���һ��λ�ã�������һ��Ŀ�ʼ
+{   // BFS + 链表：不是常规BFS遍历方式，只是因为这道题的特殊性才导致可行，空间复杂度O(1)
+    // 每层进行cur = cur->next连接，同时当前层的dummy位置的下一个位置，就是下一层的开始
     class Solution {
     public:
         Node* connect(Node* root) {
             Node* cur = root;
             while (cur) {
-                // Ϊÿһ�㣨�ӵڶ��㿪ʼ������һ���ڱ��ڵ㣨dummy��������δ��ʼ������
-                Node dummy;  // ջ�Ϸ��䣬�Զ��ͷ��ڴ�
-                // Ҳ���԰�dummy������whileѭ���⣬����ĳ�dummy.next = nullptr;
-                Node* nxt = &dummy;  // nxt ָ�� dummy �ĵ�ַ
-                // ������ǰ�㣬������һ��
+                // 为每一层（从第二层开始）创建一个哨兵节点（dummy），避免未初始化问题
+                Node dummy;  // 栈上分配，自动释放内存
+                // 也可以把dummy定义在while循环外，这里改成dummy.next = nullptr;
+                Node* nxt = &dummy;  // nxt 指向 dummy 的地址
+                // 遍历当前层，连接下一层
                 while (cur) {
                     if (cur->left) {
                         nxt->next = cur->left;
@@ -3641,9 +3641,9 @@ namespace s116o2
                         nxt->next = cur->right;
                         nxt = nxt->next;
                     }
-                    cur = cur->next; // �ƶ�����ǰ�����һ���ڵ�
+                    cur = cur->next; // 移动到当前层的下一个节点
                 }
-                // �ƶ�����һ��ĵ�һ���ڵ㣨dummy.next ����һ���ͷ�ڵ㣩
+                // 移动到下一层的第一个节点（dummy.next 是下一层的头节点）
                 cur = dummy.next;
             }
             return root;
@@ -3651,8 +3651,8 @@ namespace s116o2
     };
 }
 // ---------------------
-// ��2.15��N���� (4)
-// ��������ҩ��ֻҪ�������ն������ı�����ʽ��N�����ı���������д������ע�⣬N����û�����������
+// 【2.15】N叉树 (4)
+// 换汤不换药，只要熟练掌握二叉树的遍历方式，N叉树的遍历很容易写出来（注意，N叉树没有中序遍历）
 /*
 
 */
@@ -3892,15 +3892,15 @@ namespace s429m1
     };
 }
 // ---------------------
-// ��2.16������ (4)
-// �����Ѷȶ��Ƚϸߣ�û��ȷ�еĹ��ɿ��ԣ���Ҫ�Զ������к��������
+// 【2.16】其他 (4)
+// 整体难度都比较高，没有确切的规律可言，需要对二叉树有很深的理解
 /*
 
 */
 // ---------------------
 
 namespace s222m1
-{   // ��������ȫ������������ֱ��ʹ��ͨ�õĽڵ��������ݹ鷽��
+{   // 不利用完全二叉树的性质直接使用通用的节点个数计算递归方法
     class Solution {
     public:
         int countNodes(TreeNode* root) {
@@ -3910,8 +3910,8 @@ namespace s222m1
     };
 }
 namespace s222o1
-{	// ������ȫ�����������ʣ���ȫ������һ�����Բ��һ������������һ����ȫ�������������ɵݹ�
-    // ��ʱ�临�Ӷ�ΪO(logn * logn)���ռ临�Ӷ�ΪO(logn)��logn��ջ�ռ䣩
+{	// 利用完全二叉树的性质，完全二叉树一定可以拆成一颗满二叉树加一颗完全二叉树，借此完成递归
+    // 总时间复杂度为O(logn * logn)，空间复杂度为O(logn)（logn层栈空间）
     class Solution {
     public:
         int countNodes(TreeNode* root) {
@@ -3927,20 +3927,20 @@ namespace s222o1
             }
             while (rightChild) {
                 rightChild = rightChild->right;
-                ++rightDep;// ������������ȵ�ʱ�临�Ӷ�ΪO(logn)
+                ++rightDep;// 求左右子树深度的时间复杂度为O(logn)
             }
             if (leftDep == rightDep) {
-                // ���Һ��Ӷ����ߵ��ף�˵����һ����������
-                // leftDep �� rightDep���������ĸ߶ȣ�������������� (1 << leftDep - 1) * 2 + 1��Ҳ�൱�����+1����ʼΪ2
-                return (2 << leftDep) - 1;// ��λ�Ʋ�������2��ָ������
+                // 左右孩子都能走到底，说明是一颗满二叉树
+                // leftDep 和 rightDep都是子树的高度，完整计算过程是 (1 << leftDep - 1) * 2 + 1，也相当于深度+1，初始为2
+                return (2 << leftDep) - 1;// 用位移操作代替2的指数函数
             }
-            // �����ʱ�临�Ӷ�ΪO(logn)����Ϊһ�������������е�һ��������ֹͣ�ݹ飨Ϊ����������
+            // 这里的时间复杂度为O(logn)，因为一定有左右子树中的一个会立即停止递归（为满二叉树）
             return countNodes(root->left) + countNodes(root->right) + 1;
         }
     };
 }
 namespace s222o2
-{   // ͬ����������ȫ���������ʼ���
+{   // 同样是运用完全二叉树性质加速
     class Solution {
     private:
         int getDepth(TreeNode* node) {
@@ -3954,23 +3954,23 @@ namespace s222o2
     public:
         int countNodes(TreeNode* root) {
             if (!root) return 0;
-            // ͳ��������������ȣ���������Ϊ������o1����ȼ��㷽ʽ��ͬ��
+            // 统计左右子树的深度（都以左孩子为例，跟o1的深度计算方式不同）
             int leftDepth = getDepth(root->left);
             int rightDepth = getDepth(root->right);
             if (leftDepth == rightDepth) {
-                // ��������ȵ������������, ������������������
+                // 左子树深度等于右子树深度, 则左子树是满二叉树
                 return countNodes(root->right) + (1 << leftDepth);
-                // λ�������x2���������Ǽǵü����ţ���Ϊλ�������ȼ��ܵ�
+                // 位运算加速x2操作，但是记得加括号，因为位运算优先级很低
             }
             else {
-                // ��������ȴ������������, ������������������
+                // 左子树深度大于右子树深度, 则右子树是满二叉树
                 return countNodes(root->left) + (1 << rightDepth);
             }
         }
     };
 }
 
-// ������������ʱ������ʱ���
+// 下面三个都暂时不做，时间紧
 namespace s297o1
 {
 
@@ -3981,5 +3981,5 @@ namespace s449m1
 }
 namespace s652o1
 {
-    // ��ʱû��
+    // 暂时没做
 }

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <algorithm> // make_heap, push_heap, pop_heap, sqrt, nth_element
 #include <numeric>   // accumulate
 #include <vector>
@@ -8,38 +8,38 @@
 
 using namespace std;
 
-// ���������
+// 问题待定：
 /*
-sxxx��xxx
+sxxx：xxx
 */
 
 /*
-ģ���⣺
-1.xxx��no.x
+模板题：
+1.xxx：no.x
 
 */
 
-// �ѣ����ȶ��У������� + ���� + ��KС/�� + ����Ԫ�� + ���ڶ� + ��ɾ���� + �Զ��ѣ��������ڵ� K С/��
+// 堆（优先队列）：基础 + 进阶 + 第K小/大 + 重排元素 + 反悔堆 + 懒删除堆 + 对顶堆（滑动窗口第 K 小/大）
 
-// �塢�� (5)
+// 五、堆 (5)
 
-// ��5.1������ (2)
-// ��Ϥpriority_queue�Ļ���ʹ�ú����ʣ���������Ϥԭ�ضѻ���ʹ�ã�make_heap)
+// 【5.1】基础 (2)
+// 熟悉priority_queue的基本使用和性质，并额外熟悉原地堆化的使用（make_heap)
 /*
-2558.���������Ķ�ȡ���������һ���������� gifts ����ʾ���������������ÿһ�룬����Ҫִ�����²�����
-ѡ����������������һ�ѡ������ֹһ�Ѷ���������������࣬����ѡ����һ�Ѽ��ɡ�
-�����е������������ٵ�����ԭ������������ƽ����������ȡ���������� k ���ʣ�µ�����������
+2558.从数量最多的堆取走礼物：给你一个整数数组 gifts ，表示各堆礼物的数量。每一秒，你需要执行以下操作：
+选择礼物数量最多的那一堆。如果不止一堆都符合礼物数量最多，从中选择任一堆即可。
+将堆中的礼物数量减少到堆中原来礼物数量的平方根，向下取整。返回在 k 秒后剩下的礼物数量。
 
-703.�������еĵ� K ��Ԫ�أ����һ���ҵ��������е� k ��Ԫ�ص��ࣨclass����
-ע���������ĵ� k ��Ԫ�أ����ǵ� k ����ͬ��Ԫ�ء�
-��ʵ�� KthLargest �ࣺ
-KthLargest(int k, int[] nums) ʹ������ k �������� nums ��ʼ������
-int add(int val) �� val ���������� nums �󣬷��ص�ǰ�������е� k ���Ԫ�ء�
+703.数据流中的第 K 大元素：设计一个找到数据流中第 k 大元素的类（class）。
+注意是排序后的第 k 大元素，不是第 k 个不同的元素。
+请实现 KthLargest 类：
+KthLargest(int k, int[] nums) 使用整数 k 和整数流 nums 初始化对象。
+int add(int val) 将 val 插入数据流 nums 后，返回当前数据流中第 k 大的元素。
 */
 // ---------------------
-// ģ��1����Ϥpriority_queue + queue�Ļ���ʹ�ú����ʣ����ԶԱ��ſ�
+// 模板1：熟悉priority_queue + queue的基本使用和性质，可以对比着看
 namespace s2558m1
-{   // ֮ǰ�ù�һ�����ȶ��У������Լ�д������
+{   // 之前用过一点优先队列，这是自己写出来的
     class Solution {
     public:
         long long pickGifts(vector<int>& gifts, int k) {
@@ -51,7 +51,7 @@ namespace s2558m1
             while (k--) {
                 int x = pq.top();
                 pq.pop();
-                x = static_cast<int>(sqrt(x));// ���ﲻ������ʽ����ת��Ҳ�ᷢ����ʽ����ת��
+                x = static_cast<int>(sqrt(x));// 这里不进行显式类型转换也会发生隐式类型转换
                 pq.push(x);
             }
 
@@ -65,17 +65,17 @@ namespace s2558m1
     };
 }
 namespace s2558o1
-{   // ��ԭ�ضѻ����Խ��Ϳռ�ռ�ã���ע������ʱҪ�����Ƿ�����޸��������飩
+{   // 用原地堆化可以降低空间占用（但注意面试时要问问是否可以修改输入数组）
     class Solution {
     public:
         long long pickGifts(vector<int>& gifts, int k) {
             make_heap(gifts.begin(), gifts.end());
-            // �����Ż������Ѷ�Ԫ��Ϊ1ʱ������k�ټ�С����Ԫ��Ҳ�����ٸı�
+            // 额外优化：当堆顶元素为1时，后续k再减小堆内元素也不会再改变
             while (k-- && gifts[0] > 1) {
-                // �����Ѷ����Ƶ�ĩβ
+                // 弹出堆顶并移到末尾
                 pop_heap(gifts.begin(), gifts.end());
                 gifts.back() = sqrt(gifts.back());
-                // ��ĩβԪ�����
+                // 把末尾元素入堆
                 push_heap(gifts.begin(), gifts.end());
             }
             return accumulate(gifts.begin(), gifts.end(), 0LL);
@@ -83,9 +83,9 @@ namespace s2558o1
     };
 }
 
-// ģ��2�����ȶ��о���TopK�⣬���ö��������һ���࣬������ʱ���ص�K���Ԫ��
+// 模板2：优先队列经典TopK题，利用堆性质设计一个类，可以随时返回第K大的元素
 namespace s703o1
-{   // ����С�ѣ�С���ѣ�����nums�е�k��Ԫ�أ��Ѷ�һ������k��Ԫ������С�ģ�Ҳ���ǵ�k���Ԫ��
+{   // 用最小堆（小根堆）储存nums中的k个元素，堆顶一定就是k个元素中最小的，也就是第k大的元素
     class KthLargest {
     private:
         priority_queue<int, vector<int>, greater<int>> pqMin;
@@ -101,14 +101,14 @@ namespace s703o1
         int add(int val) {
             pqMin.push(val);
             if (pqMin.size() > k) {
-                pqMin.pop();// ��ʱ�Ѷ���ŵ��ǵ�k + 1���Ԫ�أ�����Ҫ��pop��
+                pqMin.pop();// 此时堆顶存放的是第k + 1大的元素，不需要，pop掉
             }
             return pqMin.top();
         }
     };
 }
 // ---------------------
-// ��5.2������ ()
+// 【5.2】进阶 ()
 // 
 /*
 
@@ -117,38 +117,38 @@ namespace s703o1
 // ---------------------
 
 // ---------------------
-// ��5.3���� K С/�� (2)
+// 【5.3】第 K 小/大 (2)
 // 
 /*
-215.�����еĵ�K�����Ԫ�أ������������� nums ������ k���뷵�������е� k ������Ԫ�ء�
-��ע�⣬����Ҫ�ҵ������������ĵ� k ������Ԫ�أ������ǵ� k ����ͬ��Ԫ�ء�
-�������Ʋ�ʵ��ʱ�临�Ӷ�Ϊ O(n) ���㷨��������⡣
+215.数组中的第K个最大元素：给定整数数组 nums 和整数 k，请返回数组中第 k 个最大的元素。
+请注意，你需要找的是数组排序后的第 k 个最大的元素，而不是第 k 个不同的元素。
+你必须设计并实现时间复杂度为 O(n) 的算法解决此问题。
 
-347.ǰ K ����ƵԪ�أ�����һ���������� nums ��һ������ k �����㷵�����г���Ƶ��ǰ k �ߵ�Ԫ�ء�
-����԰� ����˳�� ���ش𰸡�
+347.前 K 个高频元素：给你一个整数数组 nums 和一个整数 k ，请你返回其中出现频率前 k 高的元素。
+你可以按 任意顺序 返回答案。
 */
 // ---------------------
-// ģ����3����򵥵�˼·��С���ѣ�����ʱ�临�Ӷȳ��ˡ����������ǿ���ѡ�񷨣��ǿ�������ı��壨Ҳ��������·�Ż���
+// 模板题3：最简单的思路是小顶堆，但是时间复杂度超了。常规做法是快速选择法，是快速排序的变体（也可以用三路优化）
 namespace s215o1
-{   // ��򵥵������ȶ���(��С��)�����������ǲ���ʱ�临�Ӷ�O(nlogn)��Ҳ�ö����O(k)�ռ�
+{   // 最简单的用优先队列(最小堆)的做法，但是不仅时间复杂度O(nlogn)，也用额外的O(k)空间
     int findKthLargest(vector<int>& nums, int k) {
-        // ����һ����С�ѣ�ʹ�� priority_queue ��ָ���ȽϺ���Ϊ greater<int>
-        // �����Ѷ�������С��Ԫ��
+        // 创建一个最小堆：使用 priority_queue 并指定比较函数为 greater<int>
+        // 这样堆顶总是最小的元素
         priority_queue<int, vector<int>, greater<int>> minHeap;
 
-        // ���������е�ÿ��Ԫ��
+        // 遍历数组中的每个元素
         for (int num : nums) {
-            // ����ǰԪ���������
+            // 将当前元素推入堆中
             minHeap.push(num);
 
-            // ����ѵĴ�С���� k�������Ѷ�����С��Ԫ�أ�
-            // ��������ȷ������ֻ�������� k ��Ԫ��
+            // 如果堆的大小超过 k，弹出堆顶（最小的元素）
+            // 这样可以确保堆中只保留最大的 k 个元素
             if (minHeap.size() > k) {
                 minHeap.pop();
             }
         }
         /*  
-        // ��������ɶ�������push��pop�Ĳ������٣�ֻ�ڱ�Ҫʱ�����ѣ�Ч�ʸ���
+        // 下面的生成堆做法，push和pop的操作更少，只在必要时操作堆，效率更高
         for (int num : nums) {
             if (minHeap.size() < k) {
                 minHeap.push(num);
@@ -161,17 +161,17 @@ namespace s215o1
         }
         */
 
-        // ��ʱ�Ѷ����ǵ� k ������Ԫ��
+        // 此时堆顶就是第 k 个最大的元素
         return minHeap.top();
     }   
 }
 namespace s215o2
-{   // �����õ������ǿ���ѡ�񷨣�QuickSelect������������������׼ǵ���·ѡ��汾��ʱ�临�Ӷ�O(n)���ռ临�Ӷ�O(logn)
-    // ������·�������򣬽�����ֳ����ݣ����ǻ��ڷ��η���������������С�ڵ����ݣ�
-    // ���Ǽ��η�����ֻ��������Ҫ���ǡ�һ�ݡ�������ڿ���������Ϊ��;ֻҪ�ҵ���ֵ�Ϳ�����ǰ�˳�
-    // ����ʱ�临�Ӷȴ�O(nlogn)��С����O(n)���㷨˼������ͬ�ģ�ֻ����ΪӦ�ó�����ͬʱ�临�Ӷȷ����仯
-    // o2д����Ȼ�üǣ������õ��˶��������ռ��¼��·��������Ż���o3��o4�汾
-    // �����������ʱҪ�����޸��������飬��ֱ����o2�ⷨ
+{   // 更常用的做法是快速选择法（QuickSelect），本版是最简单最容易记的三路选择版本，时间复杂度O(n)，空间复杂度O(logn)
+    // 基于三路快速排序，将数组分成三份，不是基于分治法（继续处理大于小于的两份）
+    // 而是减治法，“只”处理需要的那“一份”，相较于快速排序，因为中途只要找到了值就可以提前退出
+    // 所以时间复杂度从O(nlogn)减小到了O(n)，算法思想是相同的，只是因为应用场景不同时间复杂度发生变化
+    // o2写法虽然好记，但是用到了额外的数组空间记录三路，更多的优化见o3和o4版本
+    // 但是如果面试时要求不能修改输入数组，就直接用o2解法
     class Solution {
     public:
         int findKthLargest(vector<int>& nums, int k) {
@@ -179,11 +179,11 @@ namespace s215o2
         }
 
     private:
-        // ע�⣺����k����nums�е�topk�󣬺����ݹ����numsΪsmallʱ��kҲ��Ҫ��Ӧ�ı�
+        // 注意：这里k代表nums中的topk大，后续递归更改nums为small时，k也需要相应改变
         int quickSelect(vector<int>& nums, int k) {
-            // ���ѡ���׼��
+            // 随机选择基准数
             int pivot = nums[rand() % nums.size()];
-            // �����ڡ�С�ڡ����� pivot ��Ԫ�ػ����� big, small, equal ��
+            // 将大于、小于、等于 pivot 的元素划分至 big, small, equal 中
             vector<int> big, equal, small;
             for (int num : nums) {
                 if (num > pivot)
@@ -193,19 +193,19 @@ namespace s215o2
                 else
                     equal.push_back(num);
             }
-            // �� k ��Ԫ���� big �У��ݹ黮��
+            // 第 k 大元素在 big 中，递归划分
             if (k <= big.size())
                 return quickSelect(big, k);
-            // �� k ��Ԫ���� small �У��ݹ黮��
+            // 第 k 大元素在 small 中，递归划分
             if (nums.size() - small.size() < k)
                 return quickSelect(small, k - nums.size() + small.size());
-            // �� k ��Ԫ���� equal �У�ֱ�ӷ��� pivot
+            // 第 k 大元素在 equal 中，直接返回 pivot
             return pivot;
         }
     };
 }
 namespace s215o3
-{   // ��0.5�����㷨s0_5_5o3�е���·ѡ��ģ������޸ģ�������ʹ�ö�����·���飬������Ȼ��O(logn)�ĵݹ�ջ����
+{   // 用0.5排序算法s0_5_5o3中的三路选择模板进行修改，避免了使用额外三路数组，但是仍然有O(logn)的递归栈调用
     class Solution {
     public:
         int findKthLargest(vector<int>& nums, int k) {
@@ -214,7 +214,7 @@ namespace s215o3
         }
 
     private:
-        // ����k˵����[low, high]�еĵ�k��ֵ�����������С��pivot������ݹ�ʱ��Ҫ�޸�k
+        // 参数k说明求[low, high]中的第k大值，所以如果向小于pivot的区间递归时，要修改k
         int quickSelect(vector<int>& nums, int low, int high, int k) {
             if (low == high) return nums[low];
 
@@ -223,10 +223,10 @@ namespace s215o3
 
             int pivot = nums[low];
 
-            // ��·������ά������ָ��
-            int lt = low;      // С��pivot���ұ߽�
-            int gt = high;     // ����pivot����߽�
-            int i = low + 1;   // ��ǰ����Ԫ��
+            // 三路分区：维护三个指针
+            int lt = low;      // 小于pivot的右边界
+            int gt = high;     // 大于pivot的左边界
+            int i = low + 1;   // 当前检查的元素
 
             while (i <= gt) {
                 if (nums[i] < pivot) {
@@ -243,7 +243,7 @@ namespace s215o3
                 }
             }
 
-            // ���������Ϊ��[low, lt-1] < pivot, [lt, gt] == pivot, [gt+1, high] > pivot
+            // 现在数组分为：[low, lt-1] < pivot, [lt, gt] == pivot, [gt+1, high] > pivot
             int greaterCnt = high - gt;
             int equalCnt = gt - lt + 1;
             if (k <= greaterCnt) {
@@ -253,14 +253,14 @@ namespace s215o3
                 return pivot;
             }
             else {
-                // �Ѿ����Դ�k����ȥ��greaterCnt + equalCnt�ˣ���ЩԪ�ر�topk��Ҫ��
+                // 已经可以从k个中去掉greaterCnt + equalCnt了，这些元素比topk都要大
                 return quickSelect(nums, low, lt - 1, k - greaterCnt - equalCnt);
             }
         }
     };
 }
 namespace s215o4
-{   // ��һ���Ż���ʡȥ�˵ݹ�ջ�Ŀռ俪���������ռ临�Ӷ�O(1)��Ҳ����Ŀǰ��������ʵ�����д��
+{   // 进一步优化，省去了递归栈的空间开销，做到空间复杂度O(1)，也是我目前觉得最合适的面试写法
     class Solution {
     public:
         int findKthLargest(vector<int>& nums, int k) {
@@ -268,16 +268,16 @@ namespace s215o4
             int low = 0, high = n - 1;
 
             while (low <= high) {
-                // ���ѡ���׼��������
+                // 随机选择基准避免最坏情况
                 int pivotIdx = low + rand() % (high - low + 1);
                 swap(nums[low], nums[pivotIdx]);
 
                 int pivot = nums[low];
 
-                // ��·������ά������ָ��
-                int lt = low;    // С��pivot���ұ߽�
-                int gt = high;   // ����pivot����߽�
-                int i = low + 1; // ��ǰ����Ԫ��
+                // 三路分区：维护三个指针
+                int lt = low;    // 小于pivot的右边界
+                int gt = high;   // 大于pivot的左边界
+                int i = low + 1; // 当前检查的元素
 
                 while (i <= gt) {
                     if (nums[i] < pivot) {
@@ -288,78 +288,78 @@ namespace s215o4
                     else if (nums[i] > pivot) {
                         swap(nums[i], nums[gt]);
                         --gt;
-                        // ע�⣺���ﲻ����i����Ϊ������������Ԫ����Ҫ���¼��
+                        // 注意：这里不增加i，因为交换过来的新元素需要重新检查
                     }
                     else {
-                        ++i;// ����pivot��ֱ������
+                        ++i;// 等于pivot，直接跳过
                     }
                 }
 
-                // ���������Ϊ��[low, lt-1] < pivot, [lt, gt] == pivot, [gt+1, high] > pivot
+                // 现在数组分为：[low, lt-1] < pivot, [lt, gt] == pivot, [gt+1, high] > pivot
                 int greaterCnt = high - gt;
                 int equalCnt = gt - lt + 1;
                 if (k <= greaterCnt) {
-                    low = gt + 1;// ���²�ѯ��Χ
+                    low = gt + 1;// 更新查询范围
                 }
                 else if (k <= greaterCnt + equalCnt) {
-                    return pivot; // k �ڵ��� pivot ��������
+                    return pivot; // k 在等于 pivot 的区间内
                 }
                 else {
                     k -= greaterCnt + equalCnt;
-                    high = lt - 1;// ���²�ѯ��Χ����ߵ�greaterCnt + equalCnt��Ԫ��ҲҪ��k������ȥ��
+                    high = lt - 1;// 更新查询范围，左边的greaterCnt + equalCnt个元素也要从k个里面去除
                 }
             }
-            return -1; // ��Ч����
+            return -1; // 无效输入
         }
     };
 }
 namespace s215o5
-{   // �⺯��д���������˽�
+{   // 库函数写法，仅作了解
     /*
-    // Ĭ��ʹ�� С�ں� < ���бȽ�
+    // 默认使用 小于号 < 进行比较
     void nth_element (RandomAccessIterator first,
                      RandomAccessIterator nth,
                      RandomAccessIterator last);
 
-    // �����Զ���ȽϹ���
+    // 可以自定义比较规则
     void nth_element (RandomAccessIterator first,
                      RandomAccessIterator nth,
                      RandomAccessIterator last,
                      Compare comp);
-    // ����ÿ�ȽϺ���
-    // �磺�ҵ�3�����������Ϊ2����ʹ�� greater<int>() ʹ���������ǰ��
+    // 或调用库比较函数
+    // 如：找第3大的数（索引为2），使用 greater<int>() 使大的数排在前面
     std::nth_element(v.begin(), v.begin() + 2, v.end(), std::greater<int>());
 
-    nth_element�����зֳ����������֣����ұ�֤���м��Ǹ�Ԫ�أ��� nth ָ���Ԫ�أ����ھ�����ȷ��λ��
-    ����������TOPK��/С���⣬��������λ��
+    nth_element把序列分成了三个部分，并且保证了中间那个元素（即 nth 指向的元素）处于绝对正确的位置
+    可以用来求TOPK大/小问题，或者是中位数
     */
     class Solution {
     public:
         int findKthLargest(vector<int>& nums, int k) {
-            // ���ڲ�ʵ��ͨ�����ǿ���ѡ�񷨣�ʱ�临�Ӷ�O(n)
+            // 其内部实现通常就是快速选择法，时间复杂度O(n)
             nth_element(nums.begin(), nums.end() - k, nums.end());
             return nums[nums.size() - k];
         }
     };
 }
 
-// ģ����4��TopK���壬Ȩ�شӴ�С����Ƶ�Σ���С���������������Ǹ��õ�������Ͱ���򣬿���ʵ��O(n)ʱ�ո��Ӷ�
+// 模板题4：TopK变体，权重从大小换成频次，最小堆依旧能做，但是更好的做法是桶排序，可以实现O(n)时空复杂度
 namespace s347m1
-{   // �����������û�뵽��ͨ���ˣ���ʱ�临�Ӷ�O(n + nlogk)���ռ临�Ӷ�O(n + k)
+{   // 这份垃圾代码没想到真通过了，总时间复杂度O(n + nlogk)，空间复杂度O(n + k)
     class Solution {
     public:
         vector<int> topKFrequent(vector<int>& nums, int k) {
-            // ����Ƶ��ͼ��ʱ�临�Ӷ�O(n)
+            // 生成频率图，时间复杂度O(n)
             unordered_map<int, int> freqMp;
             for (int num : nums) {
                 ++freqMp[num];
             }
 
-            // ������С�ѣ�ʱ�临�Ӷ�O(k + (n - k)logk)�������ΪO(nlogk)
+            // 生成最小堆，时间复杂度O(k + (n - k)logk)，化简后为O(nlogk)
             auto cmp = [](const auto& a, const auto& b) { return a.second > b.second; };
-            /* ����ĳ������������Զ���ȽϹ�������Խ�ʡ���ȶ��еĿռ䣬ֱ�Ӷ����int, vector<int>
-               �������Ҫ�����ֻ����Ƶ��Map��key������Ҫ�ظ�������[1, 1, 1, 1], k = 2;
-               ֻ��Ҫ����{1}��������{1, 1}��������С������������ԭ����cmp����
+            /* 如果改成下面这样的自定义比较规则，则可以节省优先队列的空间，直接定义成int, vector<int>
+               但是题干要求的是只返回频率Map的key，不需要重复，比如[1, 1, 1, 1], k = 2;
+               只需要返回{1}，而不是{1, 1}，所以最小堆做法还是用原本的cmp才行
             auto cmp = [&](const int a, const int b) {
                 return freqMap[a] > freqMap[b];
             };
@@ -373,7 +373,7 @@ namespace s347m1
                 }
             }
 
-            // ���ɴ𰸣�ʱ�临�Ӷ�ΪO(klogk)
+            // 生成答案，时间复杂度为O(klogk)
             vector<int> ans;
             ans.reserve(k);
             while (!minHeap.empty()) {
@@ -385,8 +385,8 @@ namespace s347m1
     };
 }
 namespace s347o1 
-{   // ����Ԫ��Ƶ����ȻС�������С������Ƶ��ȷ��Ͱ������ʵ��O(n)ʱ�ո��Ӷ�
-    // �ⷨ�߱�Ͱ�����˼��Ϳ�ܣ���ÿ��Ͱ��Ԫ�ز���������
+{   // 利用元素频率天然小于数组大小，根据频次确定桶的数量实现O(n)时空复杂度
+    // 解法具备桶排序的思想和框架，但每个桶内元素不进行排序
     class Solution {
     public:
         vector<int> topKFrequent(vector<int>& nums, int k) {
@@ -397,8 +397,8 @@ namespace s347o1
                 mxFreq = max(mxFreq, freqMap[num]);
             }
 
-            // Ҳ����ֱ�Ӷ���Ͱ�Ĵ�СΪn + 1����Ϊ���Ƶ�ʲ��������鳤��
-            // �������ܴ����Ƶ�κ�С��������΢�Ż��ռ䣬������������
+            // 也可以直接定义桶的大小为n + 1，因为最大频率不超过数组长度
+            // 如果数组很大但最大频次很小，可以稍微优化空间，就像下面这样
             vector<vector<int>> buckets(mxFreq + 1);
             for (auto& [val, freq] : freqMap) {
                 buckets[freq].push_back(val);
@@ -410,12 +410,12 @@ namespace s347o1
                 ans.insert(ans.end(), buckets[i].begin(), buckets[i].end());
             }
             /* 
-            ע����Ŀ��֤��Ψһ��һ�������ĳ�� insert �� ans.size() ǡ�õ��� k ����������Կ���ֱ��insert
-            ������𰸲�Ψһ����Ҫ����������д��ͨ������ѭ��˫���ж�����ȷ��ֻ��buckets��ȡk��Ԫ��
+            注意题目保证答案唯一，一定会出现某次 insert 后 ans.size() 恰好等于 k 的情况，所以可以直接insert
+            但如果答案不唯一，就要像下面这样写，通过内外循环双重判断条件确保只从buckets中取k个元素
             for (int i = mxFreq; i > 0 && ans.size() < k; --i) {
                 for (int num : buckets[i]) {
                     ans.push_back(num);
-                    if (ans.size() == k) break; // Ͱ�ڿ��ܴ��ڶ����ͬƵ�ʵ�Ԫ��
+                    if (ans.size() == k) break; // 桶内可能存在多个相同频率的元素
                 }
             }
             */
@@ -424,9 +424,9 @@ namespace s347o1
     };
 }
 
-// ģ����5������k·�鲢����С��������ͬʱ��¼k��
+// 模板题5：经典k路归并，用小顶堆做，同时记录k行
 namespace s373m1
-{   // ����˼·���Լ�д�����ģ����Ż���д����o1
+{   // 看了思路后自己写出来的，更优化的写法见o1
     class Solution {
     public:
         vector<vector<int>> kSmallestPairs(vector<int>& nums1, vector<int>& nums2, int k) {
@@ -457,8 +457,8 @@ namespace s373m1
     };
 }
 namespace s373o1
-{   // ʱ�䣺O(k��log(min(m,k)))�����Ͻ��ѵ� O(min(m,k))��
-    // �ռ䣺O(min(m, k))
+{   // 时间：O(k·log(min(m,k)))（加上建堆的 O(min(m,k))）
+    // 空间：O(min(m, k))
 
     class Solution {
     public:
@@ -466,27 +466,27 @@ namespace s373o1
             int m = nums1.size(), n = nums2.size();
             vector<vector<int>> ans;
 
-            // �ѵĴ�С��m������������mn��ѡ��С�ģ������Ż�������Ҫ�ǵðѴ��е����Է�תһ��
-            // ��Ҫע�⣬n < k������Ҳ�Ǳ�Ҫ�ģ����k��С����ô����mn������ʹ�ѱ�С
+            // 堆的大小由m决定，可以在mn中选更小的，进行优化，但需要记得把答案中的数对反转一下
+            // 且要注意，n < k的条件也是必要的，如果k更小，那么交换mn并不会使堆变小
             if (m > n && n < k) {
                 vector<vector<int>> res = kSmallestPairs(nums2, nums1, k);
-                for (auto& p : res) swap(p[0], p[1]);   // �� ��ÿ�Ի��� {nums1Ԫ��, nums2Ԫ��}
+                for (auto& p : res) swap(p[0], p[1]);   // ← 把每对换回 {nums1元素, nums2元素}
                 return res;
             }
 
-            // С���ѣ�Ԫ�� = {��, �к� i, �к� j}
-            // ��tuple�����ά���飬��ֱ�����Դ���greater<Node>�͹��ˣ������鷳дcmp
+            // 小顶堆，元素 = {和, 行号 i, 列号 j}
+            // 用tuple代替二维数组，且直接用自带的greater<Node>就够了，不用麻烦写cmp
             using Node = tuple<int, int, int>;
             priority_queue<Node, vector<Node>, greater<Node>> pq;
 
-            // ��һ������ÿһ�еĵ�һ��Ԫ�طŽ���
-            // �ؼ��Ż���ֻ��Ҫǰ min(m, k) �о͹��ˣ�ԭ��������˵����
+            // 第一步：把每一行的第一个元素放进堆
+            // 关键优化：只需要前 min(m, k) 行就够了（原因见下面的说明）
             for (int i = 0; i < min(m, k); ++i) {
                 pq.emplace(nums1[i] + nums2[0], i, 0);
             }
 
-            // �ڶ�����������С����Ϊ�𰸣����������ұߵ��ھ�
-            while (!pq.empty() && k > 0) {// �����!pq.empty()���Ǵ���ϰ�ߣ����ⲻ��Ҳ��
+            // 第二步：弹出最小的作为答案，并补上它右边的邻居
+            while (!pq.empty() && k > 0) {// 这里的!pq.empty()纯是代码习惯，这题不加也对
                 auto [sum, i, j] = pq.top();
                 pq.pop();
 
@@ -503,7 +503,7 @@ namespace s373o1
     };
 }
 // ---------------------
-// ��5.4������Ԫ�� ()
+// 【5.4】重排元素 ()
 // 
 /*
 
@@ -512,7 +512,7 @@ namespace s373o1
 
 
 // ---------------------
-// ��5.5�����ڶ� ()
+// 【5.5】反悔堆 ()
 // 
 /*
 
@@ -521,7 +521,7 @@ namespace s373o1
 
 
 // ---------------------
-// ��5.6����ɾ���� ()
+// 【5.6】懒删除堆 ()
 // 
 /*
 
@@ -531,21 +531,21 @@ namespace s373o1
 
 
 // ---------------------
-// ��5.7���Զ��ѣ��������ڵ� K С/�� (1)
+// 【5.7】对顶堆（滑动窗口第 K 小/大） (1)
 // 
 /*
-295.����������λ������λ�������������б��е��м�ֵ������б��Ĵ�С��ż������û���м�ֵ����λ���������м�ֵ��ƽ��ֵ��
-���� arr = [2,3,4] ����λ���� 3 ��
-���� arr = [2,3] ����λ���� (2 + 3) / 2 = 2.5 ��
-ʵ�� MedianFinder ��:
-MedianFinder() ��ʼ�� MedianFinder ����
-void addNum(int num) ���������е����� num ���ӵ����ݽṹ�С�
-double findMedian() ���ص�ĿǰΪֹ����Ԫ�ص���λ������ʵ�ʴ���� 10-5 ���ڵĴ𰸽������ܡ�
+295.数据流的中位数：中位数是有序整数列表中的中间值。如果列表的大小是偶数，则没有中间值，中位数是两个中间值的平均值。
+例如 arr = [2,3,4] 的中位数是 3 。
+例如 arr = [2,3] 的中位数是 (2 + 3) / 2 = 2.5 。
+实现 MedianFinder 类:
+MedianFinder() 初始化 MedianFinder 对象。
+void addNum(int num) 将数据流中的整数 num 添加到数据结构中。
+double findMedian() 返回到目前为止所有元素的中位数。与实际答案相差 10-5 以内的答案将被接受。
 */
 // ---------------------
-// ģ����5����С�ѽ������λ��
+// 模板题5：大小堆结合求中位数
 namespace s295m1
-{   // ��ͼ�ÿ⺯���ɻ���أ����γ�ʱ�ˣ���ΪfindMedian()�����Ƴ�O(n)ʱ�临�Ӷȱس�ʱ
+{   // 企图用库函数蒙混过关，无奈超时了，因为findMedian()如果设计成O(n)时间复杂度必超时
     class MedianFinder {
     private:
         vector<int> nums;
@@ -578,22 +578,22 @@ namespace s295m1
     };
 }
 namespace s295o1
-{   // ��С�ѣ�������λ���������Ϊ�������ϵ�˼ά
-    // addNumʱ�临�Ӷ�O(logn)��nΪ��������Ԫ�ظ���������ΪO(1)
-    // �ռ临�Ӷ�ΪO(n)
+{   // 大小堆，采用中位数将数组分为两个集合的思维
+    // addNum时间复杂度O(logn)，n为数据流的元素个数，查找为O(1)
+    // 空间复杂度为O(n)
     class MedianFinder {
     private:
-        priority_queue<int> left;                               // ����
-        priority_queue<int, vector<int>, greater<int>> right;   // ��С��
+        priority_queue<int> left;                               // 最大堆
+        priority_queue<int, vector<int>, greater<int>> right;   // 最小堆
     public:
         MedianFinder() {
 
         }
 
         void addNum(int num) {
-            // �涨left��Ԫ��ȫ��С��right��Ԫ��
-            // ��left�ѵĴ�С����right��1
-            // ���з������ۣ���left��right��С��ͬ/����ͬʱ������Ԫ����4����������Ժϲ���2��
+            // 规定left中元素全部小于right中元素
+            // 且left堆的大小最多比right多1
+            // 自行分类讨论，当left和right大小相同/不相同时，加入元素有4种情况，可以合并成2种
             if (left.size() == right.size()) {
                 right.push(num);
                 left.push(right.top());
