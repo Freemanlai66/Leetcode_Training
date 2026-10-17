@@ -609,6 +609,47 @@ namespace s93m3 {
         }
     };
 }
+namespace s93o2
+{   // 舍弃isIpAddress的函数式判断，因为可能会判断超过3次，还有函数调用的开销，子段值直接用ipVal表示即可
+    class Solution {
+    public:
+        vector<string> restoreIpAddresses(string s) {
+            int n = s.size();
+            if (n < 4 || n > 12) return {};
+
+            vector<string> ans;
+            vector<string> path;
+
+            auto dfs = [&](auto&& dfs, int i)->void {
+                // prune放在返回答案之前，省去i == n && path.size() == 4的双重判断
+                int remainingNum = n - i;
+                int remainingSlot = 4 - path.size();
+                if (remainingNum < remainingSlot || 3 * remainingSlot < remainingNum) {
+                    return;
+                }
+
+                if (i == n) {
+                    string ip = path[0] + '.' + path[1] + '.' + path[2] + '.' + path[3];
+                    ans.push_back(move(ip));
+                    return;
+                }
+
+                int ipVal = 0;
+                for (int j = i; j < n; ++j) {
+                    ipVal = 10 * ipVal + (s[j] - '0');
+                    if (ipVal > 255) break;
+                    path.emplace_back(s.begin() + i, s.begin() + j + 1);
+                    dfs(dfs, j + 1);
+                    path.pop_back();
+                    if (ipVal == 0) break;
+                }
+                };
+
+            dfs(dfs, 0);
+            return ans;
+        }
+    };
+}
 // ---------------------
 // 【4.4】组合型回溯 (4)
 // 组合型回溯相比子集型回溯，不同之处在于“组合”的长度是固定的，比如从n个数里选固定长为k的组合
