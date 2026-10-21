@@ -83,6 +83,9 @@ namespace s494o1
      剩下的就是标准的0-1背包中的一种变形了：恰好装capacity，求方案数/最小/最大价值和（其他两种是至多装capacity和至少装）
      dfs(i, j) = dfs(i - 1, j) + dfs(i - 1, capacity - nums[i]) 
      dfs(i, j)表示到nums[i]为止的方案数
+
+     因为nums[i]可能等于0，这些0选或不选都不影响背包容量，但是影响答案，所以不能在c = 0时提前返回
+     如果nums[i]全是正数，那么可以提前返回
     */
     // 下面是一个没加记忆化搜索的版本
     class Solution {
@@ -237,12 +240,14 @@ namespace s494o5
 
             vector<int> f(m + 1);
             f[0] = 1;
+            int s = 0;
 
             for (int x : nums) {
                 // 因为用不到i来标记数组了，所以可以直接用ranged for loop
                 // 同时可以直接将nums[i]与c的条件判断简化到for循环条件里
                 // 这里很直观，因为用到了f[c - x]，所以c的循环条件就是c >= x，防止下标越界
-                for (int c = m; c >= x; --c) {
+                s = max(s + x, m);
+                for (int c = s; c >= x; --c) {
                     f[c] += f[c - x];
                 }
             }
@@ -379,11 +384,14 @@ namespace s416m5
             }
             int m = sum / 2;
 
-            vector<bool> f(m + 1);
-            // vector<int8_t> f(m + 1); // better
+            vector<char> f(m + 1, false);
             f[0] = true;
+            int s = 0;
 
             for (int x : nums) {
+                // 当s小于m时，就算当前已处理元素全选，也不可能恰好选完，所以可以进行常数优化，从s开始
+                // s代表当前已经处理过的元素全部加起来，截断至m
+                s = min(s + x, m);
                 for (int c = m; c >= x; --c) {
                     f[c] = f[c] || f[c - x];
                 }

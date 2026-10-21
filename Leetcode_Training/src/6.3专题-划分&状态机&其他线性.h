@@ -116,7 +116,8 @@ namespace s139o2
                 int bottom = max(0, i - maxLen);
                 for (int j = i - 1; j >= bottom; --j) {
                     string sub = s.substr(j, i - j);
-                    if (wordSet.count(sub) && f[j]) {
+                    // 短路求值，f[j]判断条件写在前面更好
+                    if (f[j] && wordSet.count(sub)) {
                         f[i] = true;
                         // 对每个i，只要有一个j能使其满足条件，就可以直接结束循环，转去处理i + 1
                         break;
